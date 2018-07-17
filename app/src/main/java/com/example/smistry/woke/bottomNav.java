@@ -31,17 +31,14 @@ public class bottomNav extends AppCompatActivity {
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
-                    mTextMessage.setText(R.string.title_home);
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
                     fragmentTransaction.replace(R.id.flContainer, fragment1).commit();
                     return true;
                 case R.id.navigation_goals:
-                    mTextMessage.setText(R.string.title_goals);
                     FragmentTransaction fragmentTransaction2 = fragmentManager.beginTransaction();
                     fragmentTransaction2.replace(R.id.flContainer, fragment2).commit();
                     return true;
                 case R.id.navigation_statistics:
-                    mTextMessage.setText(R.string.title_statistics);
                     FragmentTransaction fragmentTransaction3 = fragmentManager.beginTransaction();
                     fragmentTransaction3.replace(R.id.flContainer, fragment3).commit();
                     return true;

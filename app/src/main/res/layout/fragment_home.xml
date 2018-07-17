@@ -4,18 +4,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ffffff"
+    android:background="@color/colorPrimary"
     tools:context=".fragments.home">
-
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
+        <!-- TODO: Update blank fragment layout -->
+
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab"
@@ -23,8 +20,6 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true"
-            android:layout_marginBottom="11dp"
-            android:layout_marginEnd="13dp"
             android:clickable="true"
             android:src="@drawable/ic_add_alert_white" />
     </RelativeLayout>
