@@ -1,4 +1,4 @@
-package com.example.smistry.woke;
+package com.example.smistry.woke.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -11,6 +11,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.example.smistry.woke.R;
+import com.example.smistry.woke.TaskAdapter;
+import com.example.smistry.woke.models.Task;
 
 import org.apache.commons.io.FileUtils;
 

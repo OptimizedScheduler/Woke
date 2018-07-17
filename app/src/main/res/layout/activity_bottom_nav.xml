@@ -32,10 +32,10 @@
 
     <fragment
         android:id="@+id/flContainer"
-        android:name="com.example.smistry.woke.home"
-        android:layout_width="386dp"
-        android:layout_height="450dp"
+        android:name="com.example.smistry.woke.fragments.home"
+        android:layout_width="408dp"
+        android:layout_height="455dp"
         tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="2dp" />
+        tools:layout_editor_absoluteY="0dp" />
 
 </android.support.constraint.ConstraintLayout>

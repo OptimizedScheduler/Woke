@@ -1,4 +1,4 @@
-package com.example.smistry.woke;
+package com.example.smistry.woke.models;
 
 
 import java.util.Date;

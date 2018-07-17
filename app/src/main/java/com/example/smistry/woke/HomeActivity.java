@@ -11,6 +11,9 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 
+import com.example.smistry.woke.fragments.newTask;
+import com.example.smistry.woke.models.Task;
+
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;

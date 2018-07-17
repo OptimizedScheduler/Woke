@@ -10,6 +10,10 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.example.smistry.woke.fragments.goals;
+import com.example.smistry.woke.fragments.home;
+import com.example.smistry.woke.fragments.stats;
+
 public class bottomNav extends AppCompatActivity {
 
     private TextView mTextMessage;
