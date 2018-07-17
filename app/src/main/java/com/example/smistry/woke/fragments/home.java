@@ -1,5 +1,6 @@
 package com.example.smistry.woke.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.smistry.woke.R;
+import com.example.smistry.woke.SettingsActivity;
 import com.example.smistry.woke.TaskAdapter;
 import com.example.smistry.woke.models.Task;
 
@@ -65,6 +67,8 @@ public class home extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent intent = new Intent(getActivity(), SettingsActivity.class);
+                startActivity(intent);
 
                 Snackbar.make(view, "Creating a new task", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
