@@ -8,12 +8,12 @@
         android:title="General" />
 
     <header
-        android:fragment="com.example.smistry.woke.SettingsActivity$NotificationPreferenceFragment"
+        android:fragment="com.example.smistry.woke.SettingsActivity$FixedTimePreferenceFragment"
         android:icon="@drawable/ic_notifications_black_24dp"
         android:title="Fixed Time" />
 
     <header
-        android:fragment="com.example.smistry.woke.SettingsActivity$DataSyncPreferenceFragment"
+        android:fragment="com.example.smistry.woke.SettingsActivity$SleepPreferenceFragment"
         android:icon="@drawable/ic_sync_black_24dp"
         android:title="Sleep" />
 
