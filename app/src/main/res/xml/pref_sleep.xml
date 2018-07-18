@@ -1,0 +1,27 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <EditTextPreference
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="time"
+        android:key="schoolWorkBegin"
+        android:selectAllOnFocus="true"
+        android:singleLine="true"
+        android:summary="What time does it begin"
+        android:title="School/Work" />
+    <EditTextPreference
+        android:inputType="time"
+        android:key="schoolWorkEnd"
+        android:selectAllOnFocus="true"
+        android:singleLine="true"
+        android:summary="What time does it end"
+        android:title="School/Work" />
+    <EditTextPreference
+        android:inputType="number"
+        android:key="commuteTime"
+        android:selectAllOnFocus="true"
+        android:singleLine="true"
+        android:summary="Estimated commute time in minutes"
+        android:title="Commute" />
+
+</PreferenceScreen>
