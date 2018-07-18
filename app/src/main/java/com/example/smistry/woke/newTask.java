@@ -60,6 +60,7 @@ public class newTask extends AppCompatActivity implements TimePickerDialog.OnTim
     int hourOfDay;
     int minute;
     int duration;
+    boolean isDateSet;
 
     String [] months = {"Jan","Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec"};
 
@@ -167,19 +168,22 @@ public class newTask extends AppCompatActivity implements TimePickerDialog.OnTim
         time = new Time(hourOfDay, minute,0);
         this.hourOfDay = hourOfDay;
         this.minute = minute;
-        tvTime.setText("Hour: " + hourOfDay + " Minute: " + minute);
+
+        if(!isDateSet){
+            Toast.makeText(newTask.this, "Please set the date first", Toast.LENGTH_SHORT).show();
+        }
+
+        else {
+            tvTime.setText("Hour: " + hourOfDay + " Minute: " + minute);
+            taskDate.setHours(hourOfDay);
+            taskDate.setMinutes(minute);
+        }
     }
 
     @Override
     public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-
-        if(!cbAutomated.isChecked()){
-            taskDate = new Date(year, month, day,hourOfDay, minute);
-            Log.d("Time", String.valueOf(hourOfDay)+","+String.valueOf(minute));
-        }
-
-       else { taskDate = new Date(year, month, day);}
-
-       tvDate.setText(months[month]+ " " + day + ","+ " " + year);
+        taskDate = new Date(year, month, day);
+        isDateSet = true;
+        tvDate.setText(months[month]+ " " + day + ","+ " " + year);
     }
 }
