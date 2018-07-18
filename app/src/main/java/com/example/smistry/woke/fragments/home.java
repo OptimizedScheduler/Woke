@@ -94,7 +94,7 @@ public class home extends Fragment {
                 Log.d("TASK", task);
 
                 String [] params = task.split(",");
-                String category = params [0];
+                String category = params[0];
                 int duration = Integer.parseInt(params [1]);
                 boolean automated = Boolean.parseBoolean(params[2]);
                 int priority = Integer.parseInt(params[3]);

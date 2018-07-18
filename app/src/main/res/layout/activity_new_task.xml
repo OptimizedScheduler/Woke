@@ -94,9 +94,8 @@
         android:id="@+id/sbDuration"
         android:layout_width="283dp"
         android:layout_height="29dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="134dp"
+        android:layout_alignStart="@+id/spCategory"
+        android:layout_alignTop="@+id/tvDuration"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.505"
         app:layout_constraintStart_toStartOf="parent"
@@ -167,5 +166,56 @@
         android:layout_above="@+id/time"
         android:layout_centerHorizontal="true"
         android:text="date" />
+
+    <Button
+        android:id="@+id/btFinish"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/sbDuration"
+        android:layout_alignTop="@+id/tvDate"
+        android:text="Finish" />
+
+    <EditText
+        android:id="@+id/etHours"
+        android:layout_width="65dp"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/cbAutomated"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="-180dp"
+        android:layout_marginStart="26dp"
+        android:ems="10"
+        android:inputType="number"
+        tools:text="Hours" />
+
+    <EditText
+        android:id="@+id/etMinutes"
+        android:layout_width="97dp"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/cbAutomated"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="-180dp"
+        android:layout_marginEnd="95dp"
+        android:ems="10"
+        android:inputType="number"
+        tools:text="Minutes" />
+
+    <TextView
+        android:id="@+id/tvHours"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="100dp"
+        android:layout_marginTop="150dp"
+        android:text="Hours" />
+
+    <TextView
+        android:id="@+id/tvMinutes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/sbDuration"
+        android:layout_alignTop="@+id/tvHours"
+        android:text="Minutes" />
+
 
 </RelativeLayout>
