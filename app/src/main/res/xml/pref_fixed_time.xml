@@ -1,0 +1,55 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory android:title="WeekDay">
+        <EditTextPreference
+            android:inputType="number"
+            android:key="minSleepWeekDay"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:summary="Enter the minimum amount of hours you would like to sleep"
+            android:title="Sleep Duration" />
+        <EditTextPreference
+            android:inputType="time"
+            android:key="sleepTimeWeekDay"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="Sleep Time"
+            android:summary="Enter your prefered sleep time" />
+        <EditTextPreference
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="time"
+            android:key="wakeTimeWeekDay"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="Wake Up Time"
+            android:summary="Enter your prefered wake up time" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory android:title="WeekEnd">
+        <EditTextPreference
+            android:inputType="number"
+            android:key="minSleepWeekEnd"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:summary="Enter the minimum amount of hours you would like to sleep"
+            android:title="Sleep Duration" />
+        <EditTextPreference
+            android:inputType="time"
+            android:key="sleepTimeWeekEnd"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="Sleep Time"
+            android:summary="Enter your prefered sleep time" />
+        <EditTextPreference
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="time"
+            android:key="wakeTimeWeekEnd"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:title="Wake Up Time"
+            android:summary="Enter your prefered wake up time" />
+
+    </PreferenceCategory>
+</PreferenceScreen>

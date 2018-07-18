@@ -74,7 +74,7 @@ public class newTask extends AppCompatActivity implements TimePickerDialog.OnTim
 
         spCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-                item = parent.getItemAtPosition(pos);
+               item = parent.getItemAtPosition(pos);
 
             }
             public void onNothingSelected(AdapterView<?> parent) {
@@ -136,7 +136,7 @@ public class newTask extends AppCompatActivity implements TimePickerDialog.OnTim
                     Toast.makeText(newTask.this,"Priority is a required field. Please enter a value!", Toast.LENGTH_SHORT).show();
                 }
 
-                else if(taskDate == null){
+               else if(taskDate == null){
                     Toast.makeText(newTask.this,"Date is a required field. Please enter a value!", Toast.LENGTH_SHORT).show();
                 }
 
