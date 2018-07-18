@@ -12,7 +12,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <fragment
+        <FrameLayout
             android:id="@+id/flContainer"
             android:name="com.example.smistry.woke.fragments.home"
             android:layout_width="match_parent"
