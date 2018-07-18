@@ -14,9 +14,9 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.smistry.woke.R;
-import com.example.smistry.woke.SettingsActivity;
 import com.example.smistry.woke.TaskAdapter;
 import com.example.smistry.woke.models.Task;
+import com.example.smistry.woke.newTask;
 
 import org.apache.commons.io.FileUtils;
 
@@ -38,7 +38,6 @@ public class home extends Fragment {
     TaskAdapter tasksdapter;
     RecyclerView rvTasks;
     // define your fragments here
-
 
 
     public home() {
@@ -67,7 +66,7 @@ public class home extends Fragment {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(getActivity(), SettingsActivity.class);
+                Intent intent = new Intent(getActivity(),newTask.class);
                 startActivity(intent);
 
                 Snackbar.make(view, "Creating a new task", Snackbar.LENGTH_LONG)
