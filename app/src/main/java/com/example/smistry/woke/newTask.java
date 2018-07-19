@@ -35,13 +35,9 @@ import java.util.Date;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class newTask extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener, DatePickerDialog.OnDateSetListener{
+public class newTask extends AppCompatActivity implements  DatePickerDialog.OnDateSetListener{
     @BindView(R.id.spCategory) Spinner spCategory;
     @BindView(R.id.sbDuration) SeekBar sbDuration;
-    @BindView(R.id.cbAutomated)CheckBox cbAutomated;
-    @BindView(R.id.switchDN) Switch switchDN;
-    @BindView(R.id.sbPriority) SeekBar sbPriority;
-
     @BindView(R.id.btTime) Button btTime;
     @BindView(R.id.btDate) Button btDate;
     @BindView(R.id.time) TextView tvTime;
@@ -108,18 +104,7 @@ public class newTask extends AppCompatActivity implements TimePickerDialog.OnTim
         });
 
 
-        cbAutomated.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if(cbAutomated.isChecked()){
-                    btTime.setVisibility(View.INVISIBLE);
-                }
 
-                else {
-                    btTime.setVisibility(View.VISIBLE);
-                }
-            }
-        });
 
         btFinish.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -132,17 +117,13 @@ public class newTask extends AppCompatActivity implements TimePickerDialog.OnTim
                     Toast.makeText(newTask.this,"Duration is a required field. Please enter a value!", Toast.LENGTH_SHORT).show();
                 }
 
-                else if(sbPriority.getProgress() == 0){
-                    Toast.makeText(newTask.this,"Priority is a required field. Please enter a value!", Toast.LENGTH_SHORT).show();
-                }
+
 
                else if(taskDate == null){
                     Toast.makeText(newTask.this,"Date is a required field. Please enter a value!", Toast.LENGTH_SHORT).show();
                 }
 
-                else if(!cbAutomated.isChecked() && time == null){
-                    Toast.makeText(newTask.this,"Time is a required field if you are not automating. Please enter a value!", Toast.LENGTH_SHORT).show();
-                }
+
 
                 else {
                     if(TextUtils.isEmpty(strHours)) {
@@ -153,7 +134,7 @@ public class newTask extends AppCompatActivity implements TimePickerDialog.OnTim
                         etMinutes.setText("0");
                     }
                     duration = (Integer.parseInt(etHours.getText().toString())*60) + Integer.parseInt(etMinutes.getText().toString());
-                    Task task = new Task(item.toString(), duration , cbAutomated.isChecked(), sbPriority.getProgress(), taskDate, switchDN.isChecked());
+                    Task task = new Task(item.toString(), duration ,  taskDate);
                     Intent intent = new Intent(newTask.this, bottomNav.class);
                     intent.putExtra("task", Parcels.wrap(task));
                     startActivity(intent);
@@ -163,22 +144,7 @@ public class newTask extends AppCompatActivity implements TimePickerDialog.OnTim
         });
     }
 
-    @Override
-    public void onTimeSet(TimePicker timePicker, int hourOfDay, int minute) {
-        time = new Time(hourOfDay, minute,0);
-        this.hourOfDay = hourOfDay;
-        this.minute = minute;
 
-        if(!isDateSet){
-            Toast.makeText(newTask.this, "Please set the date first", Toast.LENGTH_SHORT).show();
-        }
-
-        else {
-            tvTime.setText("Hour: " + hourOfDay + " Minute: " + minute);
-            taskDate.setHours(hourOfDay);
-            taskDate.setMinutes(minute);
-        }
-    }
 
     @Override
     public void onDateSet(DatePicker datePicker, int year, int month, int day) {

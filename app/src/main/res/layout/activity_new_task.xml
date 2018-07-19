@@ -35,48 +35,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/tvPriority"
-        android:layout_width="59dp"
-        android:layout_height="24dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="300dp"
-        android:text="Priority"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.025"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <CheckBox
-        android:id="@+id/cbAutomated"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="180dp"
-        android:text="Automated"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.03"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Switch
-        android:id="@+id/switchDN"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="252dp"
-        android:text="Day/Night"
-        android:textSize="16sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.03"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <Spinner
         android:id="@+id/spCategory"
         android:layout_width="249dp"
@@ -101,21 +59,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <SeekBar
-        android:id="@+id/sbPriority"
-        style="@style/Widget.AppCompat.SeekBar.Discrete"
-        android:layout_width="331dp"
-        android:layout_height="22dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="324dp"
-        android:max="10"
-        android:progress="3"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.513"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <ImageView
         android:id="@+id/ivExit"
         android:layout_width="wrap_content"
@@ -125,30 +68,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@android:drawable/btn_dialog" />
-
-    <TextView
-        android:id="@+id/time"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="34dp"
-        android:text="time"
-        android:textSize="16sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/btTime"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/spCategory"
-        android:layout_alignTop="@+id/btDate"
-        android:text="Time"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.832" />
 
     <Button
         android:id="@+id/btDate"
@@ -163,26 +82,26 @@
         android:id="@+id/tvDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/time"
-        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="211dp"
+        android:layout_toEndOf="@+id/btDate"
         android:text="date" />
 
     <Button
         android:id="@+id/btFinish"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/sbDuration"
-        android:layout_alignTop="@+id/tvDate"
+        android:layout_alignTop="@+id/btDate"
+        android:layout_toStartOf="@+id/tvMinutes"
         android:text="Finish" />
 
     <EditText
         android:id="@+id/etHours"
         android:layout_width="65dp"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/cbAutomated"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="-180dp"
-        android:layout_marginStart="26dp"
+        android:layout_alignTop="@+id/tvHours"
+        android:layout_marginEnd="-100dp"
+        android:layout_toStartOf="@+id/tvHours"
         android:ems="10"
         android:inputType="number"
         tools:text="Hours" />
@@ -191,10 +110,8 @@
         android:id="@+id/etMinutes"
         android:layout_width="97dp"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/cbAutomated"
-        android:layout_alignParentEnd="true"
-        android:layout_marginBottom="-180dp"
-        android:layout_marginEnd="95dp"
+        android:layout_alignEnd="@+id/btFinish"
+        android:layout_alignTop="@+id/tvHours"
         android:ems="10"
         android:inputType="number"
         tools:text="Minutes" />

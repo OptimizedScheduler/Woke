@@ -177,7 +177,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity  {
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            addPreferencesFromResource(R.xml.pref_sleep);
+            addPreferencesFromResource(R.xml.pref_free_times);
             setHasOptionsMenu(true);
         }
 
@@ -203,7 +203,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity  {
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            addPreferencesFromResource(R.xml.pref_fixed_time);
+            addPreferencesFromResource(R.xml.pref_sleep_time);
             setHasOptionsMenu(true);
         }
 
