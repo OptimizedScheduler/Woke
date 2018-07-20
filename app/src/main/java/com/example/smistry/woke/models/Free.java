@@ -14,6 +14,7 @@ public class Free {
     private int freeBlockDuration;
 
 
+
     public Free(ArrayList<Task> tasks, Time start, Time end, int freeBlockDuration) {
         this.tasks = tasks;
         this.start = start;
