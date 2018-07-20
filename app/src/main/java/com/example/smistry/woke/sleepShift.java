@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.text.format.DateUtils;
+import android.util.Log;
 
 import com.example.smistry.woke.models.Free;
 import com.example.smistry.woke.models.Task;
@@ -28,8 +29,12 @@ public class sleepShift extends AppCompatActivity {
     Free morningBlock= new Free(morningTasks, new Time(11,0,0), new Time(12,0,0), 60);
 
     public void morningScheduler(Free morning, Task task){
-        if (morning.getFreeBlockDuration()>=task.getDuration()){
-            //schedule in regularly Suchita
+        if (morning.getFreeBlockDuration()>=task.getDuration()) {
+            //schedule in regularly from Suchita
+            task.setTime(morning.getStart());
+            morning.getTasks().add(task);
+            morning.setFreeBlockDuration(morning.getFreeBlockDuration() - task.getDuration());
+            morning.getStart().setMinutes(morning.getStart().getMinutes() + task.getDuration());
 
         }
         else{
