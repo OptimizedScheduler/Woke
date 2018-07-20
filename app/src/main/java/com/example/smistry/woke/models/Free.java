@@ -51,5 +51,6 @@ public class Free {
     public void setFreeBlockDuration(int freeBlockDuration) {
         this.freeBlockDuration = freeBlockDuration;
     }
+
 }
 

@@ -44,17 +44,19 @@ public class newTask extends AppCompatActivity implements  DatePickerDialog.OnDa
     @BindView(R.id.tvMinutes) TextView tvMinutes;
     @BindView(R.id.etTitle) EditText etTitle;
 
-
     Object item;
     Date taskDate;
     Time time;
     int duration;
     boolean isDateSet;
-    ArrayList<Task>exTasks = new ArrayList<Task>();
-    //Free example = new Free(exTasks, 10, 12,2);
+
+    Time start = new Time(10,30,0);
+    Time end = new Time(12,0,0);
+    ArrayList<Task> tasks = new ArrayList<Task>();
+    Free example = new Free(tasks, start, end, 90);
+    ArrayList<Free> freeBlocks = new ArrayList<Free>();
 
     String [] months = {"Jan","Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec"};
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +64,7 @@ public class newTask extends AppCompatActivity implements  DatePickerDialog.OnDa
         setContentView(R.layout.activity_new_task);
         ButterKnife.bind(this);
         final DateFormat date = new SimpleDateFormat("MM dd, yyyy");
+        freeBlocks.add(example);
 
         spCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
@@ -72,7 +75,6 @@ public class newTask extends AppCompatActivity implements  DatePickerDialog.OnDa
                 Toast.makeText(newTask.this,"Please make a category selection", Toast.LENGTH_SHORT);
             }
         });
-
 
 
         btDate.setOnClickListener(new View.OnClickListener() {
@@ -92,8 +94,6 @@ public class newTask extends AppCompatActivity implements  DatePickerDialog.OnDa
         });
 
 
-
-
         btFinish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -104,7 +104,6 @@ public class newTask extends AppCompatActivity implements  DatePickerDialog.OnDa
                 if(TextUtils.isEmpty(strHours) && TextUtils.isEmpty(strMinutes) || etHours.equals("0") && etMinutes.equals("0")  ) {
                     Toast.makeText(newTask.this,"Duration is a required field. Please enter a value!", Toast.LENGTH_SHORT).show();
                 }
-
 
 
                else if(taskDate == null){
@@ -119,27 +118,40 @@ public class newTask extends AppCompatActivity implements  DatePickerDialog.OnDa
                     if(TextUtils.isEmpty(strMinutes)) {
                         etMinutes.setText("0");
                     }
-                    duration = (Integer.parseInt(etHours.getText().toString())*60) + Integer.parseInt(etMinutes.getText().toString());
-
-                    Task task = new Task(etTitle.toString(), item.toString(), duration, taskDate);
-                    exTasks.add(task);
-
-                    Intent intent = new Intent(newTask.this, bottomNav.class);
-                    intent.putExtra("task", Parcels.wrap(task));
-
-                    startActivity(intent);
-                    Log.d("Saved info", task.toString());
+                    setTaskWithinFreeBlock(freeBlocks);
                 }
             }
         });
     }
-
-
 
     @Override
     public void onDateSet(DatePicker datePicker, int year, int month, int day) {
         taskDate = new Date(year, month, day);
         isDateSet = true;
         tvDate.setText(months[month]+ " " + day + ","+ " " + year);
+        Log.d("Date Format", taskDate.toString());
+    }
+
+    public void setTaskWithinFreeBlock (ArrayList<Free> freeBlocks){
+        duration = (Integer.parseInt(etHours.getText().toString())*60) + Integer.parseInt(etMinutes.getText().toString());
+        Task task = new Task(etTitle.toString(), item.toString(), duration, taskDate);
+        for(int i = 0; i < freeBlocks.size(); i++) {
+            if (freeBlocks.get(i).getFreeBlockDuration() >= task.getDuration()) {
+                tasks.add(task);
+                freeBlocks.get(i).setTasks(tasks);
+                task.setTime(freeBlocks.get(i).getStart());
+                start.setHours(start.getHours() + (Integer.parseInt(etHours.getText().toString())));
+                start.setMinutes(start.getMinutes() + (Integer.parseInt(etMinutes.getText().toString())));
+                freeBlocks.get(i).setStart(start);
+                Log.d("Testing", start.toString());
+            }
+
+            Intent intent = new Intent(newTask.this, bottomNav.class);
+            intent.putExtra("task", Parcels.wrap(task));
+
+            startActivity(intent);
+        }
+
+
     }
 }
