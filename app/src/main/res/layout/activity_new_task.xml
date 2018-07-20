@@ -4,7 +4,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/background">
 
 
     <TextView
@@ -14,9 +15,10 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_marginStart="13dp"
-        android:layout_marginTop="73dp"
+        android:layout_marginTop="94dp"
         android:text="@string/category"
-        android:textSize="16sp"
+        android:textSize="18dp"
+        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.025"
         app:layout_constraintStart_toStartOf="parent"
@@ -27,10 +29,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_alignStart="@+id/tvCategory"
-        android:layout_marginTop="112dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="166dp"
         android:text="Duration"
-        android:textSize="16sp"
+        android:textSize="18dp"
+        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.025"
         app:layout_constraintStart_toStartOf="parent"
@@ -40,14 +43,17 @@
         android:id="@+id/spCategory"
         android:layout_width="249dp"
         android:layout_height="27dp"
-        android:layout_alignParentEnd="true"
         android:layout_alignTop="@+id/tvCategory"
-        android:layout_marginEnd="57dp"
+        android:layout_toStartOf="@+id/ivExit"
         android:entries="@array/categories"
+        android:outlineAmbientShadowColor="@color/white"
+        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.506"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:outlineSpotShadowColor="@android:color/white"
+        tools:textColor="@android:color/white" />
 
     <ImageView
         android:id="@+id/ivExit"
@@ -55,6 +61,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
+        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@android:drawable/btn_dialog" />
@@ -63,9 +70,10 @@
         android:id="@+id/btDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/tvHours"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="74dp"
+        android:textColor="@color/white"
+        android:background="@drawable/button_style"
+        android:layout_alignBaseline="@+id/tvDate"
+        android:layout_toStartOf="@+id/tvDuration"
         android:text="Date" />
 
     <TextView
@@ -73,76 +81,91 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="160dp"
-        android:text="date" />
+        android:layout_marginBottom="144dp"
+        android:layout_toEndOf="@+id/tvHours"
+        android:textColor="@color/white"
+        android:text="Date of Task"
+        android:textSize="18dp" />
 
     <Button
         android:id="@+id/btFinish"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/spCategory"
-        android:layout_alignTop="@+id/btDate"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="30dp"
+        android:textColor="@color/white"
+        android:background="@drawable/button_style"
         android:text="Finish" />
 
     <EditText
         android:id="@+id/etHours"
         android:layout_width="65dp"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/tvHours"
-        android:layout_marginEnd="-100dp"
-        android:layout_toStartOf="@+id/tvHours"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="219dp"
+        android:layout_toStartOf="@+id/spCategory"
         android:ems="10"
         android:inputType="number"
+        android:textColor="@color/white"
         tools:text="Hours" />
 
     <EditText
         android:id="@+id/etMinutes"
-        android:layout_width="97dp"
+        android:layout_width="65dp"
         android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/tvDate"
         android:layout_alignTop="@+id/etHours"
-        android:layout_centerHorizontal="true"
+        android:layout_marginStart="25dp"
         android:ems="10"
         android:inputType="number"
+        android:textColor="@color/white"
         tools:text="Minutes" />
 
     <TextView
         android:id="@+id/tvHours"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="100dp"
-        android:layout_marginTop="150dp"
-        android:text="Hours" />
+        android:layout_alignBaseline="@+id/etHours"
+        android:layout_alignStart="@+id/etTitle"
+        android:text="Hours"
+        android:textColor="@color/white"
+        android:textSize="18sp" />
 
     <TextView
         android:id="@+id/tvMinutes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/etHours"
-        android:layout_centerHorizontal="true"
-        android:text="Minutes" />
+        android:layout_alignBaseline="@+id/etHours"
+        android:layout_toEndOf="@+id/etMinutes"
+        android:textColor="@color/white"
+        android:text="Minutes"
+        android:textSize="18sp" />
 
     <TextView
         android:id="@+id/tvTitle"
-        android:layout_width="wrap_content"
+        android:layout_width="96dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/ivExit"
-        android:layout_toStartOf="@+id/spCategory"
-        android:text="Task Title" />
+        android:layout_alignBottom="@+id/etTitle"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="26dp"
+        android:text="Task Title"
+        android:textColor="@color/white"
+        android:textSize="18sp" />
 
     <EditText
         android:id="@+id/etTitle"
-        android:layout_width="184dp"
-        android:layout_height="28dp"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/ivExit"
-        android:layout_marginStart="86dp"
+        android:layout_width="213dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginEnd="39dp"
+        android:layout_marginTop="30dp"
         android:ems="10"
         android:inputType="text"
         android:selectAllOnFocus="false"
         android:singleLine="false"
+        android:textColor="@color/white"
         android:textSize="14sp" />
 
 

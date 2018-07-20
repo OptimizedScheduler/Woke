@@ -45,8 +45,6 @@ public class newTask extends AppCompatActivity implements  DatePickerDialog.OnDa
     Object item;
     Date taskDate;
     Time time;
-    int hourOfDay;
-    int minute;
     int duration;
     boolean isDateSet;
 
