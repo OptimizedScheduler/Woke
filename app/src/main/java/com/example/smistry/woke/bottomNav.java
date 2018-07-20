@@ -11,7 +11,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.MenuItem;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.smistry.woke.fragments.ViewPagerFragment;
 import com.example.smistry.woke.fragments.goals;
@@ -117,7 +116,7 @@ public class bottomNav extends AppCompatActivity {
                 DateFormat format = new SimpleDateFormat("E MMM dd HH:mm:ss ZZZ yyyy", Locale.ENGLISH);
                 Date date = format.parse(params[4]);
                 boolean day = Boolean.parseBoolean(params[5]);
-                Task newTask = new Task (category, duration,  date);
+                Task newTask = new Task ("Ending, something",category, duration,  date);
 
                 tasks.add(newTask);
                 Log.d("TASK", "added new task: " + newTask.toString());

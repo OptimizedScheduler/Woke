@@ -16,6 +16,7 @@ import com.example.smistry.woke.R;
 import com.example.smistry.woke.TaskRecyclerAdapter;
 import com.example.smistry.woke.models.Task;
 
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -46,9 +47,13 @@ public class TaskFragment extends Fragment {
         page = getArguments().getInt("someInt", 0);
         title = getArguments().getString("someTitle");
         myTasks=new ArrayList<Task>();
-        Task task1 = new Task("work",7,new Date());
+        Task task1 = new Task("Finish my final project", "work",15,new Date());
+        Task task2 = new Task("Go to gym", "excersice",30,new Date());
+        task1.setTime(new Time(10,30,00));
+        task2.setTime(new Time(11,00,00));
         //String category, int duration, boolean automated, int priority, Date date, boolean day
         myTasks.add(task1);
+        myTasks.add(task2);
         adapter=new TaskRecyclerAdapter(myTasks);
         Log.d("TaskFrag", "NEW RECYCLER");
 

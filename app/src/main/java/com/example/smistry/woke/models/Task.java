@@ -8,9 +8,10 @@ import java.sql.Time;
 import java.util.Date;
 
 public @Parcel class Task {
+
+    public String taskTitle;
     public String category;
     public int duration;
-
     public Date date;
     public Time time;
 
@@ -20,14 +21,11 @@ public @Parcel class Task {
     }
 
 
-    public Task(String category, int duration,  Date date) {
+    public Task(String task, String category, int duration,  Date date) {
+        this.taskTitle = task;
         this.category = category;
         this.duration = duration;
-
         this.date = date;
-        this.time = time;
-
-
     }
 
 
@@ -51,13 +49,24 @@ public @Parcel class Task {
         this.duration = duration;
     }
 
-
     public Date getDate() {
         return date;
     }
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public String getTaskTitle() {
+        return taskTitle;
+    }
+
+    public void setTaskTitle(String taskTitle) {
+        this.taskTitle = taskTitle;
+    }
+
+    public Time getTime() {
+        return time;
     }
 
     public void setTime(Time time) {
