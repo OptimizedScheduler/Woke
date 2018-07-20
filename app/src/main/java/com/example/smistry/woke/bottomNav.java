@@ -117,7 +117,7 @@ public class bottomNav extends AppCompatActivity {
                 DateFormat format = new SimpleDateFormat("E MMM dd HH:mm:ss ZZZ yyyy", Locale.ENGLISH);
                 Date date = format.parse(params[4]);
                 boolean day = Boolean.parseBoolean(params[5]);
-                Task newTask = new Task (category, duration, automated, priority, date, day);
+                Task newTask = new Task (category, duration,  date);
 
                 tasks.add(newTask);
                 Log.d("TASK", "added new task: " + newTask.toString());

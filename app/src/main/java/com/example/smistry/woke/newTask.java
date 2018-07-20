@@ -1,7 +1,6 @@
 package com.example.smistry.woke;
 
 import android.app.DatePickerDialog;
-import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -11,18 +10,15 @@ import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.Spinner;
-import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.example.smistry.woke.fragments.DatePickerFragment;
 import com.example.smistry.woke.models.Task;
 
 import org.parceler.Parcels;
@@ -37,10 +33,7 @@ import butterknife.ButterKnife;
 
 public class newTask extends AppCompatActivity implements  DatePickerDialog.OnDateSetListener{
     @BindView(R.id.spCategory) Spinner spCategory;
-    @BindView(R.id.sbDuration) SeekBar sbDuration;
-    @BindView(R.id.btTime) Button btTime;
     @BindView(R.id.btDate) Button btDate;
-    @BindView(R.id.time) TextView tvTime;
     @BindView(R.id.tvDate) TextView tvDate;
     @BindView(R.id.ivExit) ImageView ivExit;
     @BindView(R.id.btFinish) Button btFinish;
@@ -79,13 +72,6 @@ public class newTask extends AppCompatActivity implements  DatePickerDialog.OnDa
         });
 
 
-        btTime.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                DialogFragment timepicker = new TimePickerFragment();
-                timepicker.show(getSupportFragmentManager(), "time pick");
-            }
-        });
 
         btDate.setOnClickListener(new View.OnClickListener() {
             @Override

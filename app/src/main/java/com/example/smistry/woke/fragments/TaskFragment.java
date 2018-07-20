@@ -46,7 +46,7 @@ public class TaskFragment extends Fragment {
         page = getArguments().getInt("someInt", 0);
         title = getArguments().getString("someTitle");
         myTasks=new ArrayList<Task>();
-        Task task1 = new Task("work",7,true,4,new Date(),true);
+        Task task1 = new Task("work",7,new Date());
         //String category, int duration, boolean automated, int priority, Date date, boolean day
         myTasks.add(task1);
         adapter=new TaskRecyclerAdapter(myTasks);

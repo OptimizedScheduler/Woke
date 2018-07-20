@@ -11,9 +11,10 @@
         android:id="@+id/tvCategory"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="36dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="13dp"
+        android:layout_marginTop="73dp"
         android:text="@string/category"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -25,9 +26,9 @@
         android:id="@+id/tvDuration"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="100dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignStart="@+id/tvCategory"
+        android:layout_marginTop="112dp"
         android:text="Duration"
         android:textSize="16sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -48,17 +49,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <SeekBar
-        android:id="@+id/sbDuration"
-        android:layout_width="283dp"
-        android:layout_height="29dp"
-        android:layout_alignStart="@+id/spCategory"
-        android:layout_alignTop="@+id/tvDuration"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.505"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <ImageView
         android:id="@+id/ivExit"
         android:layout_width="wrap_content"
@@ -73,9 +63,9 @@
         android:id="@+id/btDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/tvHours"
         android:layout_alignParentBottom="true"
-        android:layout_alignStart="@+id/sbDuration"
-        android:layout_marginBottom="84dp"
+        android:layout_marginBottom="74dp"
         android:text="Date" />
 
     <TextView
@@ -83,16 +73,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="211dp"
-        android:layout_toEndOf="@+id/btDate"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="160dp"
         android:text="date" />
 
     <Button
         android:id="@+id/btFinish"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/spCategory"
         android:layout_alignTop="@+id/btDate"
-        android:layout_toStartOf="@+id/tvMinutes"
         android:text="Finish" />
 
     <EditText
@@ -110,8 +100,8 @@
         android:id="@+id/etMinutes"
         android:layout_width="97dp"
         android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/btFinish"
-        android:layout_alignTop="@+id/tvHours"
+        android:layout_alignTop="@+id/etHours"
+        android:layout_centerHorizontal="true"
         android:ems="10"
         android:inputType="number"
         tools:text="Minutes" />
@@ -130,9 +120,30 @@
         android:id="@+id/tvMinutes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/sbDuration"
-        android:layout_alignTop="@+id/tvHours"
+        android:layout_below="@+id/etHours"
+        android:layout_centerHorizontal="true"
         android:text="Minutes" />
+
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ivExit"
+        android:layout_toStartOf="@+id/spCategory"
+        android:text="Task Title" />
+
+    <EditText
+        android:id="@+id/etTitle"
+        android:layout_width="184dp"
+        android:layout_height="28dp"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/ivExit"
+        android:layout_marginStart="86dp"
+        android:ems="10"
+        android:inputType="text"
+        android:selectAllOnFocus="false"
+        android:singleLine="false"
+        android:textSize="14sp" />
 
 
 </RelativeLayout>
