@@ -21,6 +21,10 @@ public class Free {
         this.freeBlockDuration = freeBlockDuration;
     }
 
+    @Override
+    public String toString() {
+        return tasks.toString()+","+start.toString()+","+end.toString()+","+freeBlockDuration;
+    }
 
     public ArrayList<Task> getTasks() {
         return tasks;
@@ -51,5 +55,8 @@ public class Free {
     public void setFreeBlockDuration(int freeBlockDuration) {
         this.freeBlockDuration = freeBlockDuration;
     }
+
+
+
 }
 
