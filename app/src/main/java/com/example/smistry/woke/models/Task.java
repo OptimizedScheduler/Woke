@@ -15,13 +15,10 @@ public @Parcel class Task {
     public Date date;
     public Time time;
 
-
     public Task() {
-        //Empty constructor
     }
 
-
-    public Task(String task, String category, int duration,  Date date) {
+    public Task(String task, String category, int duration, Date date) {
         this.taskTitle = task;
         this.category = category;
         this.duration = duration;
