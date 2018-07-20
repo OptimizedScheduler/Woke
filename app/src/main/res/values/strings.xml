@@ -93,5 +93,28 @@
     <string name="action_settings">Settings</string>
     <string name="section_format">Hello World from section: %1$d</string>
 
+    <string-array name="MondayIntervals">
+        <item>1</item>
+    </string-array>
+    <string-array name="TuesdayIntervals">
+        <item>1</item>
+    </string-array>
+    <string-array name="WednesdayIntervals">
+        <item>1</item>
+    </string-array>
+    <string-array name="ThursdayIntervals">
+        <item>1</item>
+    </string-array>
+    <string-array name="FridayIntervals">
+        <item>1</item>
+    </string-array>
+    <string-array name="SaturdayIntervals">
+        <item>1</item>
+    </string-array>
+    <string-array name="SundayIntervals">
+        <item>1</item>
+    </string-array>
+
+
 
 </resources>
