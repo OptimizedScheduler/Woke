@@ -57,7 +57,5 @@ public class Free {
         this.freeBlockDuration = freeBlockDuration;
     }
 
-
-
 }
 
