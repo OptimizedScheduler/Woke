@@ -51,7 +51,6 @@ public @Parcel class Task {
         this.duration = duration;
     }
 
-
     public Date getDate() {
         return date;
     }

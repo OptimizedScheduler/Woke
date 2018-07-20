@@ -1,6 +1,7 @@
 package com.example.smistry.woke.models;
 
 
+import java.sql.Time;
 import java.util.ArrayList;
 
 //This object represents free times throughout the day for scheduling tasks
@@ -8,12 +9,12 @@ public class Free {
 
 
     private ArrayList<Task> tasks;
-    private int start;
-    private int end;
+    private Time start;
+    private Time end;
     private int freeBlockDuration;
 
 
-    public Free(ArrayList<Task> tasks, int start, int end, int freeBlockDuration) {
+    public Free(ArrayList<Task> tasks, Time start, Time end, int freeBlockDuration) {
         this.tasks = tasks;
         this.start = start;
         this.end = end;
@@ -29,19 +30,17 @@ public class Free {
         this.tasks = tasks;
     }
 
-    public int getStart() {
+    public Time getStart() {
         return start;
     }
 
-    public void setStart(int start) {
+    public void setStart(Time start) {
         this.start = start;
     }
 
-    public int getEnd() {
-        return end;
-    }
+    public Time getEnd() { return end; }
 
-    public void setEnd(int end) {
+    public void setEnd(Time end) {
         this.end = end;
     }
 

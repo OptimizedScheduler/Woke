@@ -19,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.smistry.woke.fragments.DatePickerFragment;
+import com.example.smistry.woke.models.Free;
 import com.example.smistry.woke.models.Task;
 
 import org.parceler.Parcels;
@@ -26,6 +27,7 @@ import org.parceler.Parcels;
 import java.sql.Time;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 
 import butterknife.BindView;
@@ -48,6 +50,8 @@ public class newTask extends AppCompatActivity implements  DatePickerDialog.OnDa
     Time time;
     int duration;
     boolean isDateSet;
+    ArrayList<Task>exTasks = new ArrayList<Task>();
+    //Free example = new Free(exTasks, 10, 12,2);
 
     String [] months = {"Jan","Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec"};
 
@@ -107,8 +111,6 @@ public class newTask extends AppCompatActivity implements  DatePickerDialog.OnDa
                     Toast.makeText(newTask.this,"Date is a required field. Please enter a value!", Toast.LENGTH_SHORT).show();
                 }
 
-
-
                 else {
                     if(TextUtils.isEmpty(strHours)) {
                         etHours.setText("0");
@@ -118,9 +120,13 @@ public class newTask extends AppCompatActivity implements  DatePickerDialog.OnDa
                         etMinutes.setText("0");
                     }
                     duration = (Integer.parseInt(etHours.getText().toString())*60) + Integer.parseInt(etMinutes.getText().toString());
+
                     Task task = new Task(item.toString(), duration ,  taskDate);
+                    exTasks.add(task);
+
                     Intent intent = new Intent(newTask.this, bottomNav.class);
                     intent.putExtra("task", Parcels.wrap(task));
+
                     startActivity(intent);
                     Log.d("Saved info", task.toString());
                 }
