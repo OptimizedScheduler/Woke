@@ -1,27 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
     <TextView
-        android:id="@+id/tvItem"
+        android:id="@+id/tvTask"
         android:layout_width="wrap_content"
         android:layout_height="25dp"
-        android:text="TextView"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="15dp"
+        android:text="Task"
+        android:textSize="18sp"
         tools:layout_editor_absoluteX="16dp"
         tools:layout_editor_absoluteY="39dp" />
 
+    <TextView
+        android:id="@+id/tvTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/tvTask"
+        android:layout_below="@+id/tvTask"
+        android:text="Time" />
+
     <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="match_parent"
-        android:layout_height="54dp"
+        android:id="@+id/ivCategory"
+        android:layout_width="26dp"
+        android:layout_height="77dp"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/tvItem"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@android:drawable/btn_star_big_on" />
+        android:layout_alignParentTop="true"
+        app:srcCompat="@android:color/background_dark" />
 </RelativeLayout>

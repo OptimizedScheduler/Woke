@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.smistry.woke.models.Task;
@@ -37,8 +38,12 @@ public class TaskRecyclerAdapter extends RecyclerView.Adapter<TaskRecyclerAdapte
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
         Task task = mTasks.get(i);
-        viewHolder.tvItem.setText(task.getCategory());
-
+        viewHolder.tvTaskName.setText(task.getTaskTitle());
+        viewHolder.tvTime.setText(task.getTime().toString());
+        if(task.getCategory()=="work")
+            viewHolder.ivCategory.setBackgroundResource(R.color.colorPrimary);
+        else
+            viewHolder.ivCategory.setBackgroundResource(R.color.colorAccent);
     }
 
     @Override
@@ -48,8 +53,11 @@ public class TaskRecyclerAdapter extends RecyclerView.Adapter<TaskRecyclerAdapte
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener  {
 
-        @BindView(R.id.tvItem)
-        TextView tvItem;
+        @BindView(R.id.tvTask) TextView tvTaskName;
+        @BindView(R.id.tvTime) TextView tvTime;
+        @BindView(R.id.ivCategory)
+        ImageView ivCategory;
+
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);

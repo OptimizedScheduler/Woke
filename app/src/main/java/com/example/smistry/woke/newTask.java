@@ -13,7 +13,6 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -120,10 +119,14 @@ public class newTask extends AppCompatActivity implements  DatePickerDialog.OnDa
                         etMinutes.setText("0");
                     }
                     duration = (Integer.parseInt(etHours.getText().toString())*60) + Integer.parseInt(etMinutes.getText().toString());
+<<<<<<< HEAD
 
                     Task task = new Task(item.toString(), duration ,  taskDate);
                     exTasks.add(task);
 
+=======
+                    Task task = new Task("Doing something else",item.toString(), duration ,  taskDate);
+>>>>>>> 9fc922aac9d3bc1846055453986410e3f1225181
                     Intent intent = new Intent(newTask.this, bottomNav.class);
                     intent.putExtra("task", Parcels.wrap(task));
 
