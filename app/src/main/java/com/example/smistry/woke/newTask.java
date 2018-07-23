@@ -1,6 +1,7 @@
 package com.example.smistry.woke;
 
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
@@ -44,6 +45,7 @@ public class newTask extends AppCompatActivity implements  DatePickerDialog.OnDa
     @BindView(R.id.tvMinutes) TextView tvMinutes;
     @BindView(R.id.etTitle) EditText etTitle;
 
+
     Object item;
     Date taskDate;
     Time time;
@@ -55,6 +57,8 @@ public class newTask extends AppCompatActivity implements  DatePickerDialog.OnDa
     ArrayList<Task> tasks = new ArrayList<Task>();
     Free example = new Free(tasks, start, end, 90);
     ArrayList<Free> freeBlocks = new ArrayList<Free>();
+    final int REQUEST_CODE = 1;
+    alarmsAndScheduling alarm = new alarmsAndScheduling();
 
     String [] months = {"Jan","Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec"};
 
@@ -100,8 +104,13 @@ public class newTask extends AppCompatActivity implements  DatePickerDialog.OnDa
 
                 String strHours = etHours.getText().toString();
                 String strMinutes = etMinutes.getText().toString();
+                String strTitle = etTitle.getText().toString();
 
-                if(TextUtils.isEmpty(strHours) && TextUtils.isEmpty(strMinutes) || etHours.equals("0") && etMinutes.equals("0")  ) {
+                if(TextUtils.isEmpty(strTitle)){
+                    Toast.makeText(newTask.this, "Please enter a Task Title!", Toast.LENGTH_SHORT).show();
+                }
+
+                else if(TextUtils.isEmpty(strHours) && TextUtils.isEmpty(strMinutes) || etHours.equals("0") && etMinutes.equals("0")  ) {
                     Toast.makeText(newTask.this,"Duration is a required field. Please enter a value!", Toast.LENGTH_SHORT).show();
                 }
 
@@ -144,12 +153,15 @@ public class newTask extends AppCompatActivity implements  DatePickerDialog.OnDa
                 start.setMinutes(start.getMinutes() + (Integer.parseInt(etMinutes.getText().toString())));
                 freeBlocks.get(i).setStart(start);
                 Log.d("Testing", start.toString());
+                Intent intent = new Intent(newTask.this, bottomNav.class);
+                intent.putExtra("task", Parcels.wrap(task));
+                startActivityForResult(intent, REQUEST_CODE);
+                //alarm.morningScheduler(freeBlocks.get(i),task);
+
             }
-
-            Intent intent = new Intent(newTask.this, bottomNav.class);
-            intent.putExtra("task", Parcels.wrap(task));
-
-            startActivity(intent);
+            else{
+                Toast.makeText(newTask.this, "Please enter a different duration", Toast.LENGTH_SHORT).show();
+            }
         }
 
 
