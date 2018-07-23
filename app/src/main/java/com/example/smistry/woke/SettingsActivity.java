@@ -12,7 +12,10 @@ import android.support.v14.preference.SwitchPreference;
 import android.support.v7.app.ActionBar;
 import android.support.v7.preference.ListPreference;
 import android.support.v7.preference.Preference;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 
 import java.util.List;
 
@@ -177,8 +180,16 @@ public class SettingsActivity extends AppCompatPreferenceActivity  {
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            addPreferencesFromResource(R.xml.pref_free_times);
-            setHasOptionsMenu(true);
+           // addPreferencesFromResource(R.xml.pref_free_times);
+           // setHasOptionsMenu(true);
+
+
+
+        }
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+            return inflater.inflate(R.layout.fixed_time_picker_item, container, false);
         }
 
         @Override

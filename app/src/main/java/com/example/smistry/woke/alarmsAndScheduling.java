@@ -4,6 +4,7 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.provider.AlarmClock;
 import android.support.v7.app.AppCompatActivity;
 import android.text.format.DateUtils;
 import android.util.Log;
@@ -16,13 +17,17 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-public class sleepShift extends AppCompatActivity {
+public class alarmsAndScheduling extends AppCompatActivity {
 
-    public AlarmManager alarmMgr= (AlarmManager)this.getSystemService(Context.ALARM_SERVICE);
-    public PendingIntent alarmIntent;
 
-    Intent intent = new Intent(this, AlarmReceiver.class);
-    alarmIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
+    public void setAlarm(Time time){
+//        Intent i = new Intent(AlarmClock.ACTION_SET_ALARM);
+//        i.putExtra(AlarmClock.EXTRA_HOUR, time.getHours() );
+//        i.putExtra(AlarmClock.EXTRA_MINUTES, time.getMinutes());
+//        i.putExtra(AlarmClock.EXTRA_SKIP_UI, true);
+//        startActivity(i);
+
+    }
 
 
     ArrayList<Task> morningTasks;
@@ -30,7 +35,6 @@ public class sleepShift extends AppCompatActivity {
 
     public void morningScheduler(Free morning, Task task){
         if (morning.getFreeBlockDuration()>=task.getDuration()) {
-            //schedule in regularly from Suchita
             task.setTime(morning.getStart());
             morning.getTasks().add(task);
             morning.setFreeBlockDuration(morning.getFreeBlockDuration() - task.getDuration());
@@ -42,7 +46,7 @@ public class sleepShift extends AppCompatActivity {
             morning.getStart().setMinutes(morning.getStart().getMinutes()-task.getDuration());
             morning.getTasks().add(0,task);
 
-            //set alarm
+            setAlarm(morning.getStart());
 
         }
 
