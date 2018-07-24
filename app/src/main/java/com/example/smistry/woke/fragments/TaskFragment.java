@@ -14,49 +14,77 @@ import android.widget.TextView;
 
 import com.example.smistry.woke.R;
 import com.example.smistry.woke.TaskRecyclerAdapter;
+import com.example.smistry.woke.models.Day;
+import com.example.smistry.woke.models.Free;
 import com.example.smistry.woke.models.Task;
 
-import java.sql.Time;
 import java.util.ArrayList;
-import java.util.Date;
 
 
 public class TaskFragment extends Fragment {
     // Store instance variables
     private String title;
-    private int page;
-    private ArrayList<Task> myTasks;
+    private int dayOfW;
+    private Day currentDay;
+    private ArrayList<Free> freeBlocks;
+    private ArrayList<Task> dailyTasks;
     private TaskRecyclerAdapter adapter;
 
     // newInstance constructor for creating fragment with arguments
-    public static TaskFragment newInstance(int page, String title) {
+    public static TaskFragment newInstance(int day, String title) { //add Day thisDay
         TaskFragment fragmentFirst = new TaskFragment();
         Bundle args = new Bundle();
-
-        //TODO -- check to pass all the needed info (Can I pass the whole TASK object???)
-        args.putInt("someInt", page);
-        args.putString("someTitle", title);
+        args.putInt("day", day);
+        args.putString("dayString", title);
+       // args.putParcelable("thisDay", Parcels.wrap(thisDay));
         fragmentFirst.setArguments(args);
         return fragmentFirst;
     }
+
+
 
     // Store instance variables based on arguments passed
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        page = getArguments().getInt("someInt", 0);
-        title = getArguments().getString("someTitle");
-        myTasks=new ArrayList<Task>();
+        //TODO check for NullPointerExc
+        dayOfW = getArguments().getInt("day");
+        title = getArguments().getString("dayString");
+        //currentDay = Parcels.unwrap(this.getArguments().getParcelable("thisDay"));
+        //Parcels.unwrap(this.getArguments().getParcelable("days"));
+        freeBlocks = new ArrayList<>();
+        dailyTasks = new ArrayList<>();
+/*        myTasks=new ArrayList<Task>();
         Task task1 = new Task("Finish my final project", "work",15,new Date());
-        Task task2 = new Task("Go to gym", "excersice",30,new Date());
+        Task task2 = new Task("Go to gym", "exercise",30,new Date());
         task1.setTime(new Time(10,30,00));
         task2.setTime(new Time(11,00,00));
         //String category, int duration, boolean automated, int priority, Date date, boolean day
         myTasks.add(task1);
         myTasks.add(task2);
-        adapter=new TaskRecyclerAdapter(myTasks);
-        Log.d("TaskFrag", "NEW RECYCLER");
+        adapter=new TaskRecyclerAdapter(myTasks);*/
 
+
+        //Obtain the array needed depending of which day is specified
+
+        if (getParentFragment() instanceof ViewPagerFragment ) {
+            try{
+            freeBlocks=((ViewPagerFragment) getParentFragment()).getArray(dayOfW);}
+            catch (Exception e){
+                Log.d("EXC", e.getMessage());
+            }
+        }
+        if(freeBlocks!=null) {
+            //TODO search for other free blocks
+            try {
+                dailyTasks = freeBlocks.get(0).getTasks();
+                adapter = new TaskRecyclerAdapter(dailyTasks);
+            }
+            catch (Exception e){
+                Log.d("EXC2",e.getMessage());
+                adapter = new TaskRecyclerAdapter(dailyTasks);
+            }
+        }
     }
 
     // Inflate the view for the fragment based on layout XML
@@ -64,15 +92,15 @@ public class TaskFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_task, container, false);
-        TextView tvLabel = (TextView) view.findViewById(R.id.tvLabel);
-        tvLabel.setText(page + " -- " + title);
+        TextView tvLabel = view.findViewById(R.id.tvLabel);
+        tvLabel.setText(dayOfW + " -- " + title);
         return view;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        RecyclerView rvTasks= (RecyclerView) view.findViewById(R.id.rvTasks);
+        RecyclerView rvTasks= view.findViewById(R.id.rvTasks);
         rvTasks.setLayoutManager(new LinearLayoutManager(getContext()));
         rvTasks.setAdapter(adapter);
     }

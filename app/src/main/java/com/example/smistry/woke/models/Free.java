@@ -1,19 +1,22 @@
 package com.example.smistry.woke.models;
 
 
+import org.parceler.Parcel;
+
 import java.sql.Time;
 import java.util.ArrayList;
 
 //This object represents free times throughout the day for scheduling tasks
+@Parcel
 public class Free {
+     public ArrayList<Task> tasks;
+    public Time start;
+    public Time end;
+    public int freeBlockDuration;
 
-
-    private ArrayList<Task> tasks;
-    private Time start;
-    private Time end;
-    private int freeBlockDuration;
-
-
+    public Free() {
+        //emtpy
+    }
 
     public Free(ArrayList<Task> tasks, Time start, Time end, int freeBlockDuration) {
         this.tasks = tasks;
