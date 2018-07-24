@@ -20,12 +20,8 @@ import java.util.Date;
 public class alarmsAndScheduling extends AppCompatActivity {
 
 
-    public void setAlarm(Time time){
-//        Intent i = new Intent(AlarmClock.ACTION_SET_ALARM);
-//        i.putExtra(AlarmClock.EXTRA_HOUR, time.getHours() );
-//        i.putExtra(AlarmClock.EXTRA_MINUTES, time.getMinutes());
-//        i.putExtra(AlarmClock.EXTRA_SKIP_UI, true);
-//        startActivity(i);
+    public void setAlarm(Time time, Date date){
+
 
     }
 
@@ -35,7 +31,7 @@ public class alarmsAndScheduling extends AppCompatActivity {
 
     public void morningScheduler(Free morning, Task task){
         if (morning.getFreeBlockDuration()>=task.getDuration()) {
-            task.setTime(morning.getStart());
+            task.setTime(morning.getEnd());
             morning.getTasks().add(task);
             morning.setFreeBlockDuration(morning.getFreeBlockDuration() - task.getDuration());
             morning.getStart().setMinutes(morning.getStart().getMinutes() + task.getDuration());
@@ -46,10 +42,8 @@ public class alarmsAndScheduling extends AppCompatActivity {
             morning.getStart().setMinutes(morning.getStart().getMinutes()-task.getDuration());
             morning.getTasks().add(0,task);
 
-            setAlarm(morning.getStart());
-
+            setAlarm(morning.getStart(), task.getDate());
         }
-
     }
 
     public void deletion(Free free, int position){
