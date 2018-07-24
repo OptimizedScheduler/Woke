@@ -1,20 +1,12 @@
 package com.example.smistry.woke;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
-import android.content.Context;
-import android.content.Intent;
-import android.provider.AlarmClock;
 import android.support.v7.app.AppCompatActivity;
-import android.text.format.DateUtils;
-import android.util.Log;
 
 import com.example.smistry.woke.models.Free;
 import com.example.smistry.woke.models.Task;
 
 import java.sql.Time;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 
 public class alarmsAndScheduling extends AppCompatActivity {
