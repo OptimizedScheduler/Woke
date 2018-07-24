@@ -2,8 +2,15 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="wrap_content"
+        android:layout_height="150dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true" />
 
     <TextView
         android:id="@+id/tvDOW"
@@ -19,34 +26,55 @@
         android:id="@+id/etStartTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
         android:layout_below="@+id/tvDOW"
-        android:layout_toEndOf="@+id/tvDOW"
+        android:layout_marginStart="22dp"
         android:ems="10"
         android:hint="Start"
-        android:inputType="textPersonName" />
+        android:inputType="time" />
 
     <EditText
         android:id="@+id/etEndTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/etStartTime"
         android:layout_below="@+id/etStartTime"
-        android:layout_toEndOf="@+id/tvDOW"
+        android:layout_marginTop="0dp"
         android:ems="10"
         android:hint="End"
-        android:inputType="textPersonName" />
+        android:inputType="time" />
 
     <Button
         android:id="@+id/btSend"
-        android:layout_width="99dp"
+        android:layout_width="70dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tvDOW"
-        android:layout_toEndOf="@+id/etStartTime"
+        android:layout_alignBaseline="@+id/switchEnd"
+        android:layout_toEndOf="@+id/switchStart"
         android:text="Send" />
 
-    <View
-        android:id="@+id/view"
+    <TextView
+        android:id="@+id/tvFreeBlocks"
         android:layout_width="wrap_content"
-        android:layout_height="127dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true" />
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/etStartTime"
+        android:layout_below="@+id/etEndTime"
+        android:hint="free blocks"
+        android:textSize="18sp" />
+
+    <Switch
+        android:id="@+id/switchStart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/etStartTime"
+        android:layout_toEndOf="@+id/etStartTime"
+        android:text="AM" />
+
+    <Switch
+        android:id="@+id/switchEnd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/etEndTime"
+        android:layout_toEndOf="@+id/etStartTime"
+        android:text="AM" />
+
 </RelativeLayout>
