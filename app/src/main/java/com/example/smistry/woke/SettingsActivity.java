@@ -238,9 +238,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity  {
 
                 ArrayList<Free> monItems= new ArrayList<>();
                 ArrayList<Free>tuesItems= new ArrayList<>();
-//            monItems.add(new Free(new ArrayList<Task>(), new Time(4,5,6), new Time(4,45,6), 40));
-//            monItems.add(new Free(new ArrayList<Task>(), new Time(5,5,6), new Time(5,45,6), 40));
-//            tuesItems.add(new Free(new ArrayList<Task>(), new Time(4,5,6), new Time(4,45,6), 40));
+                 monItems.add(new Free(new ArrayList<Task>(), new Time(4,5,6), new Time(4,45,6), 40));
+                   monItems.add(new Free(new ArrayList<Task>(), new Time(5,5,6), new Time(5,45,6), 40));
+                tuesItems.add(new Free(new ArrayList<Task>(), new Time(4,5,6), new Time(4,45,6), 40));
                 enteredItems.put("Monday", monItems);
                 enteredItems.put("Tuesday",tuesItems );
                 enteredItems.put("Wednesday", new ArrayList<Free>());
