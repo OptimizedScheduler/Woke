@@ -1,10 +1,16 @@
 package com.example.smistry.woke;
 
+import android.app.AlarmManager;
 import android.app.DatePickerDialog;
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.provider.AlarmClock;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
@@ -28,10 +34,12 @@ import java.sql.Time;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+
 
 public class newTask extends AppCompatActivity implements  DatePickerDialog.OnDateSetListener{
     @BindView(R.id.spCategory) Spinner spCategory;
@@ -45,7 +53,6 @@ public class newTask extends AppCompatActivity implements  DatePickerDialog.OnDa
     @BindView(R.id.tvMinutes) TextView tvMinutes;
     @BindView(R.id.etTitle) EditText etTitle;
 
-
     Object item;
     Date taskDate;
     Time time;
@@ -58,9 +65,12 @@ public class newTask extends AppCompatActivity implements  DatePickerDialog.OnDa
     Free example = new Free(tasks, start, end, 90);
     ArrayList<Free> freeBlocks = new ArrayList<Free>();
     final int REQUEST_CODE = 1;
-    alarmsAndScheduling alarm = new alarmsAndScheduling();
+    Calendar c = Calendar.getInstance();
 
     String [] months = {"Jan","Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec"};
+
+    private NotificationManagerCompat notificationManager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +79,9 @@ public class newTask extends AppCompatActivity implements  DatePickerDialog.OnDa
         ButterKnife.bind(this);
         final DateFormat date = new SimpleDateFormat("MM dd, yyyy");
         freeBlocks.add(example);
+
+        notificationManager = NotificationManagerCompat.from(this);
+
 
         spCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
@@ -145,18 +158,33 @@ public class newTask extends AppCompatActivity implements  DatePickerDialog.OnDa
         duration = (Integer.parseInt(etHours.getText().toString())*60) + Integer.parseInt(etMinutes.getText().toString());
         Task task = new Task(etTitle.toString(), item.toString(), duration, taskDate);
         for(int i = 0; i < freeBlocks.size(); i++) {
-            if (freeBlocks.get(i).getFreeBlockDuration() >= task.getDuration()) {
+            if (freeBlocks.get(i).getFreeBlockDuration() >= task.getDuration()) { //looping through all free blocks
                 tasks.add(task);
-                freeBlocks.get(i).setTasks(tasks);
-                task.setTime(freeBlocks.get(i).getStart());
+                freeBlocks.get(i).setTasks(tasks); // adding updated task list to free block
+                task.setTime(freeBlocks.get(i).getStart()); //setting start time for task
+                taskDate.setHours(task.getTime().getHours());
+                taskDate.setMinutes(task.getTime().getMinutes());
+
                 start.setHours(start.getHours() + (Integer.parseInt(etHours.getText().toString())));
-                start.setMinutes(start.getMinutes() + (Integer.parseInt(etMinutes.getText().toString())));
+                start.setMinutes(start.getMinutes() + (Integer.parseInt(etMinutes.getText().toString()))); //changing free block start time
                 freeBlocks.get(i).setStart(start);
                 Log.d("Testing", start.toString());
                 Intent intent = new Intent(newTask.this, bottomNav.class);
                 intent.putExtra("task", Parcels.wrap(task));
                 startActivityForResult(intent, REQUEST_CODE);
-                //alarm.morningScheduler(freeBlocks.get(i),task);
+
+                Intent setAlarm = new Intent(AlarmClock.ACTION_SET_ALARM);
+                setAlarm.putExtra(AlarmClock.EXTRA_HOUR,taskDate.getHours());
+                setAlarm.putExtra(AlarmClock.EXTRA_MINUTES, taskDate.getMinutes());
+                setAlarm.putExtra(AlarmClock.EXTRA_MESSAGE, etTitle.getText().toString());
+                setAlarm.putExtra(AlarmClock.EXTRA_SKIP_UI, true);
+
+                startActivity(setAlarm);
+
+                Log.d("Testing", "Set the alarm");
+                Log.d("Testing", task.getTime().toString());
+                Log.d("Testing", taskDate.toString());
+
 
             }
             else{
@@ -166,4 +194,5 @@ public class newTask extends AppCompatActivity implements  DatePickerDialog.OnDa
 
 
     }
+
 }

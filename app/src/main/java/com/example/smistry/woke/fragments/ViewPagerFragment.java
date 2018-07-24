@@ -15,13 +15,22 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.smistry.woke.R;
+import com.example.smistry.woke.models.Day;
+import com.example.smistry.woke.models.Free;
 import com.example.smistry.woke.newTask;
+
+import org.parceler.Parcels;
+
+import java.util.ArrayList;
+import java.util.Date;
 
 public class ViewPagerFragment extends Fragment {
 
-    public static final String PAGE_TITLE = "Tab1";
-
     ViewPager viewPager;
+    ArrayList<Day> daysA;
+    static String tabLabel="";
+    final static Date today = new Date();
+    final static int dofNum = today.getDay();
     ViewPagerAdapter viewPagerAdapter;
 
     public ViewPagerFragment() {
@@ -38,18 +47,36 @@ public class ViewPagerFragment extends Fragment {
         return fragment;
     }
 
+    //crear una instance que le permita recibir el arrayList de la BottomNav Activity
+    public static ViewPagerFragment newInstance(ArrayList<Day> days) {
+        Bundle args=new Bundle();
+        ViewPagerFragment fragment = new ViewPagerFragment();
+        args.putParcelable("days", Parcels.wrap(days));
+        fragment.setArguments(args);
+        return fragment;
+    }
+
+
+    public ArrayList<Free> getArray(int pos){
+        return daysA.get(pos).getFreeBlocks();
+    }
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        daysA = new ArrayList<>();
+        //retrieve the Array passed by the Activity (bottomNav)
+        //TODO check if it's not nullPointer
+        daysA= Parcels.unwrap(this.getArguments().getParcelable("days"));
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_view_pager, container, false);
 
-        viewPager = (ViewPager) view.findViewById(R.id.vpPager);
+        viewPager = view.findViewById(R.id.vpPager);
         viewPagerAdapter = new ViewPagerAdapter(getChildFragmentManager());
         viewPager.setAdapter(viewPagerAdapter);
         return view;
@@ -59,7 +86,7 @@ public class ViewPagerFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
+        FloatingActionButton fab = view.findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -89,19 +116,19 @@ public class ViewPagerFragment extends Fragment {
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    return TaskFragment.newInstance(0, "Monday");
-                case 1:
-                    return TaskFragment.newInstance(1, "Tuesday");
+                    return TaskFragment.newInstance((dofNum+position)%7, tabLabel);
+               case 1:
+                    return TaskFragment.newInstance((dofNum+position)%7, tabLabel);
                 case 2:
-                    return TaskFragment.newInstance(2, "Friday");
+                    return TaskFragment.newInstance((dofNum+position)%7, tabLabel);
                 case 3:
-                    return TaskFragment.newInstance(0, "Monday");
+                    return TaskFragment.newInstance((dofNum+position)%7, tabLabel);
                 case 4:
-                    return TaskFragment.newInstance(1, "Tuesday");
+                    return TaskFragment.newInstance((dofNum+position)%7, tabLabel);
                 case 5:
-                    return TaskFragment.newInstance(2, "Friday");
+                    return TaskFragment.newInstance((dofNum+position)%7, tabLabel);
                 case 6:
-                    return TaskFragment.newInstance(2, "Friday");
+                    return TaskFragment.newInstance((dofNum+position)%7, tabLabel);
 
                 default:
                     return null;
@@ -111,7 +138,31 @@ public class ViewPagerFragment extends Fragment {
         // Returns the page title for the top indicator
         @Override
         public CharSequence getPageTitle(int position) {
-            return "Page " + position;
+            switch((today.getDay()+position)%7){
+                case 0:
+                    tabLabel= "Sunday";
+                    break;
+                case 1:
+                    tabLabel= "Monday";
+                    break;
+                case 2:
+                    tabLabel= "Tuesday";
+                    break;
+                case 3:
+                    tabLabel= "Wednesday";
+                    break;
+                case 4:
+                    tabLabel= "Thursday";
+                    break;
+                case 5:
+                    tabLabel= "Friday";
+                    break;
+                case 6:
+                    tabLabel= "Saturday";
+                    break;
+
+            }
+            return tabLabel;
         }
     }
 }

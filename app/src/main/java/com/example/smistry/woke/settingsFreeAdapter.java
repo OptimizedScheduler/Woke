@@ -103,7 +103,7 @@ public class settingsFreeAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             startTime= (EditText)itemView.findViewById(R.id.etStartTime);
             endTime= (EditText)itemView.findViewById(R.id.etEndTime);
             tvDOW= (TextView)itemView.findViewById(R.id.tvDOW);
-            enteredFrees= (TextView) itemView.findViewById(R.id.tvFreeBlocks);
+           // enteredFrees= (TextView) itemView.findViewById(R.id.tvFreeBlocks);
             send= (Button) itemView.findViewById(R.id.btSend);
 
             tvStartTime= (TextView)itemView.findViewById(R.id.tvStartTime);

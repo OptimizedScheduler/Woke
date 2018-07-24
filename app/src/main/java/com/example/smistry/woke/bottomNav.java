@@ -8,31 +8,25 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.MenuItem;
-import android.widget.TextView;
 
 import com.example.smistry.woke.fragments.ViewPagerFragment;
 import com.example.smistry.woke.fragments.goals;
 import com.example.smistry.woke.fragments.stats;
+import com.example.smistry.woke.models.Day;
+import com.example.smistry.woke.models.Free;
 import com.example.smistry.woke.models.Task;
 
-import org.apache.commons.io.FileUtils;
-
 import java.io.File;
-import java.io.IOException;
-import java.nio.charset.Charset;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Locale;
 
 public class bottomNav extends AppCompatActivity {
 
-    private TextView mTextMessage;
     ArrayList<Task> tasks;
+    ArrayList<Free> freeBlocks;
+    ArrayList<Day> days;
     final FragmentManager fragmentManager = getSupportFragmentManager();
 
     // define your fragments here
@@ -47,7 +41,7 @@ public class bottomNav extends AppCompatActivity {
             switch (item.getItemId()) {
                 case R.id.navigation_home:
                     FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-                    fragmentTransaction.replace(R.id.flContainer, ViewPagerFragment.newInstance()).commit();
+                    fragmentTransaction.replace(R.id.flContainer, ViewPagerFragment.newInstance(days)).commit();
                     return true;
                 case R.id.navigation_goals:
                     FragmentTransaction fragmentTransaction2 = fragmentManager.beginTransaction();
@@ -67,29 +61,33 @@ public class bottomNav extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bottom_nav);
 
+        //Fill the Day Array with information
+        days=new ArrayList<>();
+        freeBlocks=new ArrayList<>();
+        tasks=new ArrayList<>();
+        Task task1 = new Task("Work in the app", "internship",120, new Date());
+        task1.setTime(new Time(10,00,00));
+        tasks.add(task1);
+        freeBlocks.add(new Free(tasks, new Time(10,00,00), new Time(14,00,00), 240));
+        days.add(new Day(freeBlocks,"Monday", new Time(22,0,0),new Time(6,00,00)));
 
+        //Shows Setting Activity if this is the FIRST time the app is running
         Boolean isFirstRun = getSharedPreferences("PREFERENCE", MODE_PRIVATE)
                 .getBoolean("isFirstRun", true);
-
         if (isFirstRun) {
             //show sign up activity
             startActivity(new Intent(this, SettingsActivity.class));
-
         }
-
         getSharedPreferences("PREFERENCE", MODE_PRIVATE).edit()
                 .putBoolean("isFirstRun", false).commit();
 
+        //begins fragment transaction_ViewPagerFragment is shown as the default view
+       FragmentTransaction ft = fragmentManager.beginTransaction();
+        ft.add(R.id.flContainer, ViewPagerFragment.newInstance(days)).commit();
 
-
-        FragmentTransaction ft = fragmentManager.beginTransaction();
-        ft.add(R.id.flContainer, ViewPagerFragment.newInstance()).commit();
-
-       // mTextMessage = (TextView) findViewById(R.id.message);
-        BottomNavigationView navigation = (BottomNavigationView) findViewById(R.id.navigation);
+        BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
     }
-
 
     // returns the file in which the data is stored
     public File getDataFile() {
@@ -97,7 +95,7 @@ public class bottomNav extends AppCompatActivity {
     }
 
     // read the items from the file system
-    private void readItems() {
+ /*   private void readItems() {
         try {
 
             ArrayList<String> taskStrings;
@@ -143,7 +141,7 @@ public class bottomNav extends AppCompatActivity {
             // print the error to the console
             e.printStackTrace();
         }
-    }
+    }*/
 
 
 }
