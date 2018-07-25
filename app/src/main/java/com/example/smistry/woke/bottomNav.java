@@ -8,7 +8,10 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.example.smistry.woke.fragments.ViewPagerFragment;
 import com.example.smistry.woke.fragments.goals;
@@ -28,8 +31,6 @@ public class bottomNav extends AppCompatActivity {
     ArrayList<Free> freeBlocks;
     ArrayList<Day> days;
     final FragmentManager fragmentManager = getSupportFragmentManager();
-
-
 
     ArrayList<Task> tasks2;
     ArrayList<Free> freeBlocks2;
@@ -201,5 +202,16 @@ public class bottomNav extends AppCompatActivity {
         }
     }*/
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.action_toolbar, menu);
+        return true;
+    }
+
+    public void openSettings(MenuItem item)
+ {
+     Intent intent = new Intent(bottomNav.this,SettingsActivity.class);
+     startActivity(intent);
+ }
 
 }
