@@ -30,7 +30,6 @@ public class bottomNav extends AppCompatActivity {
     final FragmentManager fragmentManager = getSupportFragmentManager();
 
 
-
     ArrayList<Task> tasks2;
     ArrayList<Free> freeBlocks2;
     ArrayList<Task> tasks3;
