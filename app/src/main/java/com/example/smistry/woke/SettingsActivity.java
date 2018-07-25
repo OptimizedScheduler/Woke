@@ -42,7 +42,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity  {
     static ArrayList<String>DOW;
 
 
-
     private static Preference.OnPreferenceChangeListener sBindPreferenceSummaryToValueListener = new Preference.OnPreferenceChangeListener() {
         @Override
         public boolean onPreferenceChange(Preference preference, Object value) {
@@ -252,9 +251,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity  {
 
 
 
-
-
-
             settingsFreeAdapter adapter= new settingsFreeAdapter( DOW, enteredItems);
             //RecyclerView setup (layout manager, use adapter)
             options.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -306,6 +302,16 @@ public class SettingsActivity extends AppCompatPreferenceActivity  {
 
     public static void addFree(String day, Free toAdd){
         enteredItems.get(day).add(toAdd);
+    }
+
+    @Override
+    public void onHeaderClick(Header header, int position) {
+        super.onHeaderClick(header, position);
+        if (header.id == R.id.open_home) {
+            Intent i = new Intent(SettingsActivity.this, bottomNav.class);
+            i.putExtra("FreeMapp", enteredItems);
+            startActivity(i);
+        }
     }
 
 
