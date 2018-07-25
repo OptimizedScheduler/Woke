@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,12 +18,15 @@ import android.view.ViewGroup;
 import com.example.smistry.woke.R;
 import com.example.smistry.woke.models.Day;
 import com.example.smistry.woke.models.Free;
+import com.example.smistry.woke.models.Task;
 import com.example.smistry.woke.newTask;
 
 import org.parceler.Parcels;
 
 import java.util.ArrayList;
 import java.util.Date;
+
+import static android.app.Activity.RESULT_OK;
 
 public class ViewPagerFragment extends Fragment {
 
@@ -32,6 +36,7 @@ public class ViewPagerFragment extends Fragment {
     final static Date today = new Date();
     final static int dofNum = today.getDay();
     ViewPagerAdapter viewPagerAdapter;
+    final int REQ_CODE = 1;
 
     public ViewPagerFragment() {
         // Required empty public constructor
@@ -91,13 +96,28 @@ public class ViewPagerFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getActivity(),newTask.class);
-                startActivity(intent);
+                intent.putExtra("dayArray", Parcels.wrap(daysA));
+                startActivityForResult(intent,REQ_CODE);
 
                 Snackbar.make(view, "Creating a new task", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
             }
         });
 
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK && requestCode == REQ_CODE){
+            int dayIndex = data.getIntExtra("dayIndex",0);
+            int freeIndex = data.getIntExtra("freeIndex",0);
+            ArrayList<Free> newFB = new ArrayList<>();
+            newFB=Parcels.unwrap(data.getParcelableExtra("newFreeBlock"));
+            Task task =newFB.get(freeIndex).getTasks().get(newFB.get(freeIndex).getTasks().size()-1);
+            daysA.get(dayIndex).getFreeBlocks().get(freeIndex).getTasks().add(task);
+            //viewPagerAdapter.notifyDataSetChanged();
+            Log.d("ADD",  daysA.get(dayIndex).getFreeBlocks().get(freeIndex).getTasks().get(newFB.get(freeIndex).getTasks().size()-1).getTaskTitle());
+        }
     }
 
     public static class ViewPagerAdapter extends FragmentStatePagerAdapter {
@@ -160,7 +180,6 @@ public class ViewPagerFragment extends Fragment {
                 case 6:
                     tabLabel= "Saturday";
                     break;
-
             }
             return tabLabel;
         }

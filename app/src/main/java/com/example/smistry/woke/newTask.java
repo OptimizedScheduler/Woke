@@ -1,15 +1,10 @@
 package com.example.smistry.woke;
 
-import android.app.AlarmManager;
 import android.app.DatePickerDialog;
-import android.app.Notification;
-import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.provider.AlarmClock;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -25,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.smistry.woke.fragments.DatePickerFragment;
+import com.example.smistry.woke.models.Day;
 import com.example.smistry.woke.models.Free;
 import com.example.smistry.woke.models.Task;
 
@@ -55,16 +51,17 @@ public class newTask extends AppCompatActivity implements  DatePickerDialog.OnDa
 
     Object item;
     Date taskDate;
+    int iTaskDate=0;
     Time time;
     int duration;
     boolean isDateSet;
+    ArrayList<Day> myDays = new ArrayList<>();
 
     Time start = new Time(10,30,0);
     Time end = new Time(12,0,0);
     ArrayList<Task> tasks = new ArrayList<Task>();
     Free example = new Free(tasks, start, end, 90);
     ArrayList<Free> freeBlocks = new ArrayList<Free>();
-    final int REQUEST_CODE = 1;
     Calendar c = Calendar.getInstance();
 
     String [] months = {"Jan","Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec"};
@@ -77,6 +74,7 @@ public class newTask extends AppCompatActivity implements  DatePickerDialog.OnDa
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_task);
         ButterKnife.bind(this);
+        myDays=Parcels.unwrap(getIntent().getParcelableExtra("dayArray"));
         final DateFormat date = new SimpleDateFormat("MM dd, yyyy");
         freeBlocks.add(example);
 
@@ -140,27 +138,34 @@ public class newTask extends AppCompatActivity implements  DatePickerDialog.OnDa
                     if(TextUtils.isEmpty(strMinutes)) {
                         etMinutes.setText("0");
                     }
-                    setTaskWithinFreeBlock(freeBlocks);
+
+                    setTaskWithinFreeBlock(myDays.get(getIndexDay(iTaskDate)).getFreeBlocks()); //getting free blocks for task Date
                 }
+
             }
         });
     }
 
     @Override
     public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-        taskDate = new Date(year, month, day);
+        Log.d("Date Format", String.valueOf(year) + " " + String.valueOf(month)+ " " + String.valueOf(day));
+        taskDate = new Date(year-1900, month, day);
         isDateSet = true;
         tvDate.setText(months[month]+ " " + day + ","+ " " + year);
         Log.d("Date Format", taskDate.toString());
+        Log.d("Date Format", String.valueOf(taskDate.getYear()));
+        iTaskDate=taskDate.getDay();
     }
 
     public void setTaskWithinFreeBlock (ArrayList<Free> freeBlocks){
         duration = (Integer.parseInt(etHours.getText().toString())*60) + Integer.parseInt(etMinutes.getText().toString());
-        Task task = new Task(etTitle.toString(), item.toString(), duration, taskDate);
+        Task task = new Task(etTitle.getText().toString(), item.toString(), duration, taskDate);
+
+
         for(int i = 0; i < freeBlocks.size(); i++) {
             if (freeBlocks.get(i).getFreeBlockDuration() >= task.getDuration()) { //looping through all free blocks
-                tasks.add(task);
-                freeBlocks.get(i).setTasks(tasks); // adding updated task list to free block
+               // tasks.add(task);
+                freeBlocks.get(i).getTasks().add(task); // adding updated task list to free block
                 task.setTime(freeBlocks.get(i).getStart()); //setting start time for task
                 taskDate.setHours(task.getTime().getHours());
                 taskDate.setMinutes(task.getTime().getMinutes());
@@ -170,8 +175,11 @@ public class newTask extends AppCompatActivity implements  DatePickerDialog.OnDa
                 freeBlocks.get(i).setStart(start);
                 Log.d("Testing", start.toString());
                 Intent intent = new Intent(newTask.this, bottomNav.class);
-                intent.putExtra("task", Parcels.wrap(task));
-                startActivityForResult(intent, REQUEST_CODE);
+                intent.putExtra("newFreeBlock", Parcels.wrap(freeBlocks));
+                intent.putExtra("dayIndex",iTaskDate);
+                intent.putExtra("freeIndex",i);
+                setResult(RESULT_OK, intent); // set result code and bundle data for response
+
 
                 Intent setAlarm = new Intent(AlarmClock.ACTION_SET_ALARM);
                 setAlarm.putExtra(AlarmClock.EXTRA_HOUR,taskDate.getHours());
@@ -185,7 +193,7 @@ public class newTask extends AppCompatActivity implements  DatePickerDialog.OnDa
                 Log.d("Testing", task.getTime().toString());
                 Log.d("Testing", taskDate.toString());
 
-
+                finish(); // closes the activity, pass data to parent
             }
             else{
                 Toast.makeText(newTask.this, "Please enter a different duration", Toast.LENGTH_SHORT).show();
@@ -195,4 +203,31 @@ public class newTask extends AppCompatActivity implements  DatePickerDialog.OnDa
 
     }
 
+    public int getIndexDay(int dayOfWeek){
+        switch(dayOfWeek%7){
+            case 0: //Sunday
+                return compareDays(0,"Sunday");
+            case 1: //Monday
+                return compareDays(1,"Monday");
+            case 2: //Tuesday
+                return compareDays(2,"Tuesday");
+            case 3: //Wednesday
+                return compareDays(3,"Wednesday");
+            case 4: //Thursday
+                return compareDays(4,"Thursday");
+            case 5: //Friday
+                return compareDays(5,"Friday");
+            case 6: //Saturday
+                return compareDays(6,"Saturday");
+        }
+        return -1;
+    }
+
+    public int compareDays(int iCase, String sDay){
+        for(int i=0;i<myDays.size();i++) {
+            if(myDays.get(iCase).getDayOfWeek().equals(sDay));
+            return i;
+        }
+        return -1;
+    }
 }

@@ -42,7 +42,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity  {
     static ArrayList<String>DOW;
 
 
-
     private static Preference.OnPreferenceChangeListener sBindPreferenceSummaryToValueListener = new Preference.OnPreferenceChangeListener() {
         @Override
         public boolean onPreferenceChange(Preference preference, Object value) {
@@ -238,9 +237,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity  {
 
                 ArrayList<Free> monItems= new ArrayList<>();
                 ArrayList<Free>tuesItems= new ArrayList<>();
-//            monItems.add(new Free(new ArrayList<Task>(), new Time(4,5,6), new Time(4,45,6), 40));
-//            monItems.add(new Free(new ArrayList<Task>(), new Time(5,5,6), new Time(5,45,6), 40));
-//            tuesItems.add(new Free(new ArrayList<Task>(), new Time(4,5,6), new Time(4,45,6), 40));
+                 monItems.add(new Free(new ArrayList<Task>(), new Time(4,5,6), new Time(4,45,6), 40));
+                   monItems.add(new Free(new ArrayList<Task>(), new Time(5,5,6), new Time(5,45,6), 40));
+                tuesItems.add(new Free(new ArrayList<Task>(), new Time(4,5,6), new Time(4,45,6), 40));
                 enteredItems.put("Monday", monItems);
                 enteredItems.put("Tuesday",tuesItems );
                 enteredItems.put("Wednesday", new ArrayList<Free>());
@@ -249,9 +248,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity  {
                 enteredItems.put("Saturday", new ArrayList<Free>());
                 enteredItems.put("Sunday", new ArrayList<Free>());
             }
-
-
-
 
 
 
@@ -306,6 +302,16 @@ public class SettingsActivity extends AppCompatPreferenceActivity  {
 
     public static void addFree(String day, Free toAdd){
         enteredItems.get(day).add(toAdd);
+    }
+
+    @Override
+    public void onHeaderClick(Header header, int position) {
+        super.onHeaderClick(header, position);
+        if (header.id == R.id.open_home) {
+            Intent i = new Intent(SettingsActivity.this, bottomNav.class);
+            i.putExtra("FreeMapp", enteredItems);
+            startActivity(i);
+        }
     }
 
 
