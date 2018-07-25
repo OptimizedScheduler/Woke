@@ -20,7 +20,6 @@ import com.example.smistry.woke.models.Task;
 
 import java.util.ArrayList;
 
-
 public class TaskFragment extends Fragment {
     // Store instance variables
     private String title;
@@ -40,8 +39,6 @@ public class TaskFragment extends Fragment {
         fragmentFirst.setArguments(args);
         return fragmentFirst;
     }
-
-
 
     // Store instance variables based on arguments passed
     @Override
@@ -64,9 +61,7 @@ public class TaskFragment extends Fragment {
         myTasks.add(task2);
         adapter=new TaskRecyclerAdapter(myTasks);*/
 
-
         //Obtain the array needed depending of which day is specified
-
         if (getParentFragment() instanceof ViewPagerFragment ) {
             try{
             freeBlocks=((ViewPagerFragment) getParentFragment()).getArray(dayOfW);}
@@ -74,10 +69,12 @@ public class TaskFragment extends Fragment {
                 Log.d("EXC", e.getMessage());
             }
         }
+
         if(freeBlocks!=null) {
             //TODO search for other free blocks
+            for(int i=0; i<freeBlocks.size(); i++)
             try {
-                dailyTasks = freeBlocks.get(0).getTasks();
+                dailyTasks = freeBlocks.get(i).getTasks();
                 adapter = new TaskRecyclerAdapter(dailyTasks);
             }
             catch (Exception e){
