@@ -96,6 +96,33 @@ public class SettingsActivity extends AppCompatPreferenceActivity  {
         PreferenceManager.setDefaultValues(this, R.xml.pref_general, false);
         PreferenceManager.setDefaultValues(this, R.xml.pref_sleep_time, false);
         PreferenceManager.setDefaultValues(this, R.xml.pref_free_times, false);
+        if (DOW==null || enteredItems== null){
+            DOW= new ArrayList<>();
+            enteredItems= new ArrayList<>();
+
+            DOW.add("Monday");
+            DOW.add("Tuesday");
+            DOW.add("Wednesday");
+            DOW.add("Thursday");
+            DOW.add("Friday");
+            DOW.add("Saturday");
+            DOW.add("Sunday");
+
+            ArrayList<Free> monItems= new ArrayList<>();
+            ArrayList<Free>tuesItems= new ArrayList<>();
+            monItems.add(new Free(new ArrayList<Task>(), new Time(4,5,6), new Time(4,45,6), 40));
+            monItems.add(new Free(new ArrayList<Task>(), new Time(5,5,6), new Time(5,45,6), 40));
+            tuesItems.add(new Free(new ArrayList<Task>(), new Time(4,5,6), new Time(4,45,6), 40));
+            enteredItems.add(0, new ArrayList<Free>());
+            enteredItems.add(1, monItems);
+            enteredItems.add(2,tuesItems );
+            enteredItems.add(3,new ArrayList<Free>());
+            enteredItems.add(4, new ArrayList<Free>());
+            enteredItems.add(5,new ArrayList<Free>());
+            enteredItems.add(6, new ArrayList<Free>());
+
+        }
+        
 
     }
 
@@ -238,34 +265,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity  {
         public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
             RecyclerView options= view.findViewById(R.id.rvFree);
             super.onViewCreated(view, savedInstanceState);
-
-            if (DOW==null || enteredItems== null){
-                DOW= new ArrayList<>();
-                enteredItems= new ArrayList<>();
-
-                DOW.add("Monday");
-                DOW.add("Tuesday");
-                DOW.add("Wednesday");
-                DOW.add("Thursday");
-                DOW.add("Friday");
-                DOW.add("Saturday");
-                DOW.add("Sunday");
-
-                ArrayList<Free> monItems= new ArrayList<>();
-                ArrayList<Free>tuesItems= new ArrayList<>();
-                 monItems.add(new Free(new ArrayList<Task>(), new Time(4,5,6), new Time(4,45,6), 40));
-                   monItems.add(new Free(new ArrayList<Task>(), new Time(5,5,6), new Time(5,45,6), 40));
-                tuesItems.add(new Free(new ArrayList<Task>(), new Time(4,5,6), new Time(4,45,6), 40));
-                enteredItems.add(0, new ArrayList<Free>());
-                enteredItems.add(1, monItems);
-                enteredItems.add(2,tuesItems );
-                enteredItems.add(3,new ArrayList<Free>());
-                enteredItems.add(4, new ArrayList<Free>());
-                enteredItems.add(5,new ArrayList<Free>());
-                enteredItems.add(6, new ArrayList<Free>());
-
-            }
-
 
 
             settingsFreeAdapter adapter= new settingsFreeAdapter( DOW, enteredItems);
@@ -447,32 +446,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity  {
         super.onHeaderClick(header, position);
         if (header.id == R.id.open_home) {
 
-            if (DOW==null || enteredItems== null){
-                DOW= new ArrayList<>();
-                enteredItems= new ArrayList<>();
-
-                DOW.add("Monday");
-                DOW.add("Tuesday");
-                DOW.add("Wednesday");
-                DOW.add("Thursday");
-                DOW.add("Friday");
-                DOW.add("Saturday");
-                DOW.add("Sunday");
-
-                ArrayList<Free> monItems= new ArrayList<>();
-                ArrayList<Free>tuesItems= new ArrayList<>();
-                monItems.add(new Free(new ArrayList<Task>(), new Time(4,5,6), new Time(4,45,6), 40));
-                monItems.add(new Free(new ArrayList<Task>(), new Time(5,5,6), new Time(5,45,6), 40));
-                tuesItems.add(new Free(new ArrayList<Task>(), new Time(4,5,6), new Time(4,45,6), 40));
-                enteredItems.add(0, new ArrayList<Free>());
-                enteredItems.add(1, monItems);
-                enteredItems.add(2,tuesItems );
-                enteredItems.add(3,new ArrayList<Free>());
-                enteredItems.add(4, new ArrayList<Free>());
-                enteredItems.add(5,new ArrayList<Free>());
-                enteredItems.add(6, new ArrayList<Free>());
-
-            }
 
 
 
@@ -499,7 +472,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity  {
 
 
 
-
             //TODO- check to ensure user inputted the data
 
             Intent i = new Intent(SettingsActivity.this, bottomNav.class);
@@ -515,8 +487,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity  {
 
 
 
-
-
             i.putExtra("Sunday", Parcels.wrap(Sunday));
             i.putExtra("Monday", Parcels.wrap(Monday));
             i.putExtra("Tuesday", Parcels.wrap(Tuesday));
@@ -524,7 +494,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity  {
             i.putExtra("Thursday", Parcels.wrap(Thursday));
             i.putExtra("Friday", Parcels.wrap(Friday));
             i.putExtra("Saturday", Parcels.wrap(Saturday));
-//
+
 
 
             startActivity(i);
