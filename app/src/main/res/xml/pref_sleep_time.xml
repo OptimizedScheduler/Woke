@@ -2,25 +2,28 @@
 
     <PreferenceCategory android:title="Monday">
         <EditTextPreference
+            android:defaultValue="23:00"
             android:inputType="time"
             android:key="sleepTimeMonday"
             android:selectAllOnFocus="true"
             android:singleLine="true"
-            android:title="Sleep Time"
-            android:summary="Enter your prefered sleep time" />
+            android:summary="Enter your prefered sleep time"
+            android:title="Sleep Time" />
         <EditTextPreference
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:defaultValue="4:00"
             android:inputType="time"
             android:key="wakeTimeMonday"
             android:selectAllOnFocus="true"
             android:singleLine="true"
-            android:title="Wake Up Time"
-            android:summary="Enter your prefered wake up time" />
+            android:summary="Enter your prefered wake up time"
+            android:title="Wake Up Time" />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="Tuesday">
     <EditTextPreference
+        android:defaultValue="23:00"
         android:inputType="time"
         android:key="sleepTimeTuesday"
         android:selectAllOnFocus="true"
@@ -28,6 +31,7 @@
         android:title="Sleep Time"
         android:summary="Enter your prefered sleep time" />
     <EditTextPreference
+        android:defaultValue="4:00"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="time"
@@ -40,6 +44,7 @@
 
     <PreferenceCategory android:title="Wednesday">
         <EditTextPreference
+            android:defaultValue="23:00"
             android:inputType="time"
             android:key="sleepTimeWednesday"
             android:selectAllOnFocus="true"
@@ -47,6 +52,7 @@
             android:title="Sleep Time"
             android:summary="Enter your prefered sleep time" />
         <EditTextPreference
+            android:defaultValue="4:00"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:inputType="time"
@@ -60,6 +66,7 @@
 
     <PreferenceCategory android:title="Thursday">
         <EditTextPreference
+            android:defaultValue="23:00"
             android:inputType="time"
             android:key="sleepTimeThursday"
             android:selectAllOnFocus="true"
@@ -67,6 +74,7 @@
             android:title="Sleep Time"
             android:summary="Enter your prefered sleep time" />
         <EditTextPreference
+            android:defaultValue="4:00"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:inputType="time"
@@ -79,6 +87,7 @@
 
     <PreferenceCategory android:title="Friday">
         <EditTextPreference
+            android:defaultValue="23:00"
             android:inputType="time"
             android:key="sleepTimeFriday"
             android:selectAllOnFocus="true"
@@ -86,6 +95,7 @@
             android:title="Sleep Time"
             android:summary="Enter your prefered sleep time" />
         <EditTextPreference
+            android:defaultValue="4:00"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:inputType="time"
@@ -97,6 +107,7 @@
     </PreferenceCategory>
     <PreferenceCategory android:title="Saturday">
         <EditTextPreference
+            android:defaultValue="23:00"
             android:inputType="time"
             android:key="sleepTimeSaturday"
             android:selectAllOnFocus="true"
@@ -104,6 +115,7 @@
             android:title="Sleep Time"
             android:summary="Enter your prefered sleep time" />
         <EditTextPreference
+            android:defaultValue="4:00"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:inputType="time"
@@ -115,6 +127,7 @@
     </PreferenceCategory>
     <PreferenceCategory android:title="Sunday">
         <EditTextPreference
+            android:defaultValue="23:00"
             android:inputType="time"
             android:key="sleepTimeSunday"
             android:selectAllOnFocus="true"
@@ -122,6 +135,7 @@
             android:title="Sleep Time"
             android:summary="Enter your prefered sleep time" />
         <EditTextPreference
+            android:defaultValue="4:00"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:inputType="time"

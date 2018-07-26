@@ -22,7 +22,7 @@ import java.util.HashMap;
 public class settingsFreeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     Context context;
     ArrayList<String> DOW;
-    HashMap<String, ArrayList<Free>> weekFrees;
+    ArrayList<ArrayList<Free>> weekFrees;
 //    ArrayList<Free> enteredFrees;
 
 
@@ -43,7 +43,7 @@ public class settingsFreeAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     public int SundayPosition;
 
 
-    public settingsFreeAdapter(ArrayList<String> DOW, HashMap<String, ArrayList<Free>> weekFrees) {
+    public settingsFreeAdapter(ArrayList<String> DOW,  ArrayList<ArrayList<Free>>  weekFrees) {
         this.DOW = DOW;
         this.weekFrees = weekFrees;
         calcPositions();
@@ -53,13 +53,13 @@ public class settingsFreeAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     }
 
     public void calcPositions() {
-        MondaySize = weekFrees.get("Monday").size();
-        TuesdaySize = weekFrees.get("Tuesday").size();
-        WednesdaySize = weekFrees.get("Wednesday").size();
-        ThursdaySize = weekFrees.get("Thursday").size();
-        FridaySize = weekFrees.get("Friday").size();
-        SaturdaySize = weekFrees.get("Saturday").size();
-        SundaySize = weekFrees.get("Sunday").size();
+        MondaySize = weekFrees.get(1).size();
+        TuesdaySize = weekFrees.get(2).size();
+        WednesdaySize = weekFrees.get(3).size();
+        ThursdaySize = weekFrees.get(4).size();
+        FridaySize = weekFrees.get(5).size();
+        SaturdaySize = weekFrees.get(6).size();
+        SundaySize = weekFrees.get(0).size();
 
         MondayPosition = 0;
         TuesdayPosition = MondaySize + 1;
@@ -73,8 +73,8 @@ public class settingsFreeAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
     @Override
     public int getItemCount() {
         int size = 7;
-        for (String key : weekFrees.keySet()) {
-            size += weekFrees.get(key).size();
+        for (int i=0; i<weekFrees.size(); i++) {
+            size += weekFrees.get(i).size();
         }
         return size;
     }
@@ -161,13 +161,13 @@ public class settingsFreeAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             if (i == MondayPosition) {
                 editMode(viewHolder0);
 
-                for (Free free : weekFrees.get(DOW.get(0))) {
+                for (Free free : weekFrees.get(1)) {
                     frees += free.toString() + " ";
                 }
                 ((editInterval) viewHolder).enteredFrees.setText(frees);
             } else {
                 viewMode(viewHolder0);
-                Free toFill = weekFrees.get(DOW.get(0)).get(i - 1);
+                Free toFill = weekFrees.get(1).get(i - 1);
                 viewHolder0.tvStartTime.setText(toFill.getStart().toString());
                 viewHolder0.tvEndTime.setText(toFill.getEnd().toString());
                 viewHolder0.enteredFrees.setText(toFill.getFreeBlockDuration() + " minutes");
@@ -179,14 +179,14 @@ public class settingsFreeAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             if (i == TuesdayPosition) {
                 editMode(viewHolder0);
 
-                for (Free free : weekFrees.get(DOW.get(1))) {
+                for (Free free : weekFrees.get(2)) {
                     frees += free.toString() + " ";
                 }
                 ((editInterval) viewHolder).enteredFrees.setText(frees);
             } else {
                 viewMode(viewHolder0);
 
-                Free toFill = weekFrees.get(DOW.get(1)).get(i - MondaySize - 2);
+                Free toFill = weekFrees.get(2).get(i - MondaySize - 2);
                 viewHolder0.tvStartTime.setText(toFill.getStart().toString());
                 viewHolder0.tvEndTime.setText(toFill.getEnd().toString());
                 viewHolder0.enteredFrees.setText(toFill.getFreeBlockDuration() + " minutes");
@@ -197,14 +197,14 @@ public class settingsFreeAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             if (i == WednesdayPosition) {
                 editMode(viewHolder0);
 
-                for (Free free : weekFrees.get(DOW.get(2))) {
+                for (Free free : weekFrees.get(3)) {
                     frees += free.toString() + " ";
                 }
                 ((editInterval) viewHolder).enteredFrees.setText(frees);
             } else {
                 viewMode(viewHolder0);
 
-                Free toFill = weekFrees.get(DOW.get(2)).get(i - MondaySize - TuesdaySize - 3);
+                Free toFill = weekFrees.get(3).get(i - MondaySize - TuesdaySize - 3);
                 viewHolder0.tvStartTime.setText(toFill.getStart().toString());
                 viewHolder0.tvEndTime.setText(toFill.getEnd().toString());
                 viewHolder0.enteredFrees.setText(toFill.getFreeBlockDuration() + " minutes");
@@ -215,14 +215,14 @@ public class settingsFreeAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             if (i == ThursdayPosition) {
                 editMode(viewHolder0);
 
-                for (Free free : weekFrees.get(DOW.get(3))) {
+                for (Free free : weekFrees.get(4)) {
                     frees += free.toString() + " ";
                 }
                 ((editInterval) viewHolder).enteredFrees.setText(frees);
             } else {
                 viewMode(viewHolder0);
 
-                Free toFill = weekFrees.get(DOW.get(3)).get(i - MondaySize - TuesdaySize - WednesdaySize - 4);
+                Free toFill = weekFrees.get(4).get(i - MondaySize - TuesdaySize - WednesdaySize - 4);
                 viewHolder0.tvStartTime.setText(toFill.getStart().toString());
                 viewHolder0.tvEndTime.setText(toFill.getEnd().toString());
                 viewHolder0.enteredFrees.setText(toFill.getFreeBlockDuration() + " minutes");
@@ -234,14 +234,14 @@ public class settingsFreeAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
             if (i == FridayPosition) {
                 editMode(viewHolder0);
 
-                for (Free free : weekFrees.get(DOW.get(4))) {
+                for (Free free : weekFrees.get(5)) {
                     frees += free.toString() + " ";
                 }
                 ((editInterval) viewHolder).enteredFrees.setText(frees);
             } else {
                 viewMode(viewHolder0);
 
-                Free toFill = weekFrees.get(DOW.get(4)).get(i - MondaySize - TuesdaySize - WednesdaySize - ThursdaySize - 5);
+                Free toFill = weekFrees.get(5).get(i - MondaySize - TuesdaySize - WednesdaySize - ThursdaySize - 5);
                 viewHolder0.tvStartTime.setText(toFill.getStart().toString());
                 viewHolder0.tvEndTime.setText(toFill.getEnd().toString());
                 viewHolder0.enteredFrees.setText(toFill.getFreeBlockDuration() + " minutes");
@@ -254,14 +254,14 @@ public class settingsFreeAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 editMode(viewHolder0);
 
 
-                for (Free free : weekFrees.get(DOW.get(5))) {
+                for (Free free : weekFrees.get(6)) {
                     frees += free.toString() + " ";
                 }
                 ((editInterval) viewHolder).enteredFrees.setText(frees);
             } else {
                 viewMode(viewHolder0);
 
-                Free toFill = weekFrees.get(DOW.get(5)).get(i - MondaySize - TuesdaySize - WednesdaySize - ThursdaySize - FridaySize - 6);
+                Free toFill = weekFrees.get(6).get(i - MondaySize - TuesdaySize - WednesdaySize - ThursdaySize - FridaySize - 6);
                 viewHolder0.tvStartTime.setText(toFill.getStart().toString());
                 viewHolder0.tvEndTime.setText(toFill.getEnd().toString());
                 viewHolder0.enteredFrees.setText(toFill.getFreeBlockDuration() + " minutes");
@@ -272,14 +272,14 @@ public class settingsFreeAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
                 editMode(viewHolder0);
 
 
-                for (Free free : weekFrees.get(DOW.get(6))) {
+                for (Free free : weekFrees.get(0)) {
                     frees += free.toString() + " ";
                 }
                 ((editInterval) viewHolder).enteredFrees.setText(frees);
             } else {
                 viewMode(viewHolder0);
 
-                Free toFill = weekFrees.get(DOW.get(6)).get(i - MondaySize - TuesdaySize - WednesdaySize - ThursdaySize - FridaySize - SaturdaySize - 7);
+                Free toFill = weekFrees.get(0).get(i - MondaySize - TuesdaySize - WednesdaySize - ThursdaySize - FridaySize - SaturdaySize - 7);
                 viewHolder0.tvStartTime.setText(toFill.getStart().toString());
                 viewHolder0.tvEndTime.setText(toFill.getEnd().toString());
                 viewHolder0.enteredFrees.setText(toFill.getFreeBlockDuration() + " minutes");
@@ -363,46 +363,46 @@ public class settingsFreeAdapter extends RecyclerView.Adapter<RecyclerView.ViewH
 
                             //add the new task into the hashMap
                             if (i < TuesdayPosition) {
-                                SettingsActivity.addFree(DOW.get(0), toAdd);
-                                for (Free free : weekFrees.get(DOW.get(0))) {
+                                SettingsActivity.addFree(1, toAdd);
+                                for (Free free : weekFrees.get(1)) {
                                     frees += free.toString() + " ";
                                 }
 
                             } else if (i < WednesdayPosition) {
-                                SettingsActivity.addFree(DOW.get(1), toAdd);
-                                for (Free free : weekFrees.get(DOW.get(1))) {
+                                SettingsActivity.addFree(2, toAdd);
+                                for (Free free : weekFrees.get(2)) {
                                     frees += free.toString() + " ";
                                 }
 
                             } else if (i < ThursdayPosition) {
-                                SettingsActivity.addFree(DOW.get(2), toAdd);
-                                for (Free free : weekFrees.get(DOW.get(2))) {
+                                SettingsActivity.addFree(3, toAdd);
+                                for (Free free : weekFrees.get(3)) {
                                     frees += free.toString() + " ";
                                 }
 
 
                             } else if (i < FridayPosition) {
-                                SettingsActivity.addFree(DOW.get(3), toAdd);
-                                for (Free free : weekFrees.get(DOW.get(3))) {
+                                SettingsActivity.addFree(4, toAdd);
+                                for (Free free : weekFrees.get(4)) {
                                     frees += free.toString() + " ";
                                 }
 
                             } else if (i < SaturdayPosition) {
-                                SettingsActivity.addFree(DOW.get(4), toAdd);
-                                for (Free free : weekFrees.get(DOW.get(4))) {
+                                SettingsActivity.addFree(5, toAdd);
+                                for (Free free : weekFrees.get(5)) {
                                     frees += free.toString() + " ";
                                 }
 
                             } else if (i < SundayPosition) {
-                                SettingsActivity.addFree(DOW.get(5), toAdd);
-                                for (Free free : weekFrees.get(DOW.get(5))) {
+                                SettingsActivity.addFree(6, toAdd);
+                                for (Free free : weekFrees.get(6)) {
                                     frees += free.toString() + " ";
                                 }
 
 
                             } else {
-                                SettingsActivity.addFree(DOW.get(6), toAdd);
-                                for (Free free : weekFrees.get(DOW.get(6))) {
+                                SettingsActivity.addFree(0, toAdd);
+                                for (Free free : weekFrees.get(0)) {
                                     frees += free.toString() + " ";
                                 }
 
