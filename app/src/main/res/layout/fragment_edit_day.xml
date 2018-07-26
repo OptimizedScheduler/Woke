@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragments.editDay"
+    android:background="@color/white">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/tvDayEditDay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="27dp"
+            android:layout_marginTop="18dp"
+            android:text="Insert Day"
+            android:textSize="24sp" />
+
+        <TextView
+            android:id="@+id/tvEnteredFreeEditDay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignStart="@+id/btSleepTime"
+            android:layout_marginTop="195dp"
+            android:text="Entered Frees"
+            android:textSize="24sp" />
+
+        <Button
+            android:id="@+id/btSleepTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/tvDayEditDay"
+            android:layout_marginStart="68dp"
+            android:text="Sleep Time" />
+
+        <Button
+            android:id="@+id/btWakeTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/btSleepTime"
+            android:layout_below="@+id/btSleepTime"
+            android:text="Wake Time" />
+
+        <Button
+            android:id="@+id/btFreeTime"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/tvEnteredFreeEditDay"
+            android:layout_below="@+id/btWakeTime"
+            android:text="Free Time" />
+
+
+    </RelativeLayout>
+
+
+</FrameLayout>

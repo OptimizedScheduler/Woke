@@ -1,9 +1,9 @@
 package com.example.smistry.woke;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
@@ -12,35 +12,23 @@ import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v14.preference.PreferenceFragment;
 import android.support.v14.preference.SwitchPreference;
-import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
-import android.support.v7.preference.EditTextPreference;
 import android.support.v7.preference.ListPreference;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.smistry.woke.models.Day;
 import com.example.smistry.woke.models.Free;
 import com.example.smistry.woke.models.Task;
 
-import org.parceler.Parcels;
-
 import java.sql.Time;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
 
 
 public class SettingsActivity extends AppCompatPreferenceActivity  {
@@ -130,13 +118,16 @@ public class SettingsActivity extends AppCompatPreferenceActivity  {
     /**
      * Set up the {@link android.app.ActionBar}, if the API is available.
      */
-    private void setupActionBar() {
+    public void setupActionBar() {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             // Show the Up button in the action bar.
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
     }
+
+
+
 
     /**
      * {@inheritDoc}
@@ -243,11 +234,13 @@ public class SettingsActivity extends AppCompatPreferenceActivity  {
 
 
 
+
+
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
            // addPreferencesFromResource(R.xml.pref_free_times);
-           // setHasOptionsMenu(true);
+            setHasOptionsMenu(true);
         }
 
         @Override
@@ -273,30 +266,33 @@ public class SettingsActivity extends AppCompatPreferenceActivity  {
 //            options.setLayoutManager(new LinearLayoutManager(getContext()));
 //            options.setAdapter(adapter);
 
-            TextView Sunday=view.findViewById(R.id.tvSunday);
-            TextView Monday= view.findViewById(R.id.tvMonday);
-            TextView Tuesday= view.findViewById(R.id.tvTuesday);
-            TextView Wednesday=view.findViewById(R.id.tvWednesday);
-            TextView Thursday= view.findViewById(R.id.tvThursday);
-            TextView Friday=view.findViewById(R.id.tvFriday);
-            TextView Saturday=view.findViewById(R.id.tvSaturday);
+            final TextView Sunday=view.findViewById(R.id.tvSunday);
+            final TextView Monday= view.findViewById(R.id.tvMonday);
+            final TextView Tuesday= view.findViewById(R.id.tvTuesday);
+            final TextView Wednesday=view.findViewById(R.id.tvWednesday);
+            final TextView Thursday= view.findViewById(R.id.tvThursday);
+            final TextView Friday=view.findViewById(R.id.tvFriday);
+            final TextView Saturday=view.findViewById(R.id.tvSaturday);
 
             Sunday.setOnClickListener(new View.OnClickListener() {
+                @SuppressLint("ResourceType")
                 @Override
                 public void onClick(View view) {
-
+                    ((SettingsActivity)getContext()).openEditDay(Sunday.getText().toString());
                 }
             });
             Monday.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
 
+                    ((SettingsActivity)getContext()).openEditDay(Monday.getText().toString());
                 }
             });
 
             Tuesday.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    ((SettingsActivity)getContext()).openEditDay(Tuesday.getText().toString());
 
                 }
             });
@@ -304,11 +300,13 @@ public class SettingsActivity extends AppCompatPreferenceActivity  {
                 @Override
                 public void onClick(View view) {
 
+                    ((SettingsActivity)getContext()).openEditDay(Wednesday.getText().toString());
                 }
             });
             Thursday.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    ((SettingsActivity)getContext()).openEditDay(Thursday.getText().toString());
 
                 }
             });
@@ -316,12 +314,14 @@ public class SettingsActivity extends AppCompatPreferenceActivity  {
                 @Override
                 public void onClick(View view) {
 
+                    ((SettingsActivity)getContext()).openEditDay(Friday.getText().toString());
                 }
             });
 
             Saturday.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    ((SettingsActivity)getContext()).openEditDay(Saturday.getText().toString());
 
                 }
             });
@@ -554,6 +554,19 @@ public class SettingsActivity extends AppCompatPreferenceActivity  {
         String[] split=time.split(":");
         return new Time(Integer.valueOf(split[0]),Integer.valueOf(split[1]),0);
     }
+
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    public void openEditDay(String day){
+
+        Intent i= new Intent(SettingsActivity.this, editDayActivity.class);
+        i.putExtra("Day", day);
+        startActivity(i);
+
+
+    }
+
+
 
 
 }
