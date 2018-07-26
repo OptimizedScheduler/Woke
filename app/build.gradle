@@ -35,4 +35,6 @@ dependencies {
     implementation 'org.parceler:parceler-api:1.1.6'//parcel
     annotationProcessor 'org.parceler:parceler:1.1.6'//parcel
     implementation 'com.android.support:preference-v7:28.0.0-alpha3'// seekBarPreference
+
+    compile 'org.greenrobot:eventbus:3.0.0' ///EventBus greenRobot
 }

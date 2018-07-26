@@ -76,10 +76,12 @@ public class TaskFragment extends Fragment {
             try {
                 dailyTasks = freeBlocks.get(i).getTasks();
                 adapter = new TaskRecyclerAdapter(dailyTasks);
+                adapter.notifyDataSetChanged();
             }
             catch (Exception e){
                 Log.d("EXC2",e.getMessage());
                 adapter = new TaskRecyclerAdapter(dailyTasks);
+                adapter.notifyDataSetChanged();
             }
         }
     }

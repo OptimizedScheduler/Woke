@@ -22,8 +22,10 @@ import android.widget.Toast;
 import com.example.smistry.woke.fragments.DatePickerFragment;
 import com.example.smistry.woke.models.Day;
 import com.example.smistry.woke.models.Free;
+import com.example.smistry.woke.models.MessageEvent;
 import com.example.smistry.woke.models.Task;
 
+import org.greenrobot.eventbus.EventBus;
 import org.parceler.Parcels;
 
 import java.sql.Time;
@@ -139,7 +141,8 @@ public class newTask extends AppCompatActivity implements  DatePickerDialog.OnDa
                         etMinutes.setText("0");
                     }
 
-                    setTaskWithinFreeBlock(myDays.get(getIndexDay(iTaskDate)).getFreeBlocks()); //getting free blocks for task Date
+                    setTaskWithinFreeBlock(myDays.get(iTaskDate).getFreeBlocks()); //getting free blocks for task Date
+                    finish();
                 }
 
             }
@@ -174,12 +177,6 @@ public class newTask extends AppCompatActivity implements  DatePickerDialog.OnDa
                 start.setMinutes(start.getMinutes() + (Integer.parseInt(etMinutes.getText().toString()))); //changing free block start time
                 freeBlocks.get(i).setStart(start);
                 Log.d("Testing", start.toString());
-                Intent intent = new Intent(newTask.this, bottomNav.class);
-                intent.putExtra("newFreeBlock", Parcels.wrap(freeBlocks));
-                intent.putExtra("dayIndex",iTaskDate);
-                intent.putExtra("freeIndex",i);
-                setResult(RESULT_OK, intent); // set result code and bundle data for response
-
 
                 Intent setAlarm = new Intent(AlarmClock.ACTION_SET_ALARM);
                 setAlarm.putExtra(AlarmClock.EXTRA_HOUR,taskDate.getHours());
@@ -193,41 +190,14 @@ public class newTask extends AppCompatActivity implements  DatePickerDialog.OnDa
                 Log.d("Testing", task.getTime().toString());
                 Log.d("Testing", taskDate.toString());
 
-                finish(); // closes the activity, pass data to parent
+               myDays.get(iTaskDate).setFreeBlocks(freeBlocks);
+
+                MessageEvent event = new MessageEvent(myDays);
+                EventBus.getDefault().postSticky(event);
             }
             else{
                 Toast.makeText(newTask.this, "Please enter a different duration", Toast.LENGTH_SHORT).show();
             }
         }
-
-
-    }
-
-    public int getIndexDay(int dayOfWeek){
-        switch(dayOfWeek%7){
-            case 0: //Sunday
-                return compareDays(0,"Sunday");
-            case 1: //Monday
-                return compareDays(1,"Monday");
-            case 2: //Tuesday
-                return compareDays(2,"Tuesday");
-            case 3: //Wednesday
-                return compareDays(3,"Wednesday");
-            case 4: //Thursday
-                return compareDays(4,"Thursday");
-            case 5: //Friday
-                return compareDays(5,"Friday");
-            case 6: //Saturday
-                return compareDays(6,"Saturday");
-        }
-        return -1;
-    }
-
-    public int compareDays(int iCase, String sDay){
-        for(int i=0;i<myDays.size();i++) {
-            if(myDays.get(iCase).getDayOfWeek().equals(sDay));
-            return i;
-        }
-        return -1;
     }
 }

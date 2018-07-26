@@ -11,7 +11,6 @@ import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v14.preference.PreferenceFragment;
 import android.support.v14.preference.SwitchPreference;
-import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.preference.ListPreference;
@@ -22,9 +21,6 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Toast;
 
 import com.example.smistry.woke.models.Free;
 import com.example.smistry.woke.models.Task;
@@ -309,7 +305,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity  {
         super.onHeaderClick(header, position);
         if (header.id == R.id.open_home) {
             Intent i = new Intent(SettingsActivity.this, bottomNav.class);
-            i.putExtra("FreeMapp", enteredItems);
+            i.putExtra("FreeMap", enteredItems);
             startActivity(i);
         }
     }

@@ -115,7 +115,7 @@ public class ViewPagerFragment extends Fragment {
             newFB=Parcels.unwrap(data.getParcelableExtra("newFreeBlock"));
             Task task =newFB.get(freeIndex).getTasks().get(newFB.get(freeIndex).getTasks().size()-1);
             daysA.get(dayIndex).getFreeBlocks().get(freeIndex).getTasks().add(task);
-            //viewPagerAdapter.notifyDataSetChanged();
+            viewPagerAdapter.notifyDataSetChanged();
             Log.d("ADD",  daysA.get(dayIndex).getFreeBlocks().get(freeIndex).getTasks().get(newFB.get(freeIndex).getTasks().size()-1).getTaskTitle());
         }
     }
