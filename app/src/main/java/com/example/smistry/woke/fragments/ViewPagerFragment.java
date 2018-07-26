@@ -18,7 +18,6 @@ import android.view.ViewGroup;
 import com.example.smistry.woke.R;
 import com.example.smistry.woke.models.Day;
 import com.example.smistry.woke.models.Free;
-import com.example.smistry.woke.models.Task;
 import com.example.smistry.woke.newTask;
 
 import org.parceler.Parcels;
@@ -32,7 +31,6 @@ public class ViewPagerFragment extends Fragment {
 
     ViewPager viewPager;
     ArrayList<Day> daysA;
-    static String tabLabel="";
     final static Date today = new Date();
     final static int dofNum = today.getDay();
     ViewPagerAdapter viewPagerAdapter;
@@ -111,10 +109,11 @@ public class ViewPagerFragment extends Fragment {
         if (resultCode == RESULT_OK && requestCode == REQ_CODE){
             int dayIndex = data.getIntExtra("dayIndex",0);
             int freeIndex = data.getIntExtra("freeIndex",0);
-            ArrayList<Free> newFB = new ArrayList<>();
+            ArrayList<Free> newFB;
             newFB=Parcels.unwrap(data.getParcelableExtra("newFreeBlock"));
-            Task task =newFB.get(freeIndex).getTasks().get(newFB.get(freeIndex).getTasks().size()-1);
-            daysA.get(dayIndex).getFreeBlocks().get(freeIndex).getTasks().add(task);
+           /* Task task =newFB.get(freeIndex).getTasks().get(newFB.get(freeIndex).getTasks().size()-1);
+            daysA.get(dayIndex).getFreeBlocks().get(freeIndex).getTasks().add(task);*/
+            daysA.get(dayIndex).setFreeBlocks(newFB);
             viewPagerAdapter.notifyDataSetChanged();
             Log.d("ADD",  daysA.get(dayIndex).getFreeBlocks().get(freeIndex).getTasks().get(newFB.get(freeIndex).getTasks().size()-1).getTaskTitle());
         }
@@ -136,19 +135,19 @@ public class ViewPagerFragment extends Fragment {
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    return TaskFragment.newInstance((dofNum+position)%7, tabLabel);
-               case 1:
-                    return TaskFragment.newInstance((dofNum+position)%7, tabLabel);
+                    return TaskFragment.newInstance((dofNum+position)%7, getLabel(position));
+                case 1:
+                    return TaskFragment.newInstance((dofNum+position)%7, getLabel(position));
                 case 2:
-                    return TaskFragment.newInstance((dofNum+position)%7, tabLabel);
+                    return TaskFragment.newInstance((dofNum+position)%7, getLabel(position));
                 case 3:
-                    return TaskFragment.newInstance((dofNum+position)%7, tabLabel);
+                    return TaskFragment.newInstance((dofNum+position)%7, getLabel(position));
                 case 4:
-                    return TaskFragment.newInstance((dofNum+position)%7, tabLabel);
+                    return TaskFragment.newInstance((dofNum+position)%7, getLabel(position));
                 case 5:
-                    return TaskFragment.newInstance((dofNum+position)%7, tabLabel);
+                    return TaskFragment.newInstance((dofNum+position)%7, getLabel(position));
                 case 6:
-                    return TaskFragment.newInstance((dofNum+position)%7, tabLabel);
+                    return TaskFragment.newInstance((dofNum+position)%7, getLabel(position));
 
                 default:
                     return null;
@@ -158,30 +157,27 @@ public class ViewPagerFragment extends Fragment {
         // Returns the page title for the top indicator
         @Override
         public CharSequence getPageTitle(int position) {
-            switch((today.getDay()+position)%7){
+            return getLabel(position);
+        }
+
+        public String getLabel(int pos){
+            switch((dofNum+pos)%7){
                 case 0:
-                    tabLabel= "Sunday";
-                    break;
+                    return "Sunday";
                 case 1:
-                    tabLabel= "Monday";
-                    break;
+                    return "Monday";
                 case 2:
-                    tabLabel= "Tuesday";
-                    break;
+                    return "Tuesday";
                 case 3:
-                    tabLabel= "Wednesday";
-                    break;
+                    return "Wednesday";
                 case 4:
-                    tabLabel= "Thursday";
-                    break;
+                    return "Thursday";
                 case 5:
-                    tabLabel= "Friday";
-                    break;
+                    return "Friday";
                 case 6:
-                    tabLabel= "Saturday";
-                    break;
+                    return "Saturday";
             }
-            return tabLabel;
+            return "";
         }
     }
 }

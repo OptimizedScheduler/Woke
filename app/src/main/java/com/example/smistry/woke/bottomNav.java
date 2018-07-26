@@ -8,10 +8,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.example.smistry.woke.fragments.ViewPagerFragment;
 import com.example.smistry.woke.fragments.goals;
@@ -28,7 +26,6 @@ import org.greenrobot.eventbus.ThreadMode;
 import java.io.File;
 import java.sql.Time;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 
 public class bottomNav extends AppCompatActivity {
@@ -101,47 +98,24 @@ public class bottomNav extends AppCompatActivity {
         //Fill the Day Array with information
         //TODO to be replaced with the information from the Files
         days=new ArrayList<>();
+
         freeBlocks=new ArrayList<>();
-        tasks=new ArrayList<>();
-        Task task1 = new Task("Work in the app", "internship",30, new Date());
-        task1.setTime(new Time(10,00,00));
-        tasks.add(task1);
-        freeBlocks.add(new Free(tasks, new Time(10,00,00), new Time(14,00,00), 240));
+        freeBlocks.add(new Free(new Time(10,00,00), new Time(14,00,00), 240));
 
         freeBlocks2=new ArrayList<>();
-        tasks2=new ArrayList<>();
-        Task task2 = new Task("Another task", "work",30, new Date());
-        task2.setTime(new Time(10,00,00));
-        tasks2.add(task2);
-        freeBlocks2.add(new Free(tasks2, new Time(10,00,00), new Time(14,00,00), 240));
+        freeBlocks2.add(new Free(new Time(10,00,00), new Time(14,00,00), 240));
 
         freeBlocks3=new ArrayList<>();
-        tasks3=new ArrayList<>();
-        Task task3 = new Task("A3", "work",30, new Date());
-        task3.setTime(new Time(10,00,00));
-        tasks3.add(task3);
-        freeBlocks3.add(new Free(tasks3, new Time(10,00,00), new Time(14,00,00), 240));
+        freeBlocks3.add(new Free(new Time(10,00,00), new Time(14,00,00), 240));
 
         freeBlocks4=new ArrayList<>();
-        tasks4=new ArrayList<>();
-        Task task4 = new Task("A4", "work",30, new Date());
-        task4.setTime(new Time(10,00,00));
-        tasks4.add(task4);
-        freeBlocks4.add(new Free(tasks4, new Time(10,00,00), new Time(14,00,00), 240));
+        freeBlocks4.add(new Free(new Time(10,00,00), new Time(14,00,00), 240));
 
         freeBlocks5=new ArrayList<>();
-        tasks5=new ArrayList<>();
-        Task task5 = new Task("A5", "work",30, new Date());
-        task5.setTime(new Time(10,00,00));
-        tasks5.add(task5);
-        freeBlocks5.add(new Free(tasks5, new Time(10,00,00), new Time(14,00,00), 240));
+        freeBlocks5.add(new Free(new Time(10,00,00), new Time(14,00,00), 240));
 
         freeBlocks6=new ArrayList<>();
-        tasks6=new ArrayList<>();
-        Task task6 = new Task("A6", "work",30, new Date());
-        task6.setTime(new Time(10,00,00));
-        tasks6.add(task6);
-        freeBlocks6.add(new Free(tasks6, new Time(10,00,00), new Time(14,00,00), 240));
+        freeBlocks6.add(new Free(new Time(10,00,00), new Time(14,00,00), 240));
 
 
         days.add(new Day(freeBlocks,"Sunday", new Time(22,0,0),new Time(6,00,00)));
@@ -165,6 +139,10 @@ public class bottomNav extends AppCompatActivity {
     @Subscribe (sticky = true,threadMode = ThreadMode.BACKGROUND)
     public void onEvent(MessageEvent event){
         days= event.getmDaysList();
+        newTask nT = EventBus.getDefault().getStickyEvent(newTask.class);
+/*        if(event != null) {
+            EventBus.getDefault().removeStickyEvent(nT);
+        }*/
     }
 
     @Override

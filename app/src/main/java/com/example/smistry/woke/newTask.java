@@ -59,7 +59,7 @@ public class newTask extends AppCompatActivity implements  DatePickerDialog.OnDa
     boolean isDateSet;
     ArrayList<Day> myDays = new ArrayList<>();
 
-    Time start = new Time(10,30,0);
+    Time start = new Time(00,00,00);
     Time end = new Time(12,0,0);
     ArrayList<Task> tasks = new ArrayList<Task>();
     Free example = new Free(tasks, start, end, 90);
@@ -78,10 +78,9 @@ public class newTask extends AppCompatActivity implements  DatePickerDialog.OnDa
         ButterKnife.bind(this);
         myDays=Parcels.unwrap(getIntent().getParcelableExtra("dayArray"));
         final DateFormat date = new SimpleDateFormat("MM dd, yyyy");
-        freeBlocks.add(example);
+        //freeBlocks.add(example);
 
         notificationManager = NotificationManagerCompat.from(this);
-
 
         spCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
@@ -165,16 +164,18 @@ public class newTask extends AppCompatActivity implements  DatePickerDialog.OnDa
         Task task = new Task(etTitle.getText().toString(), item.toString(), duration, taskDate);
 
 
-        for(int i = 0; i < freeBlocks.size(); i++) {
+        for(int i = 0; i <freeBlocks.size(); i++) {
             if (freeBlocks.get(i).getFreeBlockDuration() >= task.getDuration()) { //looping through all free blocks
                // tasks.add(task);
+                if(freeBlocks.get(i).getTasks()==null)
+                    freeBlocks.get(i).setTasks(new ArrayList<Task>());
                 freeBlocks.get(i).getTasks().add(task); // adding updated task list to free block
                 task.setTime(freeBlocks.get(i).getStart()); //setting start time for task
                 taskDate.setHours(task.getTime().getHours());
                 taskDate.setMinutes(task.getTime().getMinutes());
 
-                start.setHours(start.getHours() + (Integer.parseInt(etHours.getText().toString())));
-                start.setMinutes(start.getMinutes() + (Integer.parseInt(etMinutes.getText().toString()))); //changing free block start time
+                start.setHours(task.getTime().getHours() + (Integer.parseInt(etHours.getText().toString())));
+                start.setMinutes(task.getTime().getMinutes() + (Integer.parseInt(etMinutes.getText().toString()))); //changing free block start time
                 freeBlocks.get(i).setStart(start);
                 Log.d("Testing", start.toString());
 
@@ -183,12 +184,22 @@ public class newTask extends AppCompatActivity implements  DatePickerDialog.OnDa
                 setAlarm.putExtra(AlarmClock.EXTRA_MINUTES, taskDate.getMinutes());
                 setAlarm.putExtra(AlarmClock.EXTRA_MESSAGE, etTitle.getText().toString());
                 setAlarm.putExtra(AlarmClock.EXTRA_SKIP_UI, true);
+                ArrayList<Integer> alarmDays = new ArrayList<>();
+                alarmDays.add(task.getDate().getDay()+1);
+                setAlarm.putExtra(AlarmClock.EXTRA_DAYS, alarmDays);
+
+                Intent data = new Intent();
+                //pass relevant data
+                data.putExtra("newFreeBlock", Parcels.wrap(myDays.get(iTaskDate).getFreeBlocks()));
+                data.putExtra("dayIndex",iTaskDate);
+                data.putExtra("freeIndex",i);
+                setResult(RESULT_OK, data); // set result code and bundle data for response
 
                 startActivity(setAlarm);
 
-                Log.d("Testing", "Set the alarm");
+               /* Log.d("Testing", "Set the alarm");
                 Log.d("Testing", task.getTime().toString());
-                Log.d("Testing", taskDate.toString());
+                Log.d("Testing", taskDate.toString());*/
 
                myDays.get(iTaskDate).setFreeBlocks(freeBlocks);
 
@@ -200,4 +211,5 @@ public class newTask extends AppCompatActivity implements  DatePickerDialog.OnDa
             }
         }
     }
+
 }

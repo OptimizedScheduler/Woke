@@ -51,15 +51,6 @@ public class TaskFragment extends Fragment {
         //Parcels.unwrap(this.getArguments().getParcelable("days"));
         freeBlocks = new ArrayList<>();
         dailyTasks = new ArrayList<>();
-/*        myTasks=new ArrayList<Task>();
-        Task task1 = new Task("Finish my final project", "work",15,new Date());
-        Task task2 = new Task("Go to gym", "exercise",30,new Date());
-        task1.setTime(new Time(10,30,00));
-        task2.setTime(new Time(11,00,00));
-        //String category, int duration, boolean automated, int priority, Date date, boolean day
-        myTasks.add(task1);
-        myTasks.add(task2);
-        adapter=new TaskRecyclerAdapter(myTasks);*/
 
         //Obtain the array needed depending of which day is specified
         if (getParentFragment() instanceof ViewPagerFragment ) {
@@ -74,14 +65,14 @@ public class TaskFragment extends Fragment {
             //TODO search for other free blocks
             for(int i=0; i<freeBlocks.size(); i++)
             try {
+                if(dailyTasks!= null){
                 dailyTasks = freeBlocks.get(i).getTasks();
                 adapter = new TaskRecyclerAdapter(dailyTasks);
                 adapter.notifyDataSetChanged();
+                }
             }
             catch (Exception e){
                 Log.d("EXC2",e.getMessage());
-                adapter = new TaskRecyclerAdapter(dailyTasks);
-                adapter.notifyDataSetChanged();
             }
         }
     }
