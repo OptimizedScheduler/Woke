@@ -38,4 +38,21 @@ public class Day {
     public String getDayOfWeek() {
         return dayOfWeek;
     }
+
+
+    public void addFree( Free toAdd){
+        freeBlocks.add(toAdd);
+    }
+
+    public void setSleep(Time sleep) {
+        this.sleep = sleep;
+    }
+
+    public void setWakeUp(Time wakeUp) {
+        this.wakeUp = wakeUp;
+    }
+
+    public void setDayOfWeek(String dayOfWeek) {
+        this.dayOfWeek = dayOfWeek;
+    }
 }

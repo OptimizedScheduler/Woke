@@ -23,8 +23,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.smistry.woke.models.Day;
 import com.example.smistry.woke.models.Free;
 import com.example.smistry.woke.models.Task;
+
+import org.parceler.Parcels;
 
 import java.sql.Time;
 import java.util.ArrayList;
@@ -33,7 +36,7 @@ import java.util.List;
 
 public class SettingsActivity extends AppCompatPreferenceActivity  {
 
-    public static ArrayList<ArrayList<Free>> enteredItems;
+    public static ArrayList<Day> enteredItems;
     // Fake testing data to ensure adding free blocks works
     static ArrayList<String>DOW;
 
@@ -88,27 +91,15 @@ public class SettingsActivity extends AppCompatPreferenceActivity  {
         if (DOW==null || enteredItems== null){
             DOW= new ArrayList<>();
             enteredItems= new ArrayList<>();
+            enteredItems.add(new Day());
+            enteredItems.add(new Day());
+            enteredItems.add(new Day());
+            enteredItems.add(new Day());
+            enteredItems.add(new Day());
+            enteredItems.add(new Day());
+            enteredItems.add(new Day());
 
-            DOW.add("Monday");
-            DOW.add("Tuesday");
-            DOW.add("Wednesday");
-            DOW.add("Thursday");
-            DOW.add("Friday");
-            DOW.add("Saturday");
-            DOW.add("Sunday");
 
-            ArrayList<Free> monItems= new ArrayList<>();
-            ArrayList<Free>tuesItems= new ArrayList<>();
-            monItems.add(new Free(new ArrayList<Task>(), new Time(4,5,6), new Time(4,45,6), 40));
-            monItems.add(new Free(new ArrayList<Task>(), new Time(5,5,6), new Time(5,45,6), 40));
-            tuesItems.add(new Free(new ArrayList<Task>(), new Time(4,5,6), new Time(4,45,6), 40));
-            enteredItems.add(0, new ArrayList<Free>());
-            enteredItems.add(1, monItems);
-            enteredItems.add(2,tuesItems );
-            enteredItems.add(3,new ArrayList<Free>());
-            enteredItems.add(4, new ArrayList<Free>());
-            enteredItems.add(5,new ArrayList<Free>());
-            enteredItems.add(6, new ArrayList<Free>());
 
         }
 
@@ -278,21 +269,21 @@ public class SettingsActivity extends AppCompatPreferenceActivity  {
                 @SuppressLint("ResourceType")
                 @Override
                 public void onClick(View view) {
-                    ((SettingsActivity)getContext()).openEditDay(Sunday.getText().toString());
+                    ((SettingsActivity)getContext()).openEditDay(0,Sunday.getText().toString());
                 }
             });
             Monday.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
 
-                    ((SettingsActivity)getContext()).openEditDay(Monday.getText().toString());
+                    ((SettingsActivity)getContext()).openEditDay(1,Monday.getText().toString());
                 }
             });
 
             Tuesday.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    ((SettingsActivity)getContext()).openEditDay(Tuesday.getText().toString());
+                    ((SettingsActivity)getContext()).openEditDay(2,Tuesday.getText().toString());
 
                 }
             });
@@ -300,13 +291,13 @@ public class SettingsActivity extends AppCompatPreferenceActivity  {
                 @Override
                 public void onClick(View view) {
 
-                    ((SettingsActivity)getContext()).openEditDay(Wednesday.getText().toString());
+                    ((SettingsActivity)getContext()).openEditDay(3,Wednesday.getText().toString());
                 }
             });
             Thursday.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    ((SettingsActivity)getContext()).openEditDay(Thursday.getText().toString());
+                    ((SettingsActivity)getContext()).openEditDay(4,Thursday.getText().toString());
 
                 }
             });
@@ -314,14 +305,14 @@ public class SettingsActivity extends AppCompatPreferenceActivity  {
                 @Override
                 public void onClick(View view) {
 
-                    ((SettingsActivity)getContext()).openEditDay(Friday.getText().toString());
+                    ((SettingsActivity)getContext()).openEditDay(5,Friday.getText().toString());
                 }
             });
 
             Saturday.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    ((SettingsActivity)getContext()).openEditDay(Saturday.getText().toString());
+                    ((SettingsActivity)getContext()).openEditDay(6,Saturday.getText().toString());
 
                 }
             });
@@ -490,9 +481,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity  {
 
 
 
-    public static void addFree(int day, Free toAdd){
-        enteredItems.get(day).add(toAdd);
-    }
+//    public static void addFree(int day, Free toAdd){
+//        enteredItems.get(day).add(toAdd);
+//    }
 
     @Override
     public void onHeaderClick(Header header, int position) {
@@ -523,6 +514,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity  {
 //
 //
            Intent i = new Intent(SettingsActivity.this, bottomNav.class);
+           i.putExtra("days", enteredItems);
 //
 //            Day Sunday= new Day(enteredItems.get(0), "Sunday",stringTOTime(SundayWake), stringTOTime(SundaySleep));
 //            Day Monday = new Day(enteredItems.get(1), "Monday",stringTOTime(MondayWake), stringTOTime(MondaySleep));
@@ -557,16 +549,23 @@ public class SettingsActivity extends AppCompatPreferenceActivity  {
 
 
     @RequiresApi(api = Build.VERSION_CODES.M)
-    public void openEditDay(String day){
-
+    public void openEditDay(int position, String day){
         Intent i= new Intent(SettingsActivity.this, editDayActivity.class);
+        i.putExtra("Position", position);
         i.putExtra("Day", day);
-        startActivity(i);
-
-
+        i.putExtra("Days", Parcels.wrap(enteredItems));
+        startActivityForResult(i, 0);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        //super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode==RESULT_OK && requestCode==0){
+            Day newDay= Parcels.unwrap(data.getParcelableExtra("newDay"));
+            int position=data.getIntExtra("position",0);
+            enteredItems.remove(position);
+            enteredItems.add(position, newDay);
+        }
 
-
-
+    }
 }
