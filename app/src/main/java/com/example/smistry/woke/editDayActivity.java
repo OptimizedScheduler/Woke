@@ -71,10 +71,10 @@ public class editDayActivity extends AppCompatActivity implements TimePickerDial
         newDay.setDayOfWeek(getIntent().getStringExtra("Day").toString());
         newDay.setFreeBlocks(new ArrayList<Free>());
 
-        //position=getIntent().getIntExtra("Position", 0);
 
         day= (TextView)findViewById(R.id.tvDayEditDay);
         day.setText(getIntent().getStringExtra("Day").toString());
+        enteredFreeTimes= (TextView)findViewById(R.id.tvEnteredFreeEditDay);
 
         btsleepTime = (Button)findViewById(R.id.btSleepTime);
         btwakeTime = (Button)findViewById(R.id.btWakeTime);
@@ -140,7 +140,9 @@ public class editDayActivity extends AppCompatActivity implements TimePickerDial
                 if (endTimeFreeSet && startTimeFreeSet){
                     endTimeFreeSet=false;
                     startTimeFreeSet=false;
-                    newDay.getFreeBlocks().add(new Free(new ArrayList<Task>(), startTimeFree, endTimeFree, 60));
+                    Free toAdd=new Free(new ArrayList<Task>(), startTimeFree, endTimeFree, 60);
+                    newDay.getFreeBlocks().add(toAdd);
+                    enteredFreeTimes.setText(enteredFreeTimes.getText().toString()+" "+toAdd.toString());
 
                 }
                 else  if (!startTimeFreeSet){
@@ -166,6 +168,7 @@ public class editDayActivity extends AppCompatActivity implements TimePickerDial
                 finish();}
             else if (!wakeSet){
                 Toast.makeText(getApplicationContext(), "Please set your Wake Time first", Toast.LENGTH_SHORT).show();
+
 
             }
             else {
