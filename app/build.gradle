@@ -39,4 +39,5 @@ dependencies {
 
     //noinspection GradleCompatible
     compile 'com.android.support:preference-v7:25.0.1'// preferences
+    implementation 'com.jjoe64:graphview:4.2.2'//graph lib
 }
