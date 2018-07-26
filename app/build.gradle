@@ -39,4 +39,5 @@ dependencies {
 
     implementation 'com.jjoe64:graphview:4.2.2'//graph lib
     compile 'org.greenrobot:eventbus:3.0.0' ///EventBus greenRobot
+    implementation 'com.jjoe64:graphview:4.2.2'//graph lib
 }
