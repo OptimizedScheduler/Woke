@@ -18,18 +18,25 @@ import com.example.smistry.woke.fragments.goals;
 import com.example.smistry.woke.fragments.stats;
 import com.example.smistry.woke.models.Day;
 import com.example.smistry.woke.models.Free;
+import com.example.smistry.woke.models.MessageEvent;
 import com.example.smistry.woke.models.Task;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.File;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 
 public class bottomNav extends AppCompatActivity {
 
     ArrayList<Task> tasks;
     ArrayList<Free> freeBlocks;
     ArrayList<Day> days;
+    HashMap<String, ArrayList<Free>> settings;
     final FragmentManager fragmentManager = getSupportFragmentManager();
 
     ArrayList<Task> tasks2;
@@ -74,6 +81,22 @@ public class bottomNav extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bottom_nav);
+        //Shows Setting Activity if this is the FIRST time the app is running
+        Boolean isFirstRun = getSharedPreferences("PREFERENCE", MODE_PRIVATE)
+                .getBoolean("isFirstRun", true);
+        if (isFirstRun) {
+            //show sign up activity
+            startActivity(new Intent(this, SettingsActivity.class));
+        }
+        getSharedPreferences("PREFERENCE", MODE_PRIVATE).edit()
+                .putBoolean("isFirstRun", false).commit();
+
+        EventBus.getDefault().register(this);
+
+       Intent data = getIntent();
+       settings = (HashMap<String, ArrayList<Free>>) data.getSerializableExtra("FreeMap");
+
+
 
         //Fill the Day Array with information
         //TODO to be replaced with the information from the Files
@@ -130,22 +153,24 @@ public class bottomNav extends AppCompatActivity {
         days.add(new Day(freeBlocks,"Saturday", new Time(22,0,0),new Time(6,00,00)));
 
 
-        //Shows Setting Activity if this is the FIRST time the app is running
-        Boolean isFirstRun = getSharedPreferences("PREFERENCE", MODE_PRIVATE)
-                .getBoolean("isFirstRun", true);
-        if (isFirstRun) {
-            //show sign up activity
-            startActivity(new Intent(this, SettingsActivity.class));
-        }
-        getSharedPreferences("PREFERENCE", MODE_PRIVATE).edit()
-                .putBoolean("isFirstRun", false).commit();
-
         //begins fragment transaction_ViewPagerFragment is shown as the default view
        FragmentTransaction ft = fragmentManager.beginTransaction();
         ft.add(R.id.flContainer, ViewPagerFragment.newInstance(days)).commit();
 
         BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+    }
+
+
+    @Subscribe (sticky = true,threadMode = ThreadMode.BACKGROUND)
+    public void onEvent(MessageEvent event){
+        days= event.getmDaysList();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
     }
 
     // returns the file in which the data is stored

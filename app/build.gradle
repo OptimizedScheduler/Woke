@@ -37,7 +37,5 @@ dependencies {
     annotationProcessor 'org.parceler:parceler:1.1.6'//parcel
     implementation 'com.android.support:preference-v7:28.0.0-alpha3'// seekBarPreference
 
-    //noinspection GradleCompatible
-    compile 'com.android.support:preference-v7:25.0.1'// preferences
-    implementation 'com.jjoe64:graphview:4.2.2'//graph lib
+    compile 'org.greenrobot:eventbus:3.0.0' ///EventBus greenRobot
 }
