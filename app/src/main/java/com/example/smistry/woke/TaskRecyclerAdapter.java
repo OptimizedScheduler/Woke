@@ -37,6 +37,7 @@ public class TaskRecyclerAdapter extends RecyclerView.Adapter<TaskRecyclerAdapte
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
+        if(mTasks!= null){
         Task task = mTasks.get(i);
         viewHolder.tvTaskName.setText(task.getTaskTitle());
         viewHolder.tvTime.setText(task.getTime().toString());
@@ -44,11 +45,19 @@ public class TaskRecyclerAdapter extends RecyclerView.Adapter<TaskRecyclerAdapte
             viewHolder.ivCategory.setBackgroundResource(R.color.colorPrimary);
         else
             viewHolder.ivCategory.setBackgroundResource(R.color.colorAccent);
+        }
+        else{
+            viewHolder.tvTaskName.setText("L");
+            viewHolder.tvTime.setText("L");
+        }
     }
 
     @Override
     public int getItemCount() {
+        if(mTasks!=null)
         return mTasks.size();
+
+        return 0;
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener  {

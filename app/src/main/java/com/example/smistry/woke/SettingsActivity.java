@@ -1,9 +1,9 @@
 package com.example.smistry.woke;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Build;
 import android.os.Bundle;
@@ -12,23 +12,16 @@ import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v14.preference.PreferenceFragment;
 import android.support.v14.preference.SwitchPreference;
-import android.support.v4.app.Fragment;
-import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
-import android.support.v7.preference.EditTextPreference;
 import android.support.v7.preference.ListPreference;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.smistry.woke.models.Day;
 import com.example.smistry.woke.models.Free;
@@ -38,14 +31,12 @@ import org.parceler.Parcels;
 
 import java.sql.Time;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
 
 
 public class SettingsActivity extends AppCompatPreferenceActivity  {
 
-    public static ArrayList<ArrayList<Free>> enteredItems;
+    public static ArrayList<Day> enteredItems;
     // Fake testing data to ensure adding free blocks works
     static ArrayList<String>DOW;
 
@@ -100,29 +91,18 @@ public class SettingsActivity extends AppCompatPreferenceActivity  {
         if (DOW==null || enteredItems== null){
             DOW= new ArrayList<>();
             enteredItems= new ArrayList<>();
-
-            DOW.add("Monday");
-            DOW.add("Tuesday");
-            DOW.add("Wednesday");
-            DOW.add("Thursday");
-            DOW.add("Friday");
-            DOW.add("Saturday");
-            DOW.add("Sunday");
-
-            ArrayList<Free> monItems= new ArrayList<>();
-            ArrayList<Free>tuesItems= new ArrayList<>();
-            monItems.add(new Free(new ArrayList<Task>(), new Time(4,5,6), new Time(4,45,6), 40));
-            monItems.add(new Free(new ArrayList<Task>(), new Time(5,5,6), new Time(5,45,6), 40));
-            tuesItems.add(new Free(new ArrayList<Task>(), new Time(4,5,6), new Time(4,45,6), 40));
-            enteredItems.add(0, new ArrayList<Free>());
-            enteredItems.add(1, monItems);
-            enteredItems.add(2,tuesItems );
-            enteredItems.add(3,new ArrayList<Free>());
-            enteredItems.add(4, new ArrayList<Free>());
-            enteredItems.add(5,new ArrayList<Free>());
-            enteredItems.add(6, new ArrayList<Free>());
+            enteredItems.add(new Day());
+            enteredItems.add(new Day());
+            enteredItems.add(new Day());
+            enteredItems.add(new Day());
+            enteredItems.add(new Day());
+            enteredItems.add(new Day());
+            enteredItems.add(new Day());
 
         }
+
+
+
 
 
     }
@@ -130,13 +110,16 @@ public class SettingsActivity extends AppCompatPreferenceActivity  {
     /**
      * Set up the {@link android.app.ActionBar}, if the API is available.
      */
-    private void setupActionBar() {
+    public void setupActionBar() {
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
             // Show the Up button in the action bar.
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
     }
+
+
+
 
     /**
      * {@inheritDoc}
@@ -241,13 +224,11 @@ public class SettingsActivity extends AppCompatPreferenceActivity  {
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public static class FixedTimePreferenceFragment extends PreferenceFragment {
 
-
-
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
            // addPreferencesFromResource(R.xml.pref_free_times);
-           // setHasOptionsMenu(true);
+            setHasOptionsMenu(true);
         }
 
         @Override
@@ -264,39 +245,37 @@ public class SettingsActivity extends AppCompatPreferenceActivity  {
         @RequiresApi(api = Build.VERSION_CODES.M)
         @Override
         public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-//            RecyclerView options= view.findViewById(R.id.rvFree);
+
             super.onViewCreated(view, savedInstanceState);
 
-//
-//            settingsFreeAdapter adapter= new settingsFreeAdapter( DOW, enteredItems);
-//            //RecyclerView setup (layout manager, use adapter)
-//            options.setLayoutManager(new LinearLayoutManager(getContext()));
-//            options.setAdapter(adapter);
 
-            TextView Sunday=view.findViewById(R.id.tvSunday);
-            TextView Monday= view.findViewById(R.id.tvMonday);
-            TextView Tuesday= view.findViewById(R.id.tvTuesday);
-            TextView Wednesday=view.findViewById(R.id.tvWednesday);
-            TextView Thursday= view.findViewById(R.id.tvThursday);
-            TextView Friday=view.findViewById(R.id.tvFriday);
-            TextView Saturday=view.findViewById(R.id.tvSaturday);
+            final TextView Sunday=view.findViewById(R.id.tvSunday);
+            final TextView Monday= view.findViewById(R.id.tvMonday);
+            final TextView Tuesday= view.findViewById(R.id.tvTuesday);
+            final TextView Wednesday=view.findViewById(R.id.tvWednesday);
+            final TextView Thursday= view.findViewById(R.id.tvThursday);
+            final TextView Friday=view.findViewById(R.id.tvFriday);
+            final TextView Saturday=view.findViewById(R.id.tvSaturday);
 
             Sunday.setOnClickListener(new View.OnClickListener() {
+                @SuppressLint("ResourceType")
                 @Override
                 public void onClick(View view) {
-
+                    ((SettingsActivity)getContext()).openEditDay(0,Sunday.getText().toString());
                 }
             });
             Monday.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
 
+                    ((SettingsActivity)getContext()).openEditDay(1,Monday.getText().toString());
                 }
             });
 
             Tuesday.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    ((SettingsActivity)getContext()).openEditDay(2,Tuesday.getText().toString());
 
                 }
             });
@@ -304,11 +283,13 @@ public class SettingsActivity extends AppCompatPreferenceActivity  {
                 @Override
                 public void onClick(View view) {
 
+                    ((SettingsActivity)getContext()).openEditDay(3,Wednesday.getText().toString());
                 }
             });
             Thursday.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    ((SettingsActivity)getContext()).openEditDay(4,Thursday.getText().toString());
 
                 }
             });
@@ -316,12 +297,14 @@ public class SettingsActivity extends AppCompatPreferenceActivity  {
                 @Override
                 public void onClick(View view) {
 
+                    ((SettingsActivity)getContext()).openEditDay(5,Friday.getText().toString());
                 }
             });
 
             Saturday.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    ((SettingsActivity)getContext()).openEditDay(6,Saturday.getText().toString());
 
                 }
             });
@@ -341,211 +324,12 @@ public class SettingsActivity extends AppCompatPreferenceActivity  {
     }
 
 
-//    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-//    public static class SleepPreferenceFragment extends PreferenceFragment {
-//        @RequiresApi(api = Build.VERSION_CODES.M)
-//        @Override
-//        public void onCreate(Bundle savedInstanceState) {
-//            super.onCreate(savedInstanceState);
-//            addPreferencesFromResource(R.xml.pref_sleep_time);
-//            setHasOptionsMenu(true);
-//
-////            SharedPreferences preferences=PreferenceManager.getDefaultSharedPreferences(getContext());
-////            SharedPreferences.Editor editor=preferences.edit();
-////
-////
-////            final EditTextPreference SundaySleep= (EditTextPreference) findPreference("sleepTimeSunday");
-////            final EditTextPreference MondaySleep= (EditTextPreference) findPreference("sleepTimeMonday");
-////            final EditTextPreference TuesdaySleep= (EditTextPreference) findPreference("sleepTimeTuesday");
-////            final EditTextPreference WednesdaySleep= (EditTextPreference) findPreference("sleepTimeWednesday");
-////            final EditTextPreference ThursdaySleep= (EditTextPreference) findPreference("sleepTimeThursday");
-////            final EditTextPreference FridaySleep= (EditTextPreference) findPreference("sleepTimeFriday");
-////            final EditTextPreference SaturdaySleep= (EditTextPreference) findPreference("sleepTimeSaturday");
-////
-////
-////            editor.putString("sleepTimeSunday",SundaySleep.getText());
-////            editor.putString("sleepTimeMonday", MondaySleep.getText());
-////            editor.putString("sleepTimeTuesday", TuesdaySleep.getText());
-////            editor.putString("sleepTimeWednesday", WednesdaySleep.getText());
-////            editor.putString("sleepTimeThursday", ThursdaySleep.getText());
-////            editor.putString("sleepTimeFriday", FridaySleep.getText());
-////            editor.putString("sleepTimeSaturday", SaturdaySleep.getText());
-////
-////            editor.commit();
-////
-////            SundaySleep.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-////                @Override
-////                public boolean onPreferenceChange(Preference preference, Object o) {
-////                    SharedPreferences preferences=PreferenceManager.getDefaultSharedPreferences(getContext());
-////                    SharedPreferences.Editor editor=preferences.edit();
-////                    editor.putString("sleepTimeSunday",SundaySleep.getText());
-////                    editor.commit();
-////                    return true;
-////                }
-////            });
-////            MondaySleep.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-////                @Override
-////                public boolean onPreferenceChange(Preference preference, Object o) {
-////                    SharedPreferences preferences=PreferenceManager.getDefaultSharedPreferences(getContext());
-////                    SharedPreferences.Editor editor=preferences.edit();
-////                    editor.putString("sleepTimeMonday",MondaySleep.getText());
-////                    editor.commit();
-////                    return true;
-////                }
-////            });
-////            TuesdaySleep.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-////                @Override
-////                public boolean onPreferenceChange(Preference preference, Object o) {
-////                    SharedPreferences preferences=PreferenceManager.getDefaultSharedPreferences(getContext());
-////                    SharedPreferences.Editor editor=preferences.edit();
-////                    editor.putString("sleepTimeTuesday",TuesdaySleep.getText());
-////                    editor.commit();
-////                    return false;
-////                }
-////            });
-////            WednesdaySleep.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-////                @Override
-////                public boolean onPreferenceChange(Preference preference, Object o) {
-////                    SharedPreferences preferences=PreferenceManager.getDefaultSharedPreferences(getContext());
-////                    SharedPreferences.Editor editor=preferences.edit();
-////                    editor.putString("sleepTimeWednesday",WednesdaySleep.getText());
-////                    editor.commit();
-////                    return false;
-////                }
-////            });
-////            ThursdaySleep.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-////                @Override
-////                public boolean onPreferenceChange(Preference preference, Object o) {
-////                    SharedPreferences preferences=PreferenceManager.getDefaultSharedPreferences(getContext());
-////                    SharedPreferences.Editor editor=preferences.edit();
-////                    editor.putString("sleepTimeThursday",ThursdaySleep.getText());
-////                    editor.commit();
-////                    return false;
-////                }
-////            });
-////            FridaySleep.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-////                @Override
-////                public boolean onPreferenceChange(Preference preference, Object o) {
-////                    SharedPreferences preferences=PreferenceManager.getDefaultSharedPreferences(getContext());
-////                    SharedPreferences.Editor editor=preferences.edit();
-////                    editor.putString("sleepTimeFriday",FridaySleep.getText());
-////                    editor.commit();
-////                    return false;
-////                }
-////            });
-////            SaturdaySleep.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-////                @Override
-////                public boolean onPreferenceChange(Preference preference, Object o) {
-////                    SharedPreferences preferences=PreferenceManager.getDefaultSharedPreferences(getContext());
-////                    SharedPreferences.Editor editor=preferences.edit();
-////                    editor.putString("sleepTimeSaturday",SaturdaySleep.getText());
-////                    editor.commit();
-////                    return false;
-////                }
-////            });
-////
-////
-////            final EditTextPreference SundayWake= (EditTextPreference) findPreference("wakeTimeSunday");
-////            final EditTextPreference MondayWake= (EditTextPreference) findPreference("wakeTimeMonday");
-////            final EditTextPreference TuesdayWake= (EditTextPreference) findPreference("wakeTimeTuesday");
-////            final EditTextPreference WednesdayWake= (EditTextPreference) findPreference("wakeTimeWednesday");
-////            final EditTextPreference ThursdayWake= (EditTextPreference) findPreference("wakeTimeThursday");
-////            final EditTextPreference FridayWake= (EditTextPreference) findPreference("wakeTimeFriday");
-////            final EditTextPreference SaturdayWake= (EditTextPreference) findPreference("wakeTimeSaturday");
-////
-////
-////            editor.putString("wakeTimeSunday",SundayWake.getText());
-////            editor.putString("wakeTimeMonday",MondayWake.getText());
-////            editor.putString("wakeTimeTuesday",TuesdayWake.getText());
-////            editor.putString("wakeTimeWednesday",WednesdayWake.getText());
-////            editor.putString("wakeTimeThursday",ThursdayWake.getText());
-////            editor.putString("wakeTimeFriday",FridayWake.getText());
-////            editor.putString("wakeTimeSaturday",SaturdayWake.getText());
-//
-//
-//
-//
-//
-//
-//        }
-//
-//        @Override
-//        public void onCreatePreferences(Bundle bundle, String s) {
-//
-//        }
-//
-//
-//
-//        @Override
-//        public boolean onOptionsItemSelected(MenuItem item) {
-//            int id = item.getItemId();
-//            if (id == android.R.id.home) {
-//                startActivity(new Intent(getActivity(), SettingsActivity.class));
-//                return true;
-//            }
-//            return super.onOptionsItemSelected(item);
-//        }
-//    }
-
-
-
-
-    public static void addFree(int day, Free toAdd){
-        enteredItems.get(day).add(toAdd);
-    }
-
     @Override
     public void onHeaderClick(Header header, int position) {
         super.onHeaderClick(header, position);
         if (header.id == R.id.open_home) {
 
 
-//            SharedPreferences preferences= PreferenceManager.getDefaultSharedPreferences(this);
-//
-//            String SundaySleep=preferences.getString("sleepTimeSunday", "");
-//            String MondaySleep=preferences.getString("sleepTimeMonday", "");
-//            String TuesdaySleep=preferences.getString("sleepTimeTuesday", "");
-//            String WednesdaySleep=preferences.getString("sleepTimeWednesday", "");
-//            String ThursdaySleep=preferences.getString("sleepTimeThursday", "");
-//            String FridaySleep=preferences.getString("sleepTimeFriday", "");
-//            String SaturdaySleep=preferences.getString("sleepTimeSaturday", "");
-//
-//            String SundayWake=preferences.getString("wakeTimeSunday","");
-//            String MondayWake=preferences.getString("wakeTimeMonday","");
-//            String TuesdayWake=preferences.getString("wakeTimeTuesday","");
-//            String WednesdayWake=preferences.getString("wakeTimeWednesday","");
-//            String ThursdayWake=preferences.getString("wakeTimeThursday","");
-//            String FridayWake=preferences.getString("wakeTimeFriday","");
-//            String SaturdayWake=preferences.getString("wakeTimeSaturday","");
-//
-//
-//
-//
-//
-           Intent i = new Intent(SettingsActivity.this, bottomNav.class);
-//
-//            Day Sunday= new Day(enteredItems.get(0), "Sunday",stringTOTime(SundayWake), stringTOTime(SundaySleep));
-//            Day Monday = new Day(enteredItems.get(1), "Monday",stringTOTime(MondayWake), stringTOTime(MondaySleep));
-//            Day Tuesday= new Day(enteredItems.get(2), "Tuesday",stringTOTime(TuesdayWake), stringTOTime(TuesdaySleep));
-//            Day Wednesday= new Day(enteredItems.get(3), "Wednesday",stringTOTime(WednesdayWake), stringTOTime(WednesdaySleep));
-//            Day Thursday= new Day(enteredItems.get(4), "Thursday",stringTOTime(ThursdayWake), stringTOTime(ThursdaySleep));
-//            Day Friday= new Day(enteredItems.get(5), "Friday",stringTOTime(FridayWake), stringTOTime(FridaySleep));
-//            Day Saturday= new Day(enteredItems.get(6), "Saturday",stringTOTime(SaturdayWake), stringTOTime(SaturdaySleep));
-//
-//
-//
-//
-//            i.putExtra("Sunday", Parcels.wrap(Sunday));
-//            i.putExtra("Monday", Parcels.wrap(Monday));
-//            i.putExtra("Tuesday", Parcels.wrap(Tuesday));
-//            i.putExtra("Wednesday", Parcels.wrap(Wednesday));
-//            i.putExtra("Thursday", Parcels.wrap(Thursday));
-//            i.putExtra("Friday", Parcels.wrap(Friday));
-//            i.putExtra("Saturday", Parcels.wrap(Saturday));
-
-
-
-            startActivity(i);
         }
     }
 
@@ -553,6 +337,30 @@ public class SettingsActivity extends AppCompatPreferenceActivity  {
     public Time stringTOTime(String time){
         String[] split=time.split(":");
         return new Time(Integer.valueOf(split[0]),Integer.valueOf(split[1]),0);
+    }
+
+
+    @RequiresApi(api = Build.VERSION_CODES.M)
+    public void openEditDay(int position, String day){
+        Intent i= new Intent(SettingsActivity.this, editDayActivity.class);
+        i.putExtra("Position", position);
+        i.putExtra("Day", day);
+        i.putExtra("Days", Parcels.wrap(enteredItems));
+        startActivityForResult(i, 0);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        //super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode==RESULT_OK && requestCode==0){
+            Day newDay= Parcels.unwrap(data.getParcelableExtra("newDay"));
+            int position=data.getIntExtra("Position",0);
+            enteredItems.remove(position);
+            enteredItems.add(position, newDay);
+        }
+
+
+
     }
 
 
