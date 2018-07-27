@@ -351,6 +351,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity  {
             int position=data.getIntExtra("Position",0);
             enteredItems.remove(position);
             enteredItems.add(position, newDay);
+
             MessageEvent event = new MessageEvent(enteredItems);
             EventBus.getDefault().postSticky(event);
 
