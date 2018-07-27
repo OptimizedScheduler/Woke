@@ -31,6 +31,10 @@
             android:name=".SettingsActivity"
             android:label="@string/title_activity_settings" />
         <activity android:name=".newTask" />
+        <activity
+            android:name=".editDayActivity"
+            android:label="@string/title_activity_settings" />
+
         <activity android:name=".Test"></activity>
     </application>
 

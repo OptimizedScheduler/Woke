@@ -25,8 +25,10 @@ import android.widget.TextView;
 
 import com.example.smistry.woke.models.Day;
 import com.example.smistry.woke.models.Free;
+import com.example.smistry.woke.models.MessageEvent;
 import com.example.smistry.woke.models.Task;
 
+import org.greenrobot.eventbus.EventBus;
 import org.parceler.Parcels;
 
 import java.sql.Time;
@@ -39,7 +41,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity  {
     public static ArrayList<Day> enteredItems;
     // Fake testing data to ensure adding free blocks works
     static ArrayList<String>DOW;
-
 
 
     private static Preference.OnPreferenceChangeListener sBindPreferenceSummaryToValueListener = new Preference.OnPreferenceChangeListener() {
@@ -91,16 +92,17 @@ public class SettingsActivity extends AppCompatPreferenceActivity  {
         if (DOW==null || enteredItems== null){
             DOW= new ArrayList<>();
             enteredItems= new ArrayList<>();
-            enteredItems.add(new Day());
-            enteredItems.add(new Day());
-            enteredItems.add(new Day());
-            enteredItems.add(new Day());
-            enteredItems.add(new Day());
-            enteredItems.add(new Day());
-            enteredItems.add(new Day());
+            enteredItems.add(new Day(new ArrayList<Free>(),"Sunday", new Time(22,0,0),new Time(6,00,00)));
+            enteredItems.add(new Day(new ArrayList<Free>(),"Monday", new Time(22,0,0),new Time(6,00,00)));
+            enteredItems.add(new Day(new ArrayList<Free>(),"Tuesday", new Time(22,0,0),new Time(6,00,00)));
+            enteredItems.add(new Day(new ArrayList<Free>(),"Wednesday", new Time(22,0,0),new Time(6,00,00)));
+            enteredItems.add(new Day(new ArrayList<Free>(),"Thursday", new Time(22,0,0),new Time(6,00,00)));
+            enteredItems.add(new Day(new ArrayList<Free>(),"Friday", new Time(22,0,0),new Time(6,00,00)));
+            enteredItems.add(new Day(new ArrayList<Free>(),"Saturday", new Time(22,0,0),new Time(6,00,00)));
 
         }
-
+        MessageEvent event = new MessageEvent(enteredItems);
+        EventBus.getDefault().postSticky(event);
 
 
 
@@ -324,14 +326,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity  {
     }
 
 
-    @Override
-    public void onHeaderClick(Header header, int position) {
-        super.onHeaderClick(header, position);
-        if (header.id == R.id.open_home) {
-
-
-        }
-    }
 
 
     public Time stringTOTime(String time){
@@ -357,9 +351,11 @@ public class SettingsActivity extends AppCompatPreferenceActivity  {
             int position=data.getIntExtra("Position",0);
             enteredItems.remove(position);
             enteredItems.add(position, newDay);
+            MessageEvent event = new MessageEvent(enteredItems);
+            EventBus.getDefault().postSticky(event);
+
+         //   EventBus.getDefault().postSticky(new MessageEvent(enteredItems));
         }
-
-
 
     }
 

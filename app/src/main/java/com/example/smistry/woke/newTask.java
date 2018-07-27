@@ -139,8 +139,22 @@ public class newTask extends AppCompatActivity implements  DatePickerDialog.OnDa
                     if(TextUtils.isEmpty(strMinutes)) {
                         etMinutes.setText("0");
                     }
+                    duration = (Integer.parseInt(etHours.getText().toString())*60) + Integer.parseInt(etMinutes.getText().toString());
+                    Task task = new Task(etTitle.getText().toString(), item.toString(), duration, taskDate);
 
-                    setTaskWithinFreeBlock(myDays.get(iTaskDate).getFreeBlocks()); //getting free blocks for task Date
+                    Boolean set=false;
+
+                    while (!set && iTaskDate< myDays.size()){
+                        set=setTaskWithinFreeBlock(myDays.get(iTaskDate).getFreeBlocks(),task);
+                        iTaskDate+=1;
+                    }
+                    if (!set){
+                        Toast.makeText(newTask.this, "No space in the week for the task", Toast.LENGTH_SHORT).show();
+                        MessageEvent event = new MessageEvent(myDays);
+                        EventBus.getDefault().postSticky(event);
+                    }
+
+
                     finish();
                 }
 
@@ -159,10 +173,7 @@ public class newTask extends AppCompatActivity implements  DatePickerDialog.OnDa
         iTaskDate=taskDate.getDay();
     }
 
-    public void setTaskWithinFreeBlock (ArrayList<Free> freeBlocks){
-        duration = (Integer.parseInt(etHours.getText().toString())*60) + Integer.parseInt(etMinutes.getText().toString());
-        Task task = new Task(etTitle.getText().toString(), item.toString(), duration, taskDate);
-
+    public boolean setTaskWithinFreeBlock (ArrayList<Free> freeBlocks, Task task){
 
         for(int i = 0; i <freeBlocks.size(); i++) {
             if (freeBlocks.get(i).getFreeBlockDuration() >= task.getDuration()) { //looping through all free blocks
@@ -201,15 +212,19 @@ public class newTask extends AppCompatActivity implements  DatePickerDialog.OnDa
                 Log.d("Testing", task.getTime().toString());
                 Log.d("Testing", taskDate.toString());*/
 
-               myDays.get(iTaskDate).setFreeBlocks(freeBlocks);
+                myDays.get(iTaskDate).setFreeBlocks(freeBlocks);
 
                 MessageEvent event = new MessageEvent(myDays);
                 EventBus.getDefault().postSticky(event);
+                return true;
             }
-            else{
-                Toast.makeText(newTask.this, "Please enter a different duration", Toast.LENGTH_SHORT).show();
-            }
-        }
+//            else{
+//            Toast.makeText(newTask.this, "Please enter a different duration", Toast.LENGTH_SHORT).show();
+//        }
     }
+        return false;
+    }
+
+
 
 }

@@ -55,4 +55,9 @@ public class Day {
     public void setDayOfWeek(String dayOfWeek) {
         this.dayOfWeek = dayOfWeek;
     }
+
+    @Override
+    public String toString() {
+        return (dayOfWeek+" "+wakeUp.toString()+" "+sleep.toString()+" "+freeBlocks.toString());
+    }
 }

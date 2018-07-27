@@ -21,22 +21,7 @@ public class alarmsAndScheduling extends AppCompatActivity {
     ArrayList<Task> morningTasks;
     Free morningBlock= new Free(morningTasks, new Time(11,0,0), new Time(12,0,0), 60);
 
-    public void morningScheduler(Free morning, Task task){
-        if (morning.getFreeBlockDuration()>=task.getDuration()) {
-            task.setTime(morning.getEnd());
-            morning.getTasks().add(task);
-            morning.setFreeBlockDuration(morning.getFreeBlockDuration() - task.getDuration());
-            morning.getStart().setMinutes(morning.getStart().getMinutes() + task.getDuration());
 
-        }
-        else{
-
-            morning.getStart().setMinutes(morning.getStart().getMinutes()-task.getDuration());
-            morning.getTasks().add(0,task);
-
-            setAlarm(morning.getStart(), task.getDate());
-        }
-    }
 
     public void deletion(Free free, int position){
         Task task= free.getTasks().get(position);

@@ -67,6 +67,8 @@ public class editDayActivity extends AppCompatActivity implements TimePickerDial
         startTimeFreeSet=false;
         endTimeFreeSet=false;
 
+        position= getIntent().getIntExtra("Position",0);
+
         newDay= new Day();
         newDay.setDayOfWeek(getIntent().getStringExtra("Day").toString());
         newDay.setFreeBlocks(new ArrayList<Free>());
