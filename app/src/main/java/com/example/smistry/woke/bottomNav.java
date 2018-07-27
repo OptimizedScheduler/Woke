@@ -3,11 +3,13 @@ package com.example.smistry.woke;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -22,6 +24,7 @@ import com.example.smistry.woke.models.Task;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import org.parceler.Parcels;
 
 import java.io.File;
 import java.sql.Time;
@@ -83,7 +86,7 @@ public class bottomNav extends AppCompatActivity {
                 .getBoolean("isFirstRun", true);
         if (isFirstRun) {
             //show sign up activity
-            startActivity(new Intent(this, SettingsActivity.class));
+            startActivityForResult(new Intent(this, SettingsActivity.class), 0);
         }
         getSharedPreferences("PREFERENCE", MODE_PRIVATE).edit()
                 .putBoolean("isFirstRun", false).commit();
@@ -214,7 +217,8 @@ public class bottomNav extends AppCompatActivity {
     public void openSettings(MenuItem item)
  {
      Intent intent = new Intent(bottomNav.this,SettingsActivity.class);
-     startActivity(intent);
+     startActivityForResult(intent,2);
  }
+
 
 }
