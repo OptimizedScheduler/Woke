@@ -8,10 +8,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
 import com.example.smistry.woke.fragments.ViewPagerFragment;
 import com.example.smistry.woke.fragments.goals;
@@ -96,8 +94,6 @@ public class bottomNav extends AppCompatActivity {
        Intent data = getIntent();
        settings = (HashMap<String, ArrayList<Free>>) data.getSerializableExtra("FreeMap");
 
-
-
         //Fill the Day Array with information
         //TODO to be replaced with the information from the Files
         days=new ArrayList<>();
@@ -159,6 +155,7 @@ public class bottomNav extends AppCompatActivity {
 
         BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
     }
 
 

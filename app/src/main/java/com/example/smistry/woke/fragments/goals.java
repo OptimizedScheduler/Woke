@@ -13,6 +13,7 @@ import com.example.smistry.woke.R;
 
 public class goals extends Fragment {
 
+
     public goals() {
         // Required empty public constructor
     }
@@ -27,5 +28,7 @@ public class goals extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
     }
+
 }
