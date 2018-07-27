@@ -43,9 +43,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity  {
     static ArrayList<String>DOW;
 
 
-
-
-
     private static Preference.OnPreferenceChangeListener sBindPreferenceSummaryToValueListener = new Preference.OnPreferenceChangeListener() {
         @Override
         public boolean onPreferenceChange(Preference preference, Object value) {
@@ -102,8 +99,10 @@ public class SettingsActivity extends AppCompatPreferenceActivity  {
             enteredItems.add(new Day(new ArrayList<Free>(),"Thursday", new Time(22,0,0),new Time(6,00,00)));
             enteredItems.add(new Day(new ArrayList<Free>(),"Friday", new Time(22,0,0),new Time(6,00,00)));
             enteredItems.add(new Day(new ArrayList<Free>(),"Saturday", new Time(22,0,0),new Time(6,00,00)));
-        }
 
+        }
+        MessageEvent event = new MessageEvent(enteredItems);
+        EventBus.getDefault().postSticky(event);
 
 
 

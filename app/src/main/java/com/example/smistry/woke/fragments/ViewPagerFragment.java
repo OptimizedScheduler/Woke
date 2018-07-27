@@ -64,6 +64,9 @@ public class ViewPagerFragment extends Fragment {
         return daysA.get(pos).getFreeBlocks();
     }
 
+    public void setDaysA(ArrayList<Day> daysA) {
+        this.daysA = daysA;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

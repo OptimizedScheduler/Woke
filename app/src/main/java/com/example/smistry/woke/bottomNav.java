@@ -56,6 +56,8 @@ public class bottomNav extends AppCompatActivity {
     final Fragment fragment2= new goals();
     final Fragment fragment3= new stats();
 
+    ViewPagerFragment viewPager;
+
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -103,38 +105,42 @@ public class bottomNav extends AppCompatActivity {
         //Fill the Day Array with information
         //TODO to be replaced with the information from the Files
         days=new ArrayList<>();
+//
+//        freeBlocks=new ArrayList<>();
+//     //   freeBlocks.add(new Free(new Time(10,00,00), new Time(14,00,00), 240));
+//
+//        freeBlocks2=new ArrayList<>();
+//        freeBlocks2.add(new Free(new Time(10,00,00), new Time(14,00,00), 240));
+//
+//        freeBlocks3=new ArrayList<>();
+//        freeBlocks3.add(new Free(new Time(10,00,00), new Time(14,00,00), 240));
+//
+//        freeBlocks4=new ArrayList<>();
+//        freeBlocks4.add(new Free(new Time(10,00,00), new Time(14,00,00), 240));
+//
+//        freeBlocks5=new ArrayList<>();
+//        freeBlocks5.add(new Free(new Time(10,00,00), new Time(14,00,00), 240));
+//
+//        freeBlocks6=new ArrayList<>();
+//      //  freeBlocks6.add(new Free(new Time(10,00,00), new Time(14,00,00), 240));
+//
+//
+//        days.add(new Day(freeBlocks,"Sunday", new Time(22,0,0),new Time(6,00,00)));
+//        days.add(new Day(freeBlocks2,"Monday", new Time(22,0,0),new Time(6,00,00)));
+//        days.add(new Day(freeBlocks3,"Tuesday", new Time(22,0,0),new Time(6,00,00)));
+//        days.add(new Day(freeBlocks4,"Wednesday", new Time(22,0,0),new Time(6,00,00)));
+//        days.add(new Day(freeBlocks5,"Thursday", new Time(22,0,0),new Time(6,00,00)));
+//        days.add(new Day(freeBlocks6,"Friday", new Time(22,0,0),new Time(6,00,00)));
+//        days.add(new Day(freeBlocks,"Saturday", new Time(22,0,0),new Time(6,00,00)));
 
-        freeBlocks=new ArrayList<>();
-        freeBlocks.add(new Free(new Time(10,00,00), new Time(14,00,00), 240));
-
-        freeBlocks2=new ArrayList<>();
-        freeBlocks2.add(new Free(new Time(10,00,00), new Time(14,00,00), 240));
-
-        freeBlocks3=new ArrayList<>();
-        freeBlocks3.add(new Free(new Time(10,00,00), new Time(14,00,00), 240));
-
-        freeBlocks4=new ArrayList<>();
-        freeBlocks4.add(new Free(new Time(10,00,00), new Time(14,00,00), 240));
-
-        freeBlocks5=new ArrayList<>();
-        freeBlocks5.add(new Free(new Time(10,00,00), new Time(14,00,00), 240));
-
-        freeBlocks6=new ArrayList<>();
-        freeBlocks6.add(new Free(new Time(10,00,00), new Time(14,00,00), 240));
 
 
-        days.add(new Day(freeBlocks,"Sunday", new Time(22,0,0),new Time(6,00,00)));
-        days.add(new Day(freeBlocks2,"Monday", new Time(22,0,0),new Time(6,00,00)));
-        days.add(new Day(freeBlocks3,"Tuesday", new Time(22,0,0),new Time(6,00,00)));
-        days.add(new Day(freeBlocks4,"Wednesday", new Time(22,0,0),new Time(6,00,00)));
-        days.add(new Day(freeBlocks5,"Thursday", new Time(22,0,0),new Time(6,00,00)));
-        days.add(new Day(freeBlocks6,"Friday", new Time(22,0,0),new Time(6,00,00)));
-        days.add(new Day(freeBlocks,"Saturday", new Time(22,0,0),new Time(6,00,00)));
-
+       viewPager= ViewPagerFragment.newInstance(days);
+        Log.d("EventBus", days.toString());
 
         //begins fragment transaction_ViewPagerFragment is shown as the default view
        FragmentTransaction ft = fragmentManager.beginTransaction();
-        ft.add(R.id.flContainer, ViewPagerFragment.newInstance(days)).commit();
+        ft.add(R.id.flContainer, viewPager).commit();
 
         BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
@@ -145,8 +151,9 @@ public class bottomNav extends AppCompatActivity {
     @Subscribe (sticky = true,threadMode = ThreadMode.BACKGROUND)
     public void onEvent(MessageEvent event){
         days= event.getmDaysList();
+        viewPager.setDaysA(days);
         newTask nT = EventBus.getDefault().getStickyEvent(newTask.class);
-       Log.d("EventBus", days.toString());
+        Log.d("EventBus", days.toString());
 
 /*        if(event != null) {
             EventBus.getDefault().removeStickyEvent(nT);
