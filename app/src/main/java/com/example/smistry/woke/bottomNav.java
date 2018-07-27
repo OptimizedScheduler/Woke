@@ -9,9 +9,11 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.example.smistry.woke.fragments.ViewPagerFragment;
 import com.example.smistry.woke.fragments.goals;
@@ -91,7 +93,7 @@ public class bottomNav extends AppCompatActivity {
         getSharedPreferences("PREFERENCE", MODE_PRIVATE).edit()
                 .putBoolean("isFirstRun", false).commit();
 
-        EventBus.getDefault().register(this);
+     //   EventBus.getDefault().register(this);
 
        Intent data = getIntent();
        settings = (HashMap<String, ArrayList<Free>>) data.getSerializableExtra("FreeMap");
@@ -136,6 +138,7 @@ public class bottomNav extends AppCompatActivity {
 
         BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
     }
 
 
@@ -143,6 +146,8 @@ public class bottomNav extends AppCompatActivity {
     public void onEvent(MessageEvent event){
         days= event.getmDaysList();
         newTask nT = EventBus.getDefault().getStickyEvent(newTask.class);
+       Log.d("EventBus", days.toString());
+
 /*        if(event != null) {
             EventBus.getDefault().removeStickyEvent(nT);
         }*/
@@ -219,6 +224,16 @@ public class bottomNav extends AppCompatActivity {
      Intent intent = new Intent(bottomNav.this,SettingsActivity.class);
      startActivityForResult(intent,2);
  }
+
+
+
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
 
 
 }
