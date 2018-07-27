@@ -357,8 +357,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity  {
          //   EventBus.getDefault().postSticky(new MessageEvent(enteredItems));
         }
 
-
-
     }
 
 
