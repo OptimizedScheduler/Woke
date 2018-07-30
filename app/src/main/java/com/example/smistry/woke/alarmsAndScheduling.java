@@ -25,32 +25,31 @@ import java.util.Locale;
 public class alarmsAndScheduling extends AppCompatActivity {
 
 
-    public void setAlarm(Time time, Date date){
+    public void setAlarm(Time time, Date date) {
 
 
     }
 
 
     ArrayList<Task> morningTasks;
-    Free morningBlock= new Free(morningTasks, new Time(11,0,0), new Time(12,0,0), 60);
+    Free morningBlock = new Free(morningTasks, new Time(11, 0, 0), new Time(12, 0, 0), 60);
 
 
-
-    public void deletion(Free free, int position){
-        Task task= free.getTasks().get(position);
-        int duration=task.getDuration();
-        free.setFreeBlockDuration(free.getFreeBlockDuration()+duration);
+    public void deletion(Free free, int position) {
+        Task task = free.getTasks().get(position);
+        int duration = task.getDuration();
+        free.setFreeBlockDuration(free.getFreeBlockDuration() + duration);
         free.getTasks().remove(position);
 
-        for(int i=position; i<free.getTasks().size(); i++){
-            Task toEdit=free.getTasks().get(i);
-            toEdit.getTime().setMinutes(toEdit.getTime().getMinutes()-duration);
+        for (int i = position; i < free.getTasks().size(); i++) {
+            Task toEdit = free.getTasks().get(i);
+            toEdit.getTime().setMinutes(toEdit.getTime().getMinutes() - duration);
         }
 
     }
 
     // write the items to the filesystem
-    private void writeItems () {
+    private void writeItems() {
         try {
             // save the item list as a line-delimited text file
             FileUtils.writeLines(getDataFile(), days);
@@ -61,13 +60,8 @@ public class alarmsAndScheduling extends AppCompatActivity {
     }
 
 
-    String testData="Sunday_17:02:00_17:02:00_[23:02:00;21:02:00;60;, 21:02:00;20:02:00;60;]";
-    String testData2="Monday_22:00:00_06:00:00_[]";
-    String testData3= "Wednesday_21:00:00_06:00:00_[]";
-    ArrayList<String> testArray=new ArrayList<>();
+    ArrayList<Day>days= new ArrayList<>();
 
-
-    ArrayList<Day>days;
     // returns the file in which the data is stored
     public File getDataFile() {
         return new File(this.getFilesDir(), "days.txt");
@@ -77,16 +71,13 @@ public class alarmsAndScheduling extends AppCompatActivity {
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void readItems() {
         try {
-//            ArrayList<String> dayStrings;
-//            // create the array using the content in the file
-//            dayStrings = new ArrayList<String>(FileUtils.readLines(getDataFile(), Charset.defaultCharset()));
+            ArrayList<String> dayStrings;
+//           // create the array using the content in the file
+            dayStrings = new ArrayList<String>(FileUtils.readLines(getDataFile(), Charset.defaultCharset()));
             days.clear();
 
-            testArray.add(testData);
-            testArray.add(testData2);
-            testArray.add(testData3);
 
-            for (String daysString : testArray) {
+            for (String daysString : dayStrings) {
                 Log.d("Day", daysString);
 
                 String[] params = daysString.split("_");
@@ -103,45 +94,49 @@ public class alarmsAndScheduling extends AppCompatActivity {
                 String [] freeBlocksSplit=freeBlocks.split(",");
                 ArrayList<Free>frees=new ArrayList<>();
 
-                for (String free: freeBlocksSplit){
-                    String[] splitFree=free.split(";");
-                    String[] freeStartSplit=splitFree[0].split(":");
-                    String[] freeEndSplit=splitFree[1].split(":");
-                    Time freeStart= new Time(Integer.valueOf(freeStartSplit[0]), Integer.valueOf(freeStartSplit[1]), 0);
-                    Time freeEnd=new Time(Integer.valueOf(freeEndSplit[0]), Integer.valueOf(freeEndSplit[1]), 0);
-                    int duration=Integer.valueOf(splitFree[2]);
-                    ArrayList<Task> tasks= new ArrayList<>();
+                if (!freeBlocks.equals("")) {
+                    for (String free : freeBlocksSplit) {
+                        String[] splitFree = free.split(";");
+                        String[] freeStartSplit = splitFree[0].split(":");
+                        String[] freeEndSplit = splitFree[1].split(":");
+                        Time freeStart = new Time(Integer.valueOf(freeStartSplit[0].replaceAll("\\s+", "")), Integer.valueOf(freeStartSplit[1].replaceAll("\\s+", "")), 0);
+                        Time freeEnd = new Time(Integer.valueOf(freeEndSplit[0].replaceAll("\\s+", "")), Integer.valueOf(freeEndSplit[1].replaceAll("\\s+", "")), 0);
+                        int duration = Integer.valueOf(splitFree[2]);
+                        ArrayList<Task> tasks = new ArrayList<>();
 
-                    String[] tasksStrings=splitFree[3].split("/");
-                    for (String taskString: tasksStrings){
+                        if (splitFree.length == 4) {
 
-                        String[] taskStringSplit=taskString.split("-");
-                        String[] tasktimeSplit=taskStringSplit[4].split(":");
+                            String[] tasksStrings = splitFree[3].split("/");
+                            for (String taskString : tasksStrings) {
 
-                        String title=taskStringSplit[0];
-                        String category = taskStringSplit[1];
-                        int durationTask = Integer.parseInt(taskStringSplit[2]);
-                        DateFormat format = new SimpleDateFormat("E MMM dd HH:mm:ss ZZZ yyyy", Locale.ENGLISH);
-                        Date date = format.parse(taskStringSplit[3]);
-                        Time time= new Time(Integer.valueOf(tasktimeSplit[0]), Integer.valueOf(tasktimeSplit[1]), 0);
-                        Task newTask = new Task (title,category, durationTask,  date, time);
-                        tasks.add(newTask);
+                                String[] taskStringSplit = taskString.split("-");
+                                String[] tasktimeSplit = taskStringSplit[4].split(":");
+
+                                String title = taskStringSplit[0];
+                                String category = taskStringSplit[1];
+                                int durationTask = Integer.parseInt(taskStringSplit[2].replaceAll("\\s+", ""));
+                                DateFormat format = new SimpleDateFormat("E MMM dd HH:mm:ss ZZZ yyyy", Locale.ENGLISH);
+                                Date date = format.parse(taskStringSplit[3]);
+                                Time time = new Time(Integer.valueOf(tasktimeSplit[0].replaceAll("\\s+", "")), Integer.valueOf(tasktimeSplit[1].replaceAll("\\s+", "")), 0);
+                                Task newTask = new Task(title, category, durationTask, date, time);
+                                tasks.add(newTask);
+                            }
+                        }
+                        frees.add(new Free(tasks, freeStart, freeEnd, duration));
                     }
-                    frees.add(new Free(tasks,freeStart, freeEnd,duration));
                 }
                 Day newDay= new Day(frees,dayOfWeek,wakeTime, sleepTime);
                 days.add(newDay);
-               // days.add();
                 Log.d("Day", "added new day: " + newDay.toString());
             }
 
         }
-//        catch (IOException e) {
-//            // print the error to the console
-//            e.printStackTrace();
-//            // just load an empty list
-//            days = new ArrayList<>();
-//        }
+        catch (IOException e) {
+            // print the error to the console
+            e.printStackTrace();
+            // just load an empty list
+            days = new ArrayList<>();
+        }
         catch (ParseException e) {
             e.printStackTrace();
             Log.d("Home Activity", "Error with date to String");
