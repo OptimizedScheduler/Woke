@@ -1,23 +1,19 @@
 package com.example.smistry.woke;
 
+import android.app.Notification;
 import android.content.Intent;
-import android.icu.text.DateFormat;
-import android.icu.text.SimpleDateFormat;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.example.smistry.woke.fragments.ViewPagerFragment;
 import com.example.smistry.woke.fragments.goals;
@@ -27,21 +23,12 @@ import com.example.smistry.woke.models.Free;
 import com.example.smistry.woke.models.MessageEvent;
 import com.example.smistry.woke.models.Task;
 
-import org.apache.commons.io.FileUtils;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
-import org.parceler.Parcels;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.charset.Charset;
-import java.sql.Time;
-import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.Locale;
 
 public class bottomNav extends AppCompatActivity {
 
@@ -50,6 +37,7 @@ public class bottomNav extends AppCompatActivity {
     ArrayList<Day> days;
     HashMap<String, ArrayList<Free>> settings;
     final FragmentManager fragmentManager = getSupportFragmentManager();
+    private NotificationManagerCompat notificationManager;
 
     ArrayList<Task> tasks2;
     ArrayList<Free> freeBlocks2;
@@ -95,9 +83,13 @@ public class bottomNav extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bottom_nav);
+
+        notificationManager = NotificationManagerCompat.from(this);
+
         //Shows Setting Activity if this is the FIRST time the app is running
         Boolean isFirstRun = getSharedPreferences("PREFERENCE", MODE_PRIVATE)
                 .getBoolean("isFirstRun", true);
+
         if (isFirstRun) {
             //show sign up activity
             startActivityForResult(new Intent(this, SettingsActivity.class), 0);
@@ -142,7 +134,6 @@ public class bottomNav extends AppCompatActivity {
 //        days.add(new Day(freeBlocks5,"Thursday", new Time(22,0,0),new Time(6,00,00)));
 //        days.add(new Day(freeBlocks6,"Friday", new Time(22,0,0),new Time(6,00,00)));
 //        days.add(new Day(freeBlocks,"Saturday", new Time(22,0,0),new Time(6,00,00)));
-
 
 
        viewPager= ViewPagerFragment.newInstance(days);
@@ -190,16 +181,25 @@ public class bottomNav extends AppCompatActivity {
  }
 
 
-
-
     @Override
     public void onStart() {
         super.onStart();
         EventBus.getDefault().register(this);
     }
 
+    public void sendOnChannel1(MenuItem menuItem)
+    {
+        Notification notification = new NotificationCompat.Builder(this, WokeApp.Channel_1_ID)
+                .setSmallIcon(R.drawable.ic_notifications_black_24dp)
+                .setContentTitle("Bring Jacket")
+                .setContentText("Bring Jacket")
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .build();
 
-   
+        notificationManager.notify(1,notification);
+
+    }
+
 
 }
 
