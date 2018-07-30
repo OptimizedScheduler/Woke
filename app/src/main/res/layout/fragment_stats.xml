@@ -7,9 +7,10 @@
     tools:context=".fragments.stats">
 
     <!-- TODO: Update blank fragment layout -->
-    <com.jjoe64.graphview.GraphView
+    <com.github.mikephil.charting.charts.HorizontalBarChart
+        android:id="@+id/sleepChart"
         android:layout_width="match_parent"
-        android:layout_height="200dip"
-        android:id="@+id/graph" />
+        android:layout_height="match_parent"
+        ></com.github.mikephil.charting.charts.HorizontalBarChart>
 
 </FrameLayout>

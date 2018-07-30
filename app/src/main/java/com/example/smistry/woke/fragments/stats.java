@@ -1,6 +1,5 @@
 package com.example.smistry.woke.fragments;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -10,15 +9,17 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.smistry.woke.R;
-import com.jjoe64.graphview.GraphView;
-import com.jjoe64.graphview.ValueDependentColor;
-import com.jjoe64.graphview.series.BarGraphSeries;
-import com.jjoe64.graphview.series.DataPoint;
-import com.jjoe64.graphview.series.LineGraphSeries;
+import com.github.mikephil.charting.charts.HorizontalBarChart;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
+
+import java.util.ArrayList;
 
 
 public class stats extends Fragment {
 
+    HorizontalBarChart sleepChart;
 
     public stats() {
         // Required empty public constructor
@@ -35,29 +36,25 @@ public class stats extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        GraphView graph = (GraphView) view.findViewById(R.id.graph);
-        BarGraphSeries<DataPoint> series = new BarGraphSeries<>(new DataPoint[] {
-                new DataPoint(0, -1),
-                new DataPoint(1, 5),
-                new DataPoint(2, 3),
-                new DataPoint(3, 2),
-                new DataPoint(4, 6)
-        });
-        graph.addSeries(series);
+        sleepChart = (HorizontalBarChart) view.findViewById(R.id.sleepChart);
+        setData(7, 12);
+    }
 
-// styling
-        series.setValueDependentColor(new ValueDependentColor<DataPoint>() {
-            @Override
-            public int get(DataPoint data) {
-                return Color.rgb((int) data.getX()*255/4, (int) Math.abs(data.getY()*255/6), 100);
-            }
-        });
+    private void setData (int count, int range) {
+        ArrayList<BarEntry> sleepVals = new ArrayList<>();
+        float barWidth = 9f;
+        float spaceForBar = 10f;
 
-        series.setSpacing(50);
+        for(int i = 0; i <count; i++)
+        {
+            float val = (float) (Math.random()*range);
+            sleepVals.add(new BarEntry(i*spaceForBar,val));
+        }
 
-// draw values on top
-        series.setDrawValuesOnTop(true);
-        series.setValuesOnTopColor(Color.RED);
-//series.setValuesOnTopSize(50);
+        BarDataSet set1;
+        set1 = new BarDataSet(sleepVals, "Sleep Progress");
+        BarData data = new BarData(set1);
+        data.setBarWidth(barWidth);
+        sleepChart.setData(data);
     }
 }

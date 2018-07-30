@@ -42,6 +42,4 @@ dependencies {
     implementation 'com.loopj.android:android-async-http:1.4.9'//async
 
     implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3' //piechart
-    implementation "com.android.support:support-compat:27.1.1"
-
 }
