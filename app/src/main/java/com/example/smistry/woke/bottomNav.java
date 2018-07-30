@@ -2,6 +2,7 @@ package com.example.smistry.woke;
 
 import android.app.Notification;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -11,6 +12,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -39,16 +41,14 @@ public class bottomNav extends AppCompatActivity {
     final FragmentManager fragmentManager = getSupportFragmentManager();
     private NotificationManagerCompat notificationManager;
 
-    ArrayList<Task> tasks2;
-    ArrayList<Free> freeBlocks2;
-    ArrayList<Task> tasks3;
-    ArrayList<Free> freeBlocks3;
-    ArrayList<Task> tasks4;
-    ArrayList<Free> freeBlocks4;
-    ArrayList<Task> tasks5;
-    ArrayList<Free> freeBlocks5;
-    ArrayList<Task> tasks6;
-    ArrayList<Free> freeBlocks6;
+
+    SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+    String age= prefs.getString("age", "18");
+    Boolean weatherTasks=prefs.getBoolean("weatherSwitch", false);
+    Boolean rain=prefs.getBoolean("rainSwitch", false);
+    Boolean jacket= prefs.getBoolean("jacketSwitch", false);
+    int jacketTemp=prefs.getInt("seekBar", 50);
+
 
     // define your fragments here
     final Fragment fragment2= new goals();
@@ -107,33 +107,7 @@ public class bottomNav extends AppCompatActivity {
         //Fill the Day Array with information
         //TODO to be replaced with the information from the Files
         days=new ArrayList<>();
-//
-//        freeBlocks=new ArrayList<>();
-//     //   freeBlocks.add(new Free(new Time(10,00,00), new Time(14,00,00), 240));
-//
-//        freeBlocks2=new ArrayList<>();
-//        freeBlocks2.add(new Free(new Time(10,00,00), new Time(14,00,00), 240));
-//
-//        freeBlocks3=new ArrayList<>();
-//        freeBlocks3.add(new Free(new Time(10,00,00), new Time(14,00,00), 240));
-//
-//        freeBlocks4=new ArrayList<>();
-//        freeBlocks4.add(new Free(new Time(10,00,00), new Time(14,00,00), 240));
-//
-//        freeBlocks5=new ArrayList<>();
-//        freeBlocks5.add(new Free(new Time(10,00,00), new Time(14,00,00), 240));
-//
-//        freeBlocks6=new ArrayList<>();
-//      //  freeBlocks6.add(new Free(new Time(10,00,00), new Time(14,00,00), 240));
-//
-//
-//        days.add(new Day(freeBlocks,"Sunday", new Time(22,0,0),new Time(6,00,00)));
-//        days.add(new Day(freeBlocks2,"Monday", new Time(22,0,0),new Time(6,00,00)));
-//        days.add(new Day(freeBlocks3,"Tuesday", new Time(22,0,0),new Time(6,00,00)));
-//        days.add(new Day(freeBlocks4,"Wednesday", new Time(22,0,0),new Time(6,00,00)));
-//        days.add(new Day(freeBlocks5,"Thursday", new Time(22,0,0),new Time(6,00,00)));
-//        days.add(new Day(freeBlocks6,"Friday", new Time(22,0,0),new Time(6,00,00)));
-//        days.add(new Day(freeBlocks,"Saturday", new Time(22,0,0),new Time(6,00,00)));
+
 
 
        viewPager= ViewPagerFragment.newInstance(days);
