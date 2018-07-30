@@ -25,9 +25,16 @@ public @Parcel class Task {
         this.date = date;
     }
 
+    public Task(String taskTitle, String category, int duration, Date date, Time time) {
+        this.taskTitle = taskTitle;
+        this.category = category;
+        this.duration = duration;
+        this.date = date;
+        this.time = time;
+    }
 
     public String toString() {
-        return category + "," + String.valueOf(duration) + "," + date.toString();
+        return taskTitle+"-"+category + "-" + String.valueOf(duration) + "-" + date.toString()+"-"+time.toString();
     }
 
     public String getCategory() {

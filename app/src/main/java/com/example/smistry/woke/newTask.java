@@ -144,10 +144,8 @@ public class newTask extends AppCompatActivity implements  DatePickerDialog.OnDa
                     EventBus.getDefault().postSticky(event);
 
 
-
                     finish();
                 }
-
             }
         });
     }

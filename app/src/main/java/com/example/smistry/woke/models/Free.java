@@ -35,7 +35,12 @@ public class Free {
 
     @Override
     public String toString() {
-        return tasks.toString()+","+start.toString()+","+end.toString()+","+freeBlockDuration;
+        String taskString="";
+        for (int i=0; i<tasks.size(); i++){
+            taskString=taskString+tasks.get(i).toString();
+            taskString=taskString+"/";
+        }
+        return start.toString()+";"+end.toString()+";"+freeBlockDuration+";"+taskString;
     }
 
     public ArrayList<Task> getTasks() {

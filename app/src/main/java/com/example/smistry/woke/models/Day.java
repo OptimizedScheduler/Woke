@@ -66,6 +66,6 @@ public class Day {
 
     @Override
     public String toString() {
-        return (dayOfWeek+" "+wakeUp.toString()+" "+sleep.toString()+" "+freeBlocks.toString());
+        return (dayOfWeek+"_"+wakeUp.toString()+"_"+sleep.toString()+"_"+freeBlocks.toString());
     }
 }

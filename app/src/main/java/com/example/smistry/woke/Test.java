@@ -1,114 +1,77 @@
 package com.example.smistry.woke;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.smistry.woke.models.Weather;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.JsonHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.Iterator;
-
 import butterknife.BindView;
+import cz.msebera.android.httpclient.Header;
 
 public class Test extends AppCompatActivity {
 
     @BindView(R.id.minTemp) TextView minTemp;
     @BindView(R.id.maxTemp) TextView maxTemp;
-    private static final String TAG = Test.class.getSimpleName();
-    private ArrayList<Weather> weatherArrayList = new ArrayList<>();
+    public final static String API_BASE_URL = "http://dataservice.accuweather.com/forecasts/v1/daily/1day/337153";
+    public final static String API_KEY_PARAM = "apikey";
+    public final static String TAG = "TestActivity";
+
+    AsyncHttpClient client;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test);
+        client = new AsyncHttpClient();
 
-        URL weatherUrl = NetworkUtils.buildUrlForWeather();
-        new FetchWeatherDetails().execute(weatherUrl);
-        Log.i(TAG, "onCreate: weatherUrl: " + weatherUrl);
-
+        getWeather();
     }
 
+    public void getWeather(){
+        String url = API_BASE_URL;
 
-    private class FetchWeatherDetails extends AsyncTask<URL, Void, String> {
+        RequestParams params = new RequestParams();
+        params.put(API_KEY_PARAM, getString(R.string.apikey)); //API key, always required
+        //execute a GET Request expecting a JSON object response
+        client.get(url,params, new JsonHttpResponseHandler(){
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
 
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-        }
-
-        @Override
-        protected String doInBackground(URL... urls) {
-            URL weatherUrl = urls[0];
-            String weatherSearchResults = null;
-
-            try {
-                weatherSearchResults = NetworkUtils.getResponseFromHttpUrl(weatherUrl);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            Log.i(TAG, "doInBackground: weatherSearchResults: " + weatherSearchResults);
-            return weatherSearchResults;
-        }
-
-        @Override
-        protected void onPostExecute(String weatherSearchResults) {
-            if(weatherSearchResults != null && !weatherSearchResults.equals("")) {
-                weatherArrayList = parseJSON(weatherSearchResults);
-                //Just for testing
-                Iterator itr = weatherArrayList.iterator();
-                while(itr.hasNext()) {
-                    Weather weatherInIterator = (Weather) itr.next();
-                    Log.i(TAG, "onPostExecute: Date: " + weatherInIterator.getDate()+
-                            " Min: " + weatherInIterator.getMinTemp() +
-                            " Max: " + weatherInIterator.getMaxTemp());
-                    Log.d("Yo", weatherInIterator.getMaxTemp().toString());
+                try {
+                    JSONArray results = response.getJSONArray("DailyForecasts");
+                    Weather weather = new Weather(results.getJSONObject(0));
+                    minTemp.setText(weather.getMinTemp());
+                    maxTemp.setText(weather.getMaxTemp());
+                } catch (JSONException e) {
+                    logError("Failed to parse now playing movies", e, true);
                 }
             }
-            super.onPostExecute(weatherSearchResults);
-        }
-    }
 
-    private ArrayList<Weather> parseJSON(String weatherSearchResults) {
-
-        if(weatherSearchResults != null) {
-            try {
-                JSONObject rootObject = new JSONObject(weatherSearchResults);
-                JSONArray results = rootObject.getJSONArray("DailyForecasts");
-
-                for (int i = 0; i < 1; i++) {
-                    Weather weather = new Weather();
-
-                    JSONObject resultsObj = results.getJSONObject(i);
-
-                    String date = resultsObj.getString("Date");
-                    weather.setDate(date);
-
-                    JSONObject temperatureObj = resultsObj.getJSONObject("Temperature");
-                    Double minTemperature = temperatureObj.getJSONObject("Minimum").getDouble("Value");
-                    weather.setMinTemp(minTemperature);
-                    Log.d("PRINT", String.valueOf(minTemperature));
-                    minTemp.setText(String.valueOf(minTemperature));
-
-                    Double maxTemperature = temperatureObj.getJSONObject("Maximum").getDouble("Value");
-                    weather.setMaxTemp(maxTemperature);
-                    Log.d("PRINT", String.valueOf(maxTemperature));
-                    maxTemp.setText(String.valueOf(maxTemperature));
-
-                }
-
-            } catch (JSONException e) {
-                e.printStackTrace();
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                logError("Failed to get data from now playing endpoint", throwable, true );
             }
-        }
-        return null;
+        });
     }
+
+    private void logError(String message, Throwable error, boolean alertUser){
+        //always log the error
+        Log.e(TAG, message,error);
+        //alert the user to avoid silent errors
+        if(alertUser){
+            //show a toast with the error message
+            Toast.makeText(getApplicationContext(), message,Toast.LENGTH_LONG).show();
+        }
+    }
+
 }

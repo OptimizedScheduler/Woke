@@ -16,4 +16,13 @@
     android:title="Settings">
 </item>
 
+    <item
+        android:id="@+id/openNotification"
+        android:icon="@drawable/ic_settings_black_24dp"
+        app:showAsAction="ifRoom"
+        android:onClick="sendOnChannel1"
+        android:title="Notifications">
+    </item>
+
+
 </menu>
