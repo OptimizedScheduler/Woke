@@ -3,7 +3,6 @@ package com.example.smistry.woke;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.smistry.woke.models.Weather;
@@ -15,13 +14,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import butterknife.BindView;
 import cz.msebera.android.httpclient.Header;
 
 public class Test extends AppCompatActivity {
 
-    @BindView(R.id.minTemp) TextView minTemp;
-    @BindView(R.id.maxTemp) TextView maxTemp;
     public final static String API_BASE_URL = "http://dataservice.accuweather.com/forecasts/v1/daily/1day/337153";
     public final static String API_KEY_PARAM = "apikey";
     public final static String TAG = "TestActivity";
@@ -50,8 +46,6 @@ public class Test extends AppCompatActivity {
                 try {
                     JSONArray results = response.getJSONArray("DailyForecasts");
                     Weather weather = new Weather(results.getJSONObject(0));
-                    minTemp.setText(weather.getMinTemp());
-                    maxTemp.setText(weather.getMaxTemp());
                 } catch (JSONException e) {
                     logError("Failed to parse now playing movies", e, true);
                 }
