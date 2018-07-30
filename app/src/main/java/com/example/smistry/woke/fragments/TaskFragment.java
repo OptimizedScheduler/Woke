@@ -10,7 +10,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.example.smistry.woke.R;
 import com.example.smistry.woke.TaskRecyclerAdapter;
@@ -66,14 +65,16 @@ public class TaskFragment extends Fragment {
             for(int i=0; i<freeBlocks.size(); i++)
             try {
                 if(dailyTasks!= null){
-                dailyTasks = freeBlocks.get(i).getTasks();
-                adapter = new TaskRecyclerAdapter(dailyTasks);
-                adapter.notifyDataSetChanged();
+                    for(int j = 0; j<freeBlocks.get(i).getTasks().size();j++)
+                dailyTasks.add(freeBlocks.get(i).getTasks().get(j));
+
                 }
             }
             catch (Exception e){
                 Log.d("EXC2",e.getMessage());
             }
+            adapter = new TaskRecyclerAdapter(dailyTasks);
+            adapter.notifyDataSetChanged();
         }
     }
 
@@ -82,8 +83,6 @@ public class TaskFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_task, container, false);
-        TextView tvLabel = view.findViewById(R.id.tvLabel);
-        tvLabel.setText(dayOfW + " -- " + title);
         return view;
     }
 
