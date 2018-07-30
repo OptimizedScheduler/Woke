@@ -38,5 +38,4 @@
             android:src="@drawable/ic_add_alert_white" />
 
     </RelativeLayout>
-
 </FrameLayout>

@@ -56,6 +56,14 @@ public class Day {
         this.dayOfWeek = dayOfWeek;
     }
 
+    public Time getSleep() {
+        return sleep;
+    }
+
+    public Time getWakeUp() {
+        return wakeUp;
+    }
+
     @Override
     public String toString() {
         return (dayOfWeek+"_"+wakeUp.toString()+"_"+sleep.toString()+"_"+freeBlocks.toString());

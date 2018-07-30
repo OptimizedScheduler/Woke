@@ -52,19 +52,15 @@ public class newTask extends AppCompatActivity implements  DatePickerDialog.OnDa
     @BindView(R.id.etTitle) EditText etTitle;
 
     Object item;
-    Date taskDate;
-    int iTaskDate=0;
-    Time time;
+    Date taskDate; //Date chosen for the activity from DatePickerFragment
+    int iTaskDate=0; // Day of the week in int format
     int duration;
     boolean isDateSet;
     ArrayList<Day> myDays = new ArrayList<>();
 
     Time start = new Time(00,00,00);
     Time end = new Time(12,0,0);
-    ArrayList<Task> tasks = new ArrayList<Task>();
-    Free example = new Free(tasks, start, end, 90);
     ArrayList<Free> freeBlocks = new ArrayList<Free>();
-    Calendar c = Calendar.getInstance();
 
     String [] months = {"Jan","Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec"};
 
@@ -142,17 +138,11 @@ public class newTask extends AppCompatActivity implements  DatePickerDialog.OnDa
                     duration = (Integer.parseInt(etHours.getText().toString())*60) + Integer.parseInt(etMinutes.getText().toString());
                     Task task = new Task(etTitle.getText().toString(), item.toString(), duration, taskDate);
 
-                    Boolean set=false;
+                    setTaskWithinFreeBlock(myDays,task);
 
-                    while (!set && iTaskDate< myDays.size()){
-                        set=setTaskWithinFreeBlock(myDays.get(iTaskDate).getFreeBlocks(),task);
-                        iTaskDate+=1;
-                    }
-                    if (!set){
-                        Toast.makeText(newTask.this, "No space in the week for the task", Toast.LENGTH_SHORT).show();
-                        MessageEvent event = new MessageEvent(myDays);
-                        EventBus.getDefault().postSticky(event);
-                    }
+                    MessageEvent event = new MessageEvent(myDays);
+                    EventBus.getDefault().postSticky(event);
+
 
                     finish();
                 }
@@ -171,58 +161,90 @@ public class newTask extends AppCompatActivity implements  DatePickerDialog.OnDa
         iTaskDate=taskDate.getDay();
     }
 
-    public boolean setTaskWithinFreeBlock (ArrayList<Free> freeBlocks, Task task){
+    public void setTaskWithinFreeBlock (ArrayList<Day> dayArray, Task task){
+        boolean reachEnd = false;
+        int index = iTaskDate;
+        int blockDuration;
+        while(!reachEnd && index<7){
+            for(int i = 0; i <dayArray.get(index).getFreeBlocks().size(); i++) {
+                blockDuration = (dayArray.get(index).getFreeBlocks().get(i).getEnd().getHours()*60 + dayArray.get(index).getFreeBlocks().get(i).getEnd().getMinutes());
+                blockDuration -= dayArray.get(index).getFreeBlocks().get(i).getStart().getHours()*60 + dayArray.get(index).getFreeBlocks().get(i).getStart().getMinutes();
+                //blockDuration = Integer.parseInt(dayArray.get(index).getFreeBlocks().get(i).getStart().toString()) - Integer.parseInt(dayArray.get(index).getFreeBlocks().get(i).getEnd().toString());
+                if (blockDuration >= task.getDuration()) { //looping through all free blocks
+                    if(dayArray.get(index).getFreeBlocks().get(i).getTasks()==null)
+                        dayArray.get(index).getFreeBlocks().get(i).setTasks(new ArrayList<Task>());
+                    dayArray.get(index).getFreeBlocks().get(i).getTasks().add(task); // adding updated task list to free block
+                    task.setTime(dayArray.get(index).getFreeBlocks().get(i).getStart()); //setting start time for task
+                    taskDate.setHours(task.getTime().getHours());
+                    taskDate.setMinutes(task.getTime().getMinutes());
 
-        for(int i = 0; i <freeBlocks.size(); i++) {
-            if (freeBlocks.get(i).getFreeBlockDuration() >= task.getDuration()) { //looping through all free blocks
-               // tasks.add(task);
-                if(freeBlocks.get(i).getTasks()==null)
-                    freeBlocks.get(i).setTasks(new ArrayList<Task>());
-                freeBlocks.get(i).getTasks().add(task); // adding updated task list to free block
-                task.setTime(freeBlocks.get(i).getStart()); //setting start time for task
-                taskDate.setHours(task.getTime().getHours());
-                taskDate.setMinutes(task.getTime().getMinutes());
+                    start.setHours(task.getTime().getHours() + (Integer.parseInt(etHours.getText().toString())));
+                    start.setMinutes(task.getTime().getMinutes() + (Integer.parseInt(etMinutes.getText().toString()))); //changing free block start time
+                    dayArray.get(index).getFreeBlocks().get(i).setStart(start);
+                    Log.d("Testing", start.toString());
 
-                start.setHours(task.getTime().getHours() + (Integer.parseInt(etHours.getText().toString())));
-                start.setMinutes(task.getTime().getMinutes() + (Integer.parseInt(etMinutes.getText().toString()))); //changing free block start time
-                freeBlocks.get(i).setStart(start);
-                Log.d("Testing", start.toString());
+                    setAlarm(new Time (taskDate.getHours(),taskDate.getHours(),00), task,etTitle.getText().toString(),i, iTaskDate);
 
-                Intent setAlarm = new Intent(AlarmClock.ACTION_SET_ALARM);
-                setAlarm.putExtra(AlarmClock.EXTRA_HOUR,taskDate.getHours());
-                setAlarm.putExtra(AlarmClock.EXTRA_MINUTES, taskDate.getMinutes());
-                setAlarm.putExtra(AlarmClock.EXTRA_MESSAGE, etTitle.getText().toString());
-                setAlarm.putExtra(AlarmClock.EXTRA_SKIP_UI, true);
-                ArrayList<Integer> alarmDays = new ArrayList<>();
-                alarmDays.add(task.getDate().getDay()+1);
-                setAlarm.putExtra(AlarmClock.EXTRA_DAYS, alarmDays);
+                    MessageEvent event = new MessageEvent(myDays);
+                    EventBus.getDefault().postSticky(event);
+                    reachEnd = true;
+                }
+            }
 
-                Intent data = new Intent();
-                //pass relevant data
-                data.putExtra("newFreeBlock", Parcels.wrap(myDays.get(iTaskDate).getFreeBlocks()));
-                data.putExtra("dayIndex",iTaskDate);
-                data.putExtra("freeIndex",i);
-                setResult(RESULT_OK, data); // set result code and bundle data for response
+            //TODO --- Show dialog fragment and return to nextMorning
+            boolean nextMorning = true; //should be updated with dialog fragment
 
-                startActivity(setAlarm);
+            if(nextMorning){
+                Time t1= myDays.get(index+1).getWakeUp(); //wake up time of current day
+                int newWake = t1.getHours()*60 + t1.getMinutes() - duration;  // new wake up time (Int format)
+                Time t2 = new Time (newWake/60, (newWake%60)*60,00); //new Wake up time  && start of the task
+                task.setTime(t2);
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(taskDate);
+                cal.add(Calendar.DATE, 1);
+                Date movedDate = cal.getTime();
+                movedDate.setHours(task.getTime().getHours());
+                movedDate.setMinutes(task.getTime().getMinutes());
+                task.setDate(movedDate);
+                myDays.get(index+1).getFreeBlocks().add(0,new Free(new ArrayList<Task>(),t2,t1,0));
+                myDays.get(index+1).getFreeBlocks().get(0).getTasks().add(0,task);
 
-               /* Log.d("Testing", "Set the alarm");
-                Log.d("Testing", task.getTime().toString());
-                Log.d("Testing", taskDate.toString());*/
-
-                myDays.get(iTaskDate).setFreeBlocks(freeBlocks);
-
+                setAlarm(t2,task,etTitle.getText().toString(),0,iTaskDate+1);
+                reachEnd=true;
                 MessageEvent event = new MessageEvent(myDays);
                 EventBus.getDefault().postSticky(event);
-                return true;
             }
-//            else{
-//            Toast.makeText(newTask.this, "Please enter a different duration", Toast.LENGTH_SHORT).show();
-//        }
-    }
-        return false;
+
+            else{
+                index = (index++)%7;
+                if(index==iTaskDate)
+                    reachEnd=true;
+            }
+        }
+
+        Toast.makeText(this, "No time during this week",Toast.LENGTH_LONG).show();
     }
 
 
+    public void setAlarm(Time time, Task task,String title, int FreeIndex, int DayIndex){
+        Intent setAlarm = new Intent(AlarmClock.ACTION_SET_ALARM);
+        setAlarm.putExtra(AlarmClock.EXTRA_HOUR,time.getHours());
+        setAlarm.putExtra(AlarmClock.EXTRA_MINUTES, time.getMinutes());
+        setAlarm.putExtra(AlarmClock.EXTRA_MESSAGE, title);
+        setAlarm.putExtra(AlarmClock.EXTRA_SKIP_UI, true);
+        ArrayList<Integer> alarmDays = new ArrayList<>();
+        alarmDays.add(task.getDate().getDay()+1);
+        setAlarm.putExtra(AlarmClock.EXTRA_DAYS, alarmDays);
+
+        Intent data = new Intent();
+        //pass relevant data
+        data.putExtra("newFreeBlock", Parcels.wrap(myDays.get(DayIndex).getFreeBlocks()));
+        data.putExtra("dayIndex",DayIndex);
+        data.putExtra("freeIndex",FreeIndex);
+        setResult(RESULT_OK, data); // set result code and bundle data for response
+
+        startActivity(setAlarm);
+
+    }
 
 }
