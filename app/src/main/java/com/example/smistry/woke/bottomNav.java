@@ -163,7 +163,9 @@ public class bottomNav extends AppCompatActivity {
         days= event.getmDaysList();
         viewPager.setDaysA(days);
         newTask nT = EventBus.getDefault().getStickyEvent(newTask.class);
-        Log.d("EventBus", days.toString());
+        for (Day dayObjs: days){
+            Log.d("EventBus", dayObjs.toString());
+        }
 
 /*        if(event != null) {
             EventBus.getDefault().removeStickyEvent(nT);
@@ -199,7 +201,7 @@ public class bottomNav extends AppCompatActivity {
     }
 
 
-   
+
 
 }
 

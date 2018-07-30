@@ -34,7 +34,7 @@ public @Parcel class Task {
     }
 
     public String toString() {
-        return category + "-" + String.valueOf(duration) + "-" + date.toString();
+        return taskTitle+"-"+category + "-" + String.valueOf(duration) + "-" + date.toString()+"-"+time.toString();
     }
 
     public String getCategory() {
