@@ -27,12 +27,14 @@ public class editDayActivity extends AppCompatActivity implements TimePickerDial
 
     TextView day;
     TextView enteredFreeTimes;
+    TextView tvSleepTime;
+    TextView tvWakeTime;
     Button btsleepTime;
     Button btwakeTime;
     Button btstartTimeFree;
     Button btendTimeFree;
     Button makeFree;
-    Day newDay;
+
 
     Boolean sleepSet;
     Boolean wakeSet;
@@ -46,7 +48,8 @@ public class editDayActivity extends AppCompatActivity implements TimePickerDial
     Time endTimeFree;
 
 
-    ArrayList<ArrayList<Free>> DOW;
+    ArrayList<Day>days;
+    ArrayList<Free> frees;
     int position;
 
     @Override
@@ -68,15 +71,23 @@ public class editDayActivity extends AppCompatActivity implements TimePickerDial
         endTimeFreeSet=false;
 
         position= getIntent().getIntExtra("Position",0);
+        days= Parcels.unwrap(getIntent().getParcelableExtra("Days"));
+        Day currDay=days.get(position);
+        frees=currDay.getFreeBlocks();
 
-        newDay= new Day();
-        newDay.setDayOfWeek(getIntent().getStringExtra("Day").toString());
-        newDay.setFreeBlocks(new ArrayList<Free>());
 
+
+        tvSleepTime= (TextView)findViewById(R.id.tvSleepTime);
+        tvWakeTime= (TextView)findViewById(R.id.tvWakeTime);
+        tvSleepTime.setText(currDay.getSleep().toString());
+        tvWakeTime.setText(currDay.getWakeUp().toString());
 
         day= (TextView)findViewById(R.id.tvDayEditDay);
         day.setText(getIntent().getStringExtra("Day").toString());
         enteredFreeTimes= (TextView)findViewById(R.id.tvEnteredFreeEditDay);
+        for (Free free:frees){
+            enteredFreeTimes.setText(enteredFreeTimes.getText().toString()+" "+free.toString());
+        }
 
         btsleepTime = (Button)findViewById(R.id.btSleepTime);
         btwakeTime = (Button)findViewById(R.id.btWakeTime);
@@ -87,6 +98,11 @@ public class editDayActivity extends AppCompatActivity implements TimePickerDial
         btwakeTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                wakeSet=true;
+                sleepSet=false;
+                startTimeFreeSet=false;
+                endTimeFreeSet=false;
+
                 DialogFragment TimePicker= new TimePickerFragment();
                 TimePicker.show(getSupportFragmentManager(), "TimePick");
             }
@@ -95,28 +111,31 @@ public class editDayActivity extends AppCompatActivity implements TimePickerDial
         btsleepTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (wakeSet){
+                wakeSet=false;
+                sleepSet=true;
+                startTimeFreeSet=false;
+                endTimeFreeSet=false;
                     DialogFragment TimePicker= new TimePickerFragment();
                     TimePicker.show(getSupportFragmentManager(), "TimePick");
 
-                }
-                else{
-                    Toast.makeText(getApplicationContext(), "Please set your Sleep Time first", Toast.LENGTH_SHORT).show();
-                }
+
+
             }
         });
 
         btstartTimeFree.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (wakeSet && sleepSet){
+
+                wakeSet=false;
+                sleepSet=false;
+                startTimeFreeSet=true;
+                endTimeFreeSet=false;
                     DialogFragment TimePicker= new TimePickerFragment();
                     TimePicker.show(getSupportFragmentManager(), "TimePick");
 
-                }
-                else{
-                    Toast.makeText(getApplicationContext(), "Please set your Wake Time first", Toast.LENGTH_SHORT).show();
-                }
+
+
 
             }
         });
@@ -124,14 +143,14 @@ public class editDayActivity extends AppCompatActivity implements TimePickerDial
         btendTimeFree.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (startTimeFreeSet){
+                wakeSet=false;
+                sleepSet=false;
+                startTimeFreeSet=false;
+                endTimeFreeSet=true;
                     DialogFragment TimePicker= new TimePickerFragment();
                     TimePicker.show(getSupportFragmentManager(), "TimePick");
 
-                }
-                else{
-                    Toast.makeText(getApplicationContext(), "Please set your Start Time first", Toast.LENGTH_SHORT).show();
-                }
+
 
             }
         });
@@ -139,18 +158,19 @@ public class editDayActivity extends AppCompatActivity implements TimePickerDial
         makeFree.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (endTimeFreeSet && startTimeFreeSet){
-                    endTimeFreeSet=false;
-                    startTimeFreeSet=false;
+                if (startTimeFree!=null&& endTimeFree!=null){
+
                     Free toAdd=new Free(new ArrayList<Task>(), startTimeFree, endTimeFree, 60);
-                    newDay.getFreeBlocks().add(toAdd);
+                    days.get(position).getFreeBlocks().add(toAdd);
                     enteredFreeTimes.setText(enteredFreeTimes.getText().toString()+" "+toAdd.toString());
+                    endTimeFree=null;
+                    startTimeFree=null;
 
                 }
-                else  if (!startTimeFreeSet){
+                else  if (startTimeFree==null){
                     Toast.makeText(getApplicationContext(), "Please set your Start Time first", Toast.LENGTH_SHORT).show();
                 }
-                else {
+                else if (endTimeFree==null){
                     Toast.makeText(getApplicationContext(), "Please set your End Time first", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -162,20 +182,12 @@ public class editDayActivity extends AppCompatActivity implements TimePickerDial
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == android.R.id.home) {
-            if (sleepSet && wakeSet){
                 Intent i= new Intent();
-                i.putExtra("newDay", Parcels.wrap(newDay));
-                i.putExtra("Position", position);
+
+                i.putExtra("days", Parcels.wrap(days));
                 setResult(RESULT_OK, i);
-                finish();}
-            else if (!wakeSet){
-                Toast.makeText(getApplicationContext(), "Please set your Wake Time first", Toast.LENGTH_SHORT).show();
+                finish();
 
-
-            }
-            else {
-                Toast.makeText(getApplicationContext(), "Please set your Sleep Time first", Toast.LENGTH_SHORT).show();
-            }
         }
         return super.onOptionsItemSelected(item);
     }
@@ -185,25 +197,31 @@ public class editDayActivity extends AppCompatActivity implements TimePickerDial
     public void onTimeSet(TimePicker timePicker, int hour, int minute) {
         Time time = new Time(hour, minute, 0);
 
-        if (!wakeSet){
+        if (wakeSet){
             wakeTime=time;
             wakeSet=true;
-            newDay.setWakeUp(wakeTime);
+            days.get(position).setWakeUp(wakeTime);
+            tvWakeTime.setText(wakeTime.toString());
         }
-        else if (!sleepSet){
+        else if (sleepSet){
             sleepTime=time;
             sleepSet=true;
-            newDay.setSleep(sleepTime);
+            days.get(position).setSleep(sleepTime);
+            tvSleepTime.setText(sleepTime.toString());
         }
 
-        else if (!startTimeFreeSet){
+        else if (startTimeFreeSet){
             startTimeFree=time;
             startTimeFreeSet=true;
         }
-        else if (!endTimeFreeSet){
+        else if (endTimeFreeSet){
             endTimeFree=time;
             endTimeFreeSet=true;
         }
+        sleepSet=false;
+        wakeSet=false;
+        startTimeFreeSet=false;
+        endTimeFreeSet=false;
 
     }
 

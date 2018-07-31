@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckedTextView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -36,7 +37,7 @@ public class TaskRecyclerAdapter extends RecyclerView.Adapter<TaskRecyclerAdapte
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder viewHolder, int i) {
+    public void onBindViewHolder(@NonNull final ViewHolder viewHolder, final int i) {
         if(mTasks!= null){
         Task task = mTasks.get(i);
         viewHolder.tvTaskName.setText(task.getTaskTitle());
@@ -50,6 +51,27 @@ public class TaskRecyclerAdapter extends RecyclerView.Adapter<TaskRecyclerAdapte
             viewHolder.tvTaskName.setText("L");
             viewHolder.tvTime.setText("L");
         }
+
+        if (mTasks.get(i).isCompleted()){
+            viewHolder.tvTaskName.setChecked(true);
+        }
+        else{
+            viewHolder.tvTaskName.setChecked(false);
+        }
+
+        viewHolder.tvTaskName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (viewHolder.tvTaskName.isChecked()){
+                    viewHolder.tvTaskName.setChecked(false);
+                    mTasks.get(i).setCompleted(false);
+                }
+                else {
+                    viewHolder.tvTaskName.setChecked(true);
+                    mTasks.get(i).setCompleted(true);
+                }
+            }
+        });
     }
 
     @Override
@@ -62,7 +84,7 @@ public class TaskRecyclerAdapter extends RecyclerView.Adapter<TaskRecyclerAdapte
 
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener  {
 
-        @BindView(R.id.tvTask) TextView tvTaskName;
+        @BindView(R.id.tvTask) CheckedTextView tvTaskName;
         @BindView(R.id.tvTime) TextView tvTime;
         @BindView(R.id.ivCategory)
         ImageView ivCategory;
@@ -72,6 +94,7 @@ public class TaskRecyclerAdapter extends RecyclerView.Adapter<TaskRecyclerAdapte
             super(itemView);
             ButterKnife.bind(this, itemView);
             itemView.setOnClickListener(this);
+
         }
 
         @Override

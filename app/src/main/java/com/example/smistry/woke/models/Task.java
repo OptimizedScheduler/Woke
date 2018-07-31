@@ -14,6 +14,7 @@ public @Parcel class Task {
     public int duration;
     public Date date;
     public Time time;
+    public boolean completed;
 
     public Task() {
     }
@@ -23,6 +24,7 @@ public @Parcel class Task {
         this.category = category;
         this.duration = duration;
         this.date = date;
+        this.completed=false;
     }
 
     public Task(String taskTitle, String category, int duration, Date date, Time time) {
@@ -31,10 +33,20 @@ public @Parcel class Task {
         this.duration = duration;
         this.date = date;
         this.time = time;
+        this.completed=false;
+    }
+
+    public Task(String taskTitle, String category, int duration, Date date, Time time, boolean completed) {
+        this.taskTitle = taskTitle;
+        this.category = category;
+        this.duration = duration;
+        this.date = date;
+        this.time = time;
+        this.completed = completed;
     }
 
     public String toString() {
-        return taskTitle+"-"+category + "-" + String.valueOf(duration) + "-" + date.toString()+"-"+time.toString();
+        return taskTitle+"-"+category + "-" + String.valueOf(duration) + "-" + date.toString()+"-"+time.toString()+"-"+completed;
     }
 
     public String getCategory() {
@@ -75,5 +87,13 @@ public @Parcel class Task {
 
     public void setTime(Time time) {
         this.time = time;
+    }
+
+    public boolean isCompleted() {
+        return completed;
+    }
+
+    public void setCompleted(boolean completed) {
+        this.completed = completed;
     }
 }
