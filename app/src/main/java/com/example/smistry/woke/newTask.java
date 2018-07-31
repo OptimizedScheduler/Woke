@@ -5,8 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.provider.AlarmClock;
 import android.support.v4.app.DialogFragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.NotificationManagerCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -39,7 +39,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 
-public class newTask extends AppCompatActivity implements  DatePickerDialog.OnDateSetListener{
+public class newTask extends FragmentActivity implements  DatePickerDialog.OnDateSetListener{
     @BindView(R.id.spCategory) Spinner spCategory;
     @BindView(R.id.btDate) Button btDate;
     @BindView(R.id.tvDate) TextView tvDate;
@@ -57,6 +57,7 @@ public class newTask extends AppCompatActivity implements  DatePickerDialog.OnDa
     int duration;
     boolean isDateSet;
     ArrayList<Day> myDays = new ArrayList<>();
+    public  boolean nextMorning;
 
     Time start = new Time(00,00,00);
     Time end = new Time(12,0,0);
@@ -138,7 +139,10 @@ public class newTask extends AppCompatActivity implements  DatePickerDialog.OnDa
                     duration = (Integer.parseInt(etHours.getText().toString())*60) + Integer.parseInt(etMinutes.getText().toString());
                     Task task = new Task(etTitle.getText().toString(), item.toString(), duration, taskDate);
 
-                    setTaskWithinFreeBlock(myDays,task);
+                    boolean set = setTaskWithinFreeBlock(myDays,task);
+
+                    if(!set)
+                         Log.d("ADD", "No time during this week");
 
                     MessageEvent event = new MessageEvent(myDays);
                     EventBus.getDefault().postSticky(event);
@@ -161,11 +165,10 @@ public class newTask extends AppCompatActivity implements  DatePickerDialog.OnDa
         iTaskDate=taskDate.getDay();
     }
 
-    public void setTaskWithinFreeBlock (ArrayList<Day> dayArray, Task task){
+    public boolean setTaskWithinFreeBlock (ArrayList<Day> dayArray, Task task){
         boolean reachEnd = false;
         int index = iTaskDate;
         int blockDuration;
-        while(!reachEnd && index<7){
             for(int i = 0; i <dayArray.get(index).getFreeBlocks().size(); i++) {
                 blockDuration = (dayArray.get(index).getFreeBlocks().get(i).getEnd().getHours()*60 + dayArray.get(index).getFreeBlocks().get(i).getEnd().getMinutes());
                 blockDuration -= dayArray.get(index).getFreeBlocks().get(i).getStart().getHours()*60 + dayArray.get(index).getFreeBlocks().get(i).getStart().getMinutes();
@@ -187,42 +190,27 @@ public class newTask extends AppCompatActivity implements  DatePickerDialog.OnDa
 
                     MessageEvent event = new MessageEvent(myDays);
                     EventBus.getDefault().postSticky(event);
-                    reachEnd = true;
+                    return true;
                 }
             }
 
-            //TODO --- Show dialog fragment and return to nextMorning
-            boolean nextMorning = true; //should be updated with dialog fragment
-
-            if(nextMorning){
-                Time t1= myDays.get(index+1).getWakeUp(); //wake up time of current day
-                int newWake = t1.getHours()*60 + t1.getMinutes() - duration;  // new wake up time (Int format)
-                Time t2 = new Time (newWake/60, (newWake%60)*60,00); //new Wake up time  && start of the task
-                task.setTime(t2);
-                Calendar cal = Calendar.getInstance();
-                cal.setTime(taskDate);
-                cal.add(Calendar.DATE, 1);
-                Date movedDate = cal.getTime();
-                movedDate.setHours(task.getTime().getHours());
-                movedDate.setMinutes(task.getTime().getMinutes());
-                task.setDate(movedDate);
-                myDays.get(index+1).getFreeBlocks().add(0,new Free(new ArrayList<Task>(),t2,t1,0));
-                myDays.get(index+1).getFreeBlocks().get(0).getTasks().add(0,task);
-
-                setAlarm(t2,task,etTitle.getText().toString(),0,iTaskDate+1);
-                reachEnd=true;
-                MessageEvent event = new MessageEvent(myDays);
-                EventBus.getDefault().postSticky(event);
-            }
-
-            else{
-                index = (index++)%7;
-                if(index==iTaskDate)
-                    reachEnd=true;
-            }
-        }
-
-        Toast.makeText(this, "No time during this week",Toast.LENGTH_LONG).show();
+            Time t1= myDays.get(index+1).getWakeUp(); //wake up time of current day
+            int newWake = t1.getHours()*60 + t1.getMinutes() - duration;  // new wake up time (Int format)
+            Time t2 = new Time (newWake/60, (newWake%60)*60,00); //new Wake up time  && start of the task
+            task.setTime(t2);
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(taskDate);
+            cal.add(Calendar.DATE, 1);
+            Date movedDate = cal.getTime();
+            movedDate.setHours(task.getTime().getHours());
+            movedDate.setMinutes(task.getTime().getMinutes());
+            task.setDate(movedDate);
+            myDays.get(index+1).getFreeBlocks().add(0,new Free(new ArrayList<Task>(),t2,t1,0));
+            myDays.get(index+1).getFreeBlocks().get(0).getTasks().add(0,task);
+            setAlarm(t2,task,etTitle.getText().toString(),0,iTaskDate+1);
+            MessageEvent event = new MessageEvent(myDays);
+            EventBus.getDefault().postSticky(event);
+            return true;
     }
 
 

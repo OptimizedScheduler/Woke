@@ -4,6 +4,7 @@ import android.app.Notification;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
@@ -12,7 +13,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.preference.PreferenceManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,7 +23,6 @@ import com.example.smistry.woke.fragments.stats;
 import com.example.smistry.woke.models.Day;
 import com.example.smistry.woke.models.Free;
 import com.example.smistry.woke.models.MessageEvent;
-import com.example.smistry.woke.models.Task;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -34,8 +33,13 @@ import java.util.HashMap;
 
 public class bottomNav extends AppCompatActivity {
 
-    ArrayList<Task> tasks;
     ArrayList<Free> freeBlocks;
+    ArrayList<Free> freeBlocks2;
+    ArrayList<Free> freeBlocks3;
+    ArrayList<Free> freeBlocks4;
+    ArrayList<Free> freeBlocks5;
+    ArrayList<Free> freeBlocks6;
+
     ArrayList<Day> days;
     HashMap<String, ArrayList<Free>> settings;
     final FragmentManager fragmentManager = getSupportFragmentManager();
@@ -82,6 +86,7 @@ public class bottomNav extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        days=new ArrayList<>();
         setContentView(R.layout.activity_bottom_nav);
 
         notificationManager = NotificationManagerCompat.from(this);
@@ -99,15 +104,13 @@ public class bottomNav extends AppCompatActivity {
 
      //   EventBus.getDefault().register(this);
 
-       Intent data = getIntent();
+        Intent data = getIntent();
        settings = (HashMap<String, ArrayList<Free>>) data.getSerializableExtra("FreeMap");
 
 
 
         //Fill the Day Array with information
         //TODO to be replaced with the information from the Files
-        days=new ArrayList<>();
-
 
 
        viewPager= ViewPagerFragment.newInstance(days);
