@@ -36,8 +36,11 @@ import org.greenrobot.eventbus.ThreadMode;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.parceler.Parcels;
 
+import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 
 import cz.msebera.android.httpclient.Header;
@@ -136,6 +139,26 @@ public class bottomNav extends AppCompatActivity {
 
        // if(weatherTasks && jacket && bringJacket) {sendOnChannel1();};
 
+
+
+        if (days!=null){
+            for (Day day: days) {
+                if (day.getDayOfWeek().equals(Calendar.getInstance().DAY_OF_WEEK)){
+                    for (Free free:day.getFreeBlocks()){
+                        for (Task task:free.getTasks()){
+                            Time taskEnd=new Time (task.getTime().getHours(),task.getTime().getMinutes()+task.getDuration(),0);
+                            if (taskEnd.before(Calendar.getInstance().getTime()) && !task.isCompleted() ){
+                                    //reschedule new task
+                                   // setTaskWithinFreeBlock;
+                                    task.setCompleted(true);
+                            }
+                        }
+                    }
+
+                }
+            }
+        }
+
     }
 
 
@@ -165,10 +188,11 @@ public class bottomNav extends AppCompatActivity {
     }
 
     public void openSettings(MenuItem item)
- {
-     Intent intent = new Intent(bottomNav.this,SettingsActivity.class);
-     startActivityForResult(intent,2);
- }
+    {
+        Intent intent = new Intent(bottomNav.this,SettingsActivity.class);
+        intent.putExtra("days", Parcels.wrap(days));
+        startActivityForResult(intent,2);
+    }
 
 
     @Override

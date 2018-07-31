@@ -100,6 +100,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity  {
         PreferenceManager.setDefaultValues(this, R.xml.pref_general, false);
 //        PreferenceManager.setDefaultValues(this, R.xml.pref_sleep_time, false);
 //        PreferenceManager.setDefaultValues(this, R.xml.pref_free_times, false);
+        if (getIntent()!=null){
+            enteredItems=Parcels.unwrap(getIntent().getParcelableExtra("days"));
+        }
         if (DOW==null || enteredItems== null){
             DOW= new ArrayList<>();
             enteredItems= new ArrayList<>();
@@ -112,6 +115,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity  {
             enteredItems.add(new Day(new ArrayList<Free>(),"Saturday", new Time(22,0,0),new Time(6,00,00)));
 
         }
+
+
         MessageEvent event = new MessageEvent(enteredItems);
         EventBus.getDefault().postSticky(event);
 
@@ -358,11 +363,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity  {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         //super.onActivityResult(requestCode, resultCode, data);
         if (resultCode==RESULT_OK && requestCode==0){
-            Day newDay= Parcels.unwrap(data.getParcelableExtra("newDay"));
-            int position=data.getIntExtra("Position",0);
-            enteredItems.remove(position);
-            enteredItems.add(position, newDay);
-
+            enteredItems.clear();
+            enteredItems.addAll((ArrayList<Day>)Parcels.unwrap(data.getParcelableExtra("days")));
+//
             MessageEvent event = new MessageEvent(enteredItems);
             EventBus.getDefault().postSticky(event);
 

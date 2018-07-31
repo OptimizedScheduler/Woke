@@ -26,8 +26,6 @@ public class alarmsAndScheduling extends AppCompatActivity {
 
 
     public void setAlarm(Time time, Date date) {
-
-
     }
 
 
@@ -118,7 +116,8 @@ public class alarmsAndScheduling extends AppCompatActivity {
                                 DateFormat format = new SimpleDateFormat("E MMM dd HH:mm:ss ZZZ yyyy", Locale.ENGLISH);
                                 Date date = format.parse(taskStringSplit[3]);
                                 Time time = new Time(Integer.valueOf(tasktimeSplit[0].replaceAll("\\s+", "")), Integer.valueOf(tasktimeSplit[1].replaceAll("\\s+", "")), 0);
-                                Task newTask = new Task(title, category, durationTask, date, time);
+                                Boolean completed= Boolean.valueOf(taskStringSplit[5]);
+                                Task newTask = new Task(title, category, durationTask, date, time,completed);
                                 tasks.add(newTask);
                             }
                         }

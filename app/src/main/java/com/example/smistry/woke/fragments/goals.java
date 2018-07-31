@@ -70,12 +70,21 @@ public class goals extends Fragment {
             entries.add(new PieEntry(categoryCount.get(key),key));
         }
 
+
+        entries.add (new PieEntry(8, "hello"));
+        entries.add(new PieEntry(20, "h"));
+        entries.add(new PieEntry(20, "4"));
+        entries.add(new PieEntry(29, "g"));
+
+
         PieDataSet set = new PieDataSet(entries, "Categories");
         PieData data = new PieData(set);
 
         set.setColors(new int[] { R.color.colorAccent, R.color.colorPrimary, R.color.colorPrimaryDark, R.color.mdtp_red }, getContext());
         chart.setData(data);
-        chart.invalidate(); // refresh
+       // chart.animate();
+        chart.animateXY(2000,2000);
+        //chart.invalidate(); // refresh
 
     }
 
