@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.smistry.woke.R;
+import com.example.smistry.woke.bottomNav;
+import com.example.smistry.woke.models.Day;
 import com.github.mikephil.charting.charts.HorizontalBarChart;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
@@ -20,6 +22,7 @@ import java.util.ArrayList;
 public class stats extends Fragment {
 
     HorizontalBarChart sleepChart;
+
 
     public stats() {
         // Required empty public constructor
@@ -38,23 +41,51 @@ public class stats extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         sleepChart = (HorizontalBarChart) view.findViewById(R.id.sleepChart);
         setData(7, 12);
+
     }
 
     private void setData (int count, int range) {
         ArrayList<BarEntry> sleepVals = new ArrayList<>();
-        float barWidth = 9f;
-        float spaceForBar = 10f;
+        float barWidth = 15f;
+        float spaceForBar = 20f;
+        ArrayList<Day> days=((bottomNav) getContext()).getDays();
 
-        for(int i = 0; i <count; i++)
+
+
+        for(int i = 0; i < days.size()-1; i++)
         {
-            float val = (float) (Math.random()*range);
-            sleepVals.add(new BarEntry(i*spaceForBar,val));
+
+           Day day = days.get(i);
+           Day next = days.get(i+1);
+           int nextHours = next.getWakeUp().getHours();
+           int nextMin = next.getWakeUp().getMinutes();
+           int dayHours = day.getSleep().getHours();
+           int dayMins = day.getWakeUp().getMinutes();
+           float sleeptime = (nextHours-dayHours)*60 + (nextMin-dayMins);
+           sleepVals.add(new BarEntry(i*spaceForBar, sleeptime));
+
+
         }
+
+        Day day= days.get(days.size()-1);
+        Day next= days.get(0);
+        int nextHours = next.getWakeUp().getHours();
+        int nextMin = next.getWakeUp().getMinutes();
+        int dayHours = day.getSleep().getHours();
+        int dayMins = day.getWakeUp().getMinutes();
+        float sleeptime = (nextHours-dayHours)*60 + (nextMin-dayMins);
+        sleepVals.add(new BarEntry((days.size()-1)*spaceForBar, sleeptime));
+
+
+
+
 
         BarDataSet set1;
         set1 = new BarDataSet(sleepVals, "Sleep Progress");
         BarData data = new BarData(set1);
         data.setBarWidth(barWidth);
+        sleepChart.setFitBars(true);
         sleepChart.setData(data);
+
     }
 }

@@ -136,6 +136,16 @@ public class bottomNav extends AppCompatActivity {
 
        // if(weatherTasks && jacket && bringJacket) {sendOnChannel1();};
 
+        ArrayList<Task> tasks2;
+        ArrayList<Free> freeBlocks2;
+        ArrayList<Task> tasks3;
+        ArrayList<Free> freeBlocks3;
+        ArrayList<Task> tasks4;
+        ArrayList<Free> freeBlocks4;
+        ArrayList<Task> tasks5;
+        ArrayList<Free> freeBlocks5;
+        ArrayList<Task> tasks6;
+        ArrayList<Free> freeBlocks6;
     }
 
 
