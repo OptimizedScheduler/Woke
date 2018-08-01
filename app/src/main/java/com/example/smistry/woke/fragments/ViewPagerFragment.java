@@ -75,6 +75,7 @@ public class ViewPagerFragment extends Fragment {
         //retrieve the Array passed by the Activity (bottomNav)
         //TODO check if it's not nullPointer
         daysA= Parcels.unwrap(this.getArguments().getParcelable("days"));
+        //
     }
 
     @Override

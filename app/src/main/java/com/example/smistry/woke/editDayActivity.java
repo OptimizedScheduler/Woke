@@ -18,8 +18,11 @@ import com.example.smistry.woke.models.Day;
 import com.example.smistry.woke.models.Free;
 import com.example.smistry.woke.models.Task;
 
+import org.apache.commons.io.FileUtils;
 import org.parceler.Parcels;
 
+import java.io.File;
+import java.io.IOException;
 import java.sql.Time;
 import java.util.ArrayList;
 
@@ -182,8 +185,8 @@ public class editDayActivity extends AppCompatActivity implements TimePickerDial
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         if (id == android.R.id.home) {
+                writeItems();
                 Intent i= new Intent();
-
                 i.putExtra("days", Parcels.wrap(days));
                 setResult(RESULT_OK, i);
                 finish();
@@ -224,6 +227,26 @@ public class editDayActivity extends AppCompatActivity implements TimePickerDial
         endTimeFreeSet=false;
 
     }
+
+
+    // write the items to the filesystem
+    private void writeItems() {
+        try {
+            // save the item list as a line-delimited text file
+            FileUtils.writeLines(getDataFile(), days);
+        } catch (IOException e) {
+            // print the error to the console
+            e.printStackTrace();
+        }
+    }
+
+
+
+    // returns the file in which the data is stored
+    public File getDataFile() {
+        return new File(this.getFilesDir(), "days.txt");
+    }
+
 
 
 

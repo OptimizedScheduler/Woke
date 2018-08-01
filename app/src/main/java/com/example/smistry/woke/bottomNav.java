@@ -3,8 +3,12 @@ package com.example.smistry.woke;
 import android.app.Notification;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.icu.text.DateFormat;
+import android.icu.text.SimpleDateFormat;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -30,6 +34,7 @@ import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
+import org.apache.commons.io.FileUtils;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -38,10 +43,16 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.parceler.Parcels;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.Charset;
 import java.sql.Time;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 
 import cz.msebera.android.httpclient.Header;
 
@@ -67,6 +78,8 @@ public class bottomNav extends AppCompatActivity {
 
     ViewPagerFragment viewPager;
 
+    HashMap<String,Integer>  months = new HashMap<>();
+
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -90,10 +103,28 @@ public class bottomNav extends AppCompatActivity {
         }
     };
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bottom_nav);
+
+        months.put("Jan",0);
+        months.put("Feb",1);
+        months.put("Mar",2);
+        months.put("Apr",3);
+        months.put("May",4);
+        months.put("Jun",5);
+        months.put("Jul",6);
+        months.put("Aug",7);
+        months.put("Sep",8);
+        months.put("Oct",9);
+        months.put("Nov",10);
+        months.put("Dec",11);
+
+
+
+        readItems();
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         String age= prefs.getString("age", "18");
@@ -137,6 +168,7 @@ public class bottomNav extends AppCompatActivity {
         BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
 
+
        // if(weatherTasks && jacket && bringJacket) {sendOnChannel1();};
 
 
@@ -159,6 +191,9 @@ public class bottomNav extends AppCompatActivity {
             }
         }
 
+
+
+
     }
 
 
@@ -173,6 +208,19 @@ public class bottomNav extends AppCompatActivity {
             EventBus.getDefault().removeStickyEvent(nT);
         }*/
     }
+
+    // write the items to the filesystem
+    private void writeItems() {
+        try {
+            // save the item list as a line-delimited text file
+            FileUtils.writeLines(getDataFile(), days);
+        } catch (IOException e) {
+            // print the error to the console
+            e.printStackTrace();
+        }
+    }
+
+
 
     @Override
     public void onStop() {
@@ -253,6 +301,109 @@ public class bottomNav extends AppCompatActivity {
     public ArrayList<Day> getDays() {
         return days;
     }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Override
+    protected void onResume() {
+        super.onResume();
+        readItems();
+    }
+
+    // returns the file in which the data is stored
+    public File getDataFile() {
+        return new File(this.getFilesDir(), "days.txt");
+    }
+
+    // read the items from the file system
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void readItems() {
+        try {
+            ArrayList<String> dayStrings;
+//           // create the array using the content in the file
+            dayStrings = new ArrayList<String>(FileUtils.readLines(getDataFile(), Charset.defaultCharset()));
+            if(days!=null){
+                days.clear();}
+            else{
+                days=new ArrayList<>();
+            }
+
+
+            for (String daysString : dayStrings) {
+                Log.d("Day", daysString);
+
+                String[] params = daysString.split("_");
+                String dayOfWeek = params[0];
+                String[] wakeTimeSplit = params[1].split(":");
+                String[] sleepTimeSplit = params[2].split(":");
+                Time wakeTime = new Time(Integer.valueOf(wakeTimeSplit[0]), Integer.valueOf(wakeTimeSplit[1]), 0);
+                Time sleepTime = new Time(Integer.valueOf(sleepTimeSplit[0]), Integer.valueOf(sleepTimeSplit[1]), 0);
+
+
+                String freeBlocks=params[3];
+                //remove brackets from array toStirng
+                freeBlocks=freeBlocks.substring(1,freeBlocks.length()-1);
+                String [] freeBlocksSplit=freeBlocks.split(",");
+                ArrayList<Free>frees=new ArrayList<>();
+
+                if (!freeBlocks.equals("")) {
+                    for (String free : freeBlocksSplit) {
+                        String[] splitFree = free.split(";");
+                        String[] freeStartSplit = splitFree[0].split(":");
+                        String[] freeEndSplit = splitFree[1].split(":");
+                        Time freeStart = new Time(Integer.valueOf(freeStartSplit[0].replaceAll("\\s+", "")), Integer.valueOf(freeStartSplit[1].replaceAll("\\s+", "")), 0);
+                        Time freeEnd = new Time(Integer.valueOf(freeEndSplit[0].replaceAll("\\s+", "")), Integer.valueOf(freeEndSplit[1].replaceAll("\\s+", "")), 0);
+                        int duration = Integer.valueOf(splitFree[2]);
+                        ArrayList<Task> tasks = new ArrayList<>();
+
+                        if (splitFree.length == 4) {
+
+                            String[] tasksStrings = splitFree[3].split("/");
+                            for (String taskString : tasksStrings) {
+
+                                String[] taskStringSplit = taskString.split("-");
+                                String[] tasktimeSplit = taskStringSplit[4].split(":");
+
+                                String title = taskStringSplit[0];
+                                String category = taskStringSplit[1];
+                                int durationTask = Integer.parseInt(taskStringSplit[2].replaceAll("\\s+", ""));
+                                SimpleDateFormat format = new SimpleDateFormat("E MMM dd HH:mm:ss ZZZ yyyy", Locale.ENGLISH);
+                               // Date date = format.parse(taskStringSplit[3]);
+
+                                String[] dateSplit=taskStringSplit[3].split(" ");
+
+                                Date date= new Date(Integer.valueOf(dateSplit[5])-1900,months.get(dateSplit[1]) ,Integer.valueOf(dateSplit[2]));
+                                Time time = new Time(Integer.valueOf(tasktimeSplit[0].replaceAll("\\s+", "")), Integer.valueOf(tasktimeSplit[1].replaceAll("\\s+", "")), 0);
+                                Boolean completed= Boolean.valueOf(taskStringSplit[5]);
+                                Task newTask = new Task(title, category, durationTask, date, time,completed);
+                                tasks.add(newTask);
+                            }
+                        }
+                        frees.add(new Free(tasks, freeStart, freeEnd, duration));
+                    }
+                }
+                Day newDay= new Day(frees,dayOfWeek,wakeTime, sleepTime);
+                days.add(newDay);
+                Log.d("Day", "added new day: " + newDay.toString());
+            }
+
+
+
+        }
+        catch (IOException e) {
+            // print the error to the console
+            e.printStackTrace();
+            // just load an empty list
+            days = new ArrayList<>();
+        }
+//        catch (ParseException e) {
+//            e.printStackTrace();
+//            Log.d("Home Activity", "Error with date to String");
+//        }
+
+    }
+
+
+
 }
 
 

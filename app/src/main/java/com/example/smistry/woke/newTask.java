@@ -25,9 +25,12 @@ import com.example.smistry.woke.models.Free;
 import com.example.smistry.woke.models.MessageEvent;
 import com.example.smistry.woke.models.Task;
 
+import org.apache.commons.io.FileUtils;
 import org.greenrobot.eventbus.EventBus;
 import org.parceler.Parcels;
 
+import java.io.File;
+import java.io.IOException;
 import java.sql.Time;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -148,6 +151,8 @@ public class newTask extends FragmentActivity implements  DatePickerDialog.OnDat
                     EventBus.getDefault().postSticky(event);
 
 
+                    Log.d("Days", myDays.toString());
+                    writeItems();
                     finish();
                 }
             }
@@ -194,23 +199,31 @@ public class newTask extends FragmentActivity implements  DatePickerDialog.OnDat
                 }
             }
 
-            Time t1= myDays.get(index+1).getWakeUp(); //wake up time of current day
-            int newWake = t1.getHours()*60 + t1.getMinutes() - duration;  // new wake up time (Int format)
-            Time t2 = new Time (newWake/60, (newWake%60)*60,00); //new Wake up time  && start of the task
-            task.setTime(t2);
-            Calendar cal = Calendar.getInstance();
-            cal.setTime(taskDate);
-            cal.add(Calendar.DATE, 1);
-            Date movedDate = cal.getTime();
-            movedDate.setHours(task.getTime().getHours());
-            movedDate.setMinutes(task.getTime().getMinutes());
-            task.setDate(movedDate);
-            myDays.get(index+1).getFreeBlocks().add(0,new Free(new ArrayList<Task>(),t2,t1,0));
-            myDays.get(index+1).getFreeBlocks().get(0).getTasks().add(0,task);
-            setAlarm(t2,task,etTitle.getText().toString(),0,iTaskDate+1);
-            MessageEvent event = new MessageEvent(myDays);
-            EventBus.getDefault().postSticky(event);
-            return true;
+            if (index<myDays.size()-1){
+                Time t1= myDays.get(index+1).getWakeUp(); //wake up time of current day
+                int newWake = t1.getHours()*60 + t1.getMinutes() - duration;  // new wake up time (Int format)
+                Time t2 = new Time (newWake/60, (newWake%60),00); //new Wake up time  && start of the task
+                task.setTime(t2);
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(taskDate);
+                cal.add(Calendar.DATE, 1);
+                Date movedDate = cal.getTime();
+                movedDate.setHours(task.getTime().getHours());
+                movedDate.setMinutes(task.getTime().getMinutes());
+                task.setDate(movedDate);
+                myDays.get(index+1).getFreeBlocks().add(0,new Free(new ArrayList<Task>(),t1,t1,0));
+                myDays.get(index+1).getFreeBlocks().get(0).getTasks().add(task);
+                myDays.get(index+1).setWakeUp(t2);
+                setAlarm(t2,task,etTitle.getText().toString(),0,iTaskDate+1);
+                MessageEvent event = new MessageEvent(myDays);
+                EventBus.getDefault().postSticky(event);
+                return true;}
+
+                else{
+                Toast.makeText(this,"Sorry there is no available time in the week", Toast.LENGTH_LONG).show();
+                return false;
+            }
+
     }
 
 
@@ -234,5 +247,24 @@ public class newTask extends FragmentActivity implements  DatePickerDialog.OnDat
         startActivity(setAlarm);
 
     }
+    // write the items to the filesystem
+    private void writeItems() {
+        try {
+            // save the item list as a line-delimited text file
+            FileUtils.writeLines(getDataFile(), myDays);
+        } catch (IOException e) {
+            // print the error to the console
+            e.printStackTrace();
+        }
+    }
+
+
+
+    // returns the file in which the data is stored
+    public File getDataFile() {
+        return new File(this.getFilesDir(), "days.txt");
+    }
 
 }
+
+

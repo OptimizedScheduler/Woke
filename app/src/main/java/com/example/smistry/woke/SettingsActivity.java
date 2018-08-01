@@ -50,7 +50,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity  {
 
     public static ArrayList<Day> enteredItems;
     // Fake testing data to ensure adding free blocks works
-    static ArrayList<String>DOW;
+
 
 
     private static Preference.OnPreferenceChangeListener sBindPreferenceSummaryToValueListener = new Preference.OnPreferenceChangeListener() {
@@ -100,25 +100,30 @@ public class SettingsActivity extends AppCompatPreferenceActivity  {
         PreferenceManager.setDefaultValues(this, R.xml.pref_general, false);
 //        PreferenceManager.setDefaultValues(this, R.xml.pref_sleep_time, false);
 //        PreferenceManager.setDefaultValues(this, R.xml.pref_free_times, false);
+
         if (getIntent()!=null){
             enteredItems=Parcels.unwrap(getIntent().getParcelableExtra("days"));
         }
-        if (DOW==null || enteredItems== null){
-            DOW= new ArrayList<>();
+
+        if (enteredItems== null ||enteredItems.size()==0){
             enteredItems= new ArrayList<>();
-            enteredItems.add(new Day(new ArrayList<Free>(),"Sunday", new Time(22,0,0),new Time(6,00,00)));
-            enteredItems.add(new Day(new ArrayList<Free>(),"Monday", new Time(22,0,0),new Time(6,00,00)));
-            enteredItems.add(new Day(new ArrayList<Free>(),"Tuesday", new Time(22,0,0),new Time(6,00,00)));
-            enteredItems.add(new Day(new ArrayList<Free>(),"Wednesday", new Time(22,0,0),new Time(6,00,00)));
-            enteredItems.add(new Day(new ArrayList<Free>(),"Thursday", new Time(22,0,0),new Time(6,00,00)));
-            enteredItems.add(new Day(new ArrayList<Free>(),"Friday", new Time(22,0,0),new Time(6,00,00)));
-            enteredItems.add(new Day(new ArrayList<Free>(),"Saturday", new Time(22,0,0),new Time(6,00,00)));
+
+
+
+            enteredItems.add(new Day(new ArrayList<Free>(),"Sunday", new Time(6,0,0),new Time(22,00,00)));
+            enteredItems.add(new Day(new ArrayList<Free>(),"Monday", new Time(6,0,0),new Time(22,00,00)));
+            enteredItems.add(new Day(new ArrayList<Free>(),"Tuesday", new Time(6,0,0),new Time(22,00,00)));
+            enteredItems.add(new Day(new ArrayList<Free>(),"Wednesday", new Time(6,0,0),new Time(22,00,00)));
+            enteredItems.add(new Day(new ArrayList<Free>(),"Thursday", new Time(6,0,0),new Time(22,00,00)));
+            enteredItems.add(new Day(new ArrayList<Free>(),"Friday", new Time(6,0,0),new Time(22,00,00)));
+            enteredItems.add(new Day(new ArrayList<Free>(),"Saturday", new Time(6,0,0),new Time(22,00,00)));
 
         }
 
 
         MessageEvent event = new MessageEvent(enteredItems);
         EventBus.getDefault().postSticky(event);
+        writeItems();
 
 
 
@@ -368,10 +373,32 @@ public class SettingsActivity extends AppCompatPreferenceActivity  {
 //
             MessageEvent event = new MessageEvent(enteredItems);
             EventBus.getDefault().postSticky(event);
+            writeItems();
 
          //   EventBus.getDefault().postSticky(new MessageEvent(enteredItems));
         }
 
     }
+
+
+    // write the items to the filesystem
+    private void writeItems() {
+        try {
+            // save the item list as a line-delimited text file
+            FileUtils.writeLines(getDataFile(), enteredItems);
+        } catch (IOException e) {
+            // print the error to the console
+            e.printStackTrace();
+        }
+    }
+
+
+
+    // returns the file in which the data is stored
+    public File getDataFile() {
+        return new File(this.getFilesDir(), "days.txt");
+    }
+
+
 
 }

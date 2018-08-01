@@ -71,12 +71,6 @@ public class goals extends Fragment {
         }
 
 
-        entries.add (new PieEntry(8, "hello"));
-        entries.add(new PieEntry(20, "h"));
-        entries.add(new PieEntry(20, "4"));
-        entries.add(new PieEntry(29, "g"));
-
-
         PieDataSet set = new PieDataSet(entries, "Categories");
         PieData data = new PieData(set);
 

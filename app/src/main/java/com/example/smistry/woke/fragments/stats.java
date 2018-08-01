@@ -12,9 +12,16 @@ import com.example.smistry.woke.R;
 import com.example.smistry.woke.bottomNav;
 import com.example.smistry.woke.models.Day;
 import com.github.mikephil.charting.charts.HorizontalBarChart;
+import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
+import com.jjoe64.graphview.LabelFormatter;
+import com.jjoe64.graphview.Viewport;
 
 import java.util.ArrayList;
 
@@ -52,16 +59,16 @@ public class stats extends Fragment {
 
 
 
-        for(int i = 0; i < days.size()-1; i++)
+        for(int i = days.size()-1; i >0; i--)
         {
 
-           Day day = days.get(i);
-           Day next = days.get(i+1);
+           Day day = days.get(i-1);
+           Day next = days.get(i);
            int nextHours = next.getWakeUp().getHours();
            int nextMin = next.getWakeUp().getMinutes();
            int dayHours = day.getSleep().getHours();
            int dayMins = day.getWakeUp().getMinutes();
-           float sleeptime = (nextHours-dayHours)*60 + (nextMin-dayMins);
+           float sleeptime = 1440-Math.abs((nextHours-dayHours)*60 + (nextMin-dayMins));
            sleepVals.add(new BarEntry(i*spaceForBar, sleeptime));
 
 
@@ -73,8 +80,10 @@ public class stats extends Fragment {
         int nextMin = next.getWakeUp().getMinutes();
         int dayHours = day.getSleep().getHours();
         int dayMins = day.getWakeUp().getMinutes();
-        float sleeptime = (nextHours-dayHours)*60 + (nextMin-dayMins);
-        sleepVals.add(new BarEntry((days.size()-1)*spaceForBar, sleeptime));
+        float sleeptime = 1440-Math.abs((nextHours-dayHours)*60 + (nextMin-dayMins));
+        sleepVals.add(new BarEntry((0)*spaceForBar, sleeptime));
+
+
 
 
 
@@ -86,6 +95,31 @@ public class stats extends Fragment {
         data.setBarWidth(barWidth);
         sleepChart.setFitBars(true);
         sleepChart.setData(data);
+
+
+
+        YAxis yAxis= sleepChart.getAxisLeft();
+        yAxis.setDrawGridLines(false);
+
+        ArrayList<String>labels= new ArrayList<>();
+        labels.add("h");
+        labels.add("E");
+        labels.add( "w");
+        labels.add("wW");
+        labels.add("o");
+        labels.add("!");
+        labels.add("!!");
+        yAxis.setValueFormatter(new IndexAxisValueFormatter(labels));
+        yAxis.setDrawLabels(true);
+        //TODO- fix bar icons
+
+
+
+
+
+        sleepChart.animateXY(1000,1000);
+
+
 
     }
 }
