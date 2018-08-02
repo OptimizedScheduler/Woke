@@ -11,6 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_alignStart="@+id/tvTask"
         android:layout_below="@+id/tvTask"
+        android:textColor="@color/purple4"
         android:text="Time" />
 
     <ImageView
@@ -28,6 +29,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginTop="16dp"
         android:layout_toEndOf="@+id/ivCategory"
+        android:textColor="@color/purple4"
         android:checkMark="?android:listChoiceIndicatorMultiple"
         android:text="CheckedTextView" />
 
