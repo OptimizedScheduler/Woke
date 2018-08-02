@@ -71,6 +71,7 @@ public class goals extends Fragment {
         }
 
 
+
         PieDataSet set = new PieDataSet(entries, "Categories");
         PieData data = new PieData(set);
 

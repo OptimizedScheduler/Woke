@@ -42,4 +42,6 @@ dependencies {
     implementation 'com.loopj.android:android-async-http:1.4.9'//async
 
     implementation 'com.github.PhilJay:MPAndroidChart:v3.0.3' //piechart
+
+    debugImplementation 'com.facebook.sonar:sonar:0.6.13'
 }
