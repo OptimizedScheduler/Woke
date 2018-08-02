@@ -1,7 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorPrimary">#692878</color>
+    <color name="colorPrimaryDark">#140023</color>
+    <color name="colorAccent">#692878</color>
     <color name ="white">#FFFFFF</color>
+    <color name= "purple0">#63566c</color>
+    <color name= "purple1">#4b2771</color>
+    <color name= "purple2">#692878</color>
+    <color name= "purple3">#8c6b96</color>
+    <color name= "purple4">#c1aad2</color>
+    <color name= "purple5">#e7d8f2</color>
+
+    <color name="backgroundPages">#262854</color>
+    <color name="secondaryBackground">#5e609b</color>
+    <color name="font_main">#bfc2d2</color>
+    <color name="orange">#e26600</color>
+    <color name="blue">#0152bc</color>
+    <color name="green">#00be91</color>
+    <color name="yellow">#e6d201</color>
+    <color name="red">#bc001f</color>
+    <color name="pink">#d90182</color>
 </resources>
+

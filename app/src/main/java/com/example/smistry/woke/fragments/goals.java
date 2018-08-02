@@ -50,10 +50,10 @@ public class goals extends Fragment {
                 for (Task task: free.getTasks()){
 
                     if(!categoryCount.containsKey(task.getCategory())){
-                        categoryCount.put(task.getCategory(), 1);
+                        categoryCount.put(task.getCategory(), task.getDuration());
                     }
                     else{
-                        categoryCount.put(task.getCategory(), categoryCount.get(task.getCategory())+1);
+                        categoryCount.put(task.getCategory(), categoryCount.get(task.getCategory())+task.getDuration());
                     }
                 }
             }
@@ -75,7 +75,7 @@ public class goals extends Fragment {
         PieDataSet set = new PieDataSet(entries, "Categories");
         PieData data = new PieData(set);
 
-        set.setColors(new int[] { R.color.colorAccent, R.color.colorPrimary, R.color.colorPrimaryDark, R.color.mdtp_red }, getContext());
+        set.setColors(new int[] { R.color.purple4, R.color.purple1, R.color.purple2, R.color.purple3 }, getContext());
         chart.setData(data);
        // chart.animate();
         chart.animateXY(2000,2000);
