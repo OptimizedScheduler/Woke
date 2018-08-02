@@ -33,6 +33,8 @@ import com.facebook.soloader.SoLoader;
 import com.facebook.sonar.android.AndroidSonarClient;
 import com.facebook.sonar.android.utils.SonarUtils;
 import com.facebook.sonar.core.SonarClient;
+import com.facebook.sonar.plugins.inspector.DescriptorMapping;
+import com.facebook.sonar.plugins.inspector.InspectorSonarPlugin;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -57,8 +59,6 @@ import java.util.HashMap;
 import java.util.Locale;
 
 import cz.msebera.android.httpclient.Header;
-import com.facebook.sonar.plugins.inspector.DescriptorMapping;
-import com.facebook.sonar.plugins.inspector.InspectorSonarPlugin;
 
 
 public class bottomNav extends AppCompatActivity {
@@ -174,6 +174,7 @@ public class bottomNav extends AppCompatActivity {
 
        viewPager= ViewPagerFragment.newInstance(days);
         Log.d("EventBus", days.toString());
+
 
         //begins fragment transaction_ViewPagerFragment is shown as the default view
        FragmentTransaction ft = fragmentManager.beginTransaction();
