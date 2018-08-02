@@ -29,6 +29,10 @@ import com.example.smistry.woke.models.Free;
 import com.example.smistry.woke.models.MessageEvent;
 import com.example.smistry.woke.models.Task;
 import com.example.smistry.woke.models.Weather;
+import com.facebook.soloader.SoLoader;
+import com.facebook.sonar.android.AndroidSonarClient;
+import com.facebook.sonar.android.utils.SonarUtils;
+import com.facebook.sonar.core.SonarClient;
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
@@ -53,8 +57,12 @@ import java.util.HashMap;
 import java.util.Locale;
 
 import cz.msebera.android.httpclient.Header;
+import com.facebook.sonar.plugins.inspector.DescriptorMapping;
+import com.facebook.sonar.plugins.inspector.InspectorSonarPlugin;
+
 
 public class bottomNav extends AppCompatActivity {
+    final DescriptorMapping descriptorMapping = DescriptorMapping.withDefaults();
 
     ArrayList<Task> tasks;
     ArrayList<Free> freeBlocks;
@@ -106,6 +114,14 @@ public class bottomNav extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bottom_nav);
+
+        SoLoader.init(this, false);
+
+        if (BuildConfig.DEBUG && SonarUtils.shouldEnableSonar(this)) {
+            final SonarClient client = AndroidSonarClient.getInstance(this);
+            client.addPlugin(new InspectorSonarPlugin(getApplicationContext(), descriptorMapping));
+            client.start();
+        }
 
         months.put("Jan",0);
         months.put("Feb",1);
