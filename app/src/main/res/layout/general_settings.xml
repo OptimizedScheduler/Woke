@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <EditText
+        android:id="@+id/etAge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="42dp"
+        android:ems="10"
+        android:fontFamily="@font/raleway_thin"
+        android:hint="Age"
+        android:inputType="number"
+        tools:layout_editor_absoluteX="85dp"
+        tools:layout_editor_absoluteY="68dp" />
+
+    <Switch
+        android:id="@+id/sWeather"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="130dp"
+        android:fontFamily="@font/raleway_thin"
+        android:text="Weather Tasks" />
+
+    <Switch
+        android:id="@+id/sUmbrella"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/sWeather"
+        android:layout_centerHorizontal="true"
+        android:fontFamily="@font/raleway_thin"
+        android:text="Bring Umbrella"
+        android:textStyle="bold" />
+
+    <Switch
+        android:id="@+id/sJacket"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/sUmbrella"
+        android:layout_centerHorizontal="true"
+        android:fontFamily="@font/raleway_thin"
+        android:text="Bring Jacket"
+        android:textStyle="bold" />
+
+    <SeekBar
+        android:id="@+id/sbTemp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/sJacket"
+        android:layout_centerHorizontal="true"
+        android:max="100" />
+</RelativeLayout>

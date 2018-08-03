@@ -14,22 +14,29 @@ import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v14.preference.PreferenceFragment;
 import android.support.v14.preference.SwitchPreference;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.ActionBar;
+import android.support.v7.preference.EditTextPreference;
 import android.support.v7.preference.ListPreference;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceManager;
+import android.text.method.DigitsKeyListener;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
+import android.widget.EditText;
+import android.widget.SeekBar;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.example.smistry.woke.models.Day;
 import com.example.smistry.woke.models.Free;
 import com.example.smistry.woke.models.MessageEvent;
-import com.example.smistry.woke.models.Task;
+
 
 import org.apache.commons.io.FileUtils;
 import org.greenrobot.eventbus.EventBus;
@@ -172,65 +179,146 @@ public class SettingsActivity extends AppCompatPreferenceActivity  {
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public static class GeneralPreferenceFragment extends PreferenceFragment {
 
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+            return inflater.inflate(R.layout.general_settings, container, false);
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.M)
+        @Override
+        public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+            super.onViewCreated(view, savedInstanceState);
+
+
+
+
+            TextView age= (TextView)view.findViewById(R.id.etAge);
+            final Switch weather= (Switch)view.findViewById(R.id.sWeather);
+            final Switch rain= (Switch)view.findViewById(R.id.sUmbrella);
+            final Switch jacket= (Switch)view.findViewById(R.id.sJacket);
+            final SeekBar temp= (SeekBar)view.findViewById(R.id.sbTemp);
+
+
+
+            if (!weather.isChecked()){
+                rain.setVisibility(View.INVISIBLE);
+                jacket.setVisibility(View.INVISIBLE);
+                temp.setVisibility(View.INVISIBLE);
+            }
+            else{
+                rain.setVisibility(View.VISIBLE);
+                jacket.setVisibility(View.VISIBLE);
+                temp.setVisibility(View.VISIBLE);
+                if (!jacket.isChecked()){
+                    temp.setVisibility(View.INVISIBLE);
+                }
+                else{
+                    temp.setVisibility(View.VISIBLE);
+
+                }
+
+            }
+
+            weather.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                    if (!b){
+                        rain.setVisibility(View.INVISIBLE);
+                        jacket.setVisibility(View.INVISIBLE);
+                        temp.setVisibility(View.INVISIBLE);
+                    }
+                    else{
+                        rain.setVisibility(View.VISIBLE);
+                        jacket.setVisibility(View.VISIBLE);
+                        temp.setVisibility(View.VISIBLE);
+                        if (!jacket.isChecked()){
+                            temp.setVisibility(View.INVISIBLE);
+                        }
+                        else{
+                            temp.setVisibility(View.VISIBLE);
+
+                        }
+
+                    }
+                }
+            });
+
+            jacket.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                    if (!b){
+                        temp.setVisibility(View.INVISIBLE);
+                    }
+                    else{
+                        temp.setVisibility(View.VISIBLE);
+                    }
+
+                }
+            });
+
+
+
+
+
+
+        }
+
         @RequiresApi(api = Build.VERSION_CODES.M)
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            addPreferencesFromResource(R.xml.pref_general);
-
-
-
             setHasOptionsMenu(true);
 
-            if (!((SwitchPreference)getPreferenceManager().findPreference("weatherSwitch")).isChecked()) {
-                getPreferenceManager().findPreference("rainSwitch").setEnabled(false);
-                getPreferenceManager().findPreference("jacketSwitch").setEnabled(false);
-                getPreferenceManager().findPreference("seekBar").setEnabled(false);
-            }
-            else{
-                getPreferenceManager().findPreference("rainSwitch").setEnabled(true);
-                getPreferenceManager().findPreference("jacketSwitch").setEnabled(true);
-                getPreferenceManager().findPreference("seekBar").setEnabled(true);
-            }
-
-            ((SwitchPreference)getPreferenceManager().findPreference("weatherSwitch")).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                @Override
-                public boolean onPreferenceClick(Preference preference) {
-                    if (!((SwitchPreference)preference).isChecked()) {
-                        getPreferenceManager().findPreference("rainSwitch").setEnabled(false);
-                        getPreferenceManager().findPreference("jacketSwitch").setEnabled(false);
-                        getPreferenceManager().findPreference("seekBar").setEnabled(false);
-                    }
-
-                    else{
-                        getPreferenceManager().findPreference("rainSwitch").setEnabled(true);
-                        getPreferenceManager().findPreference("jacketSwitch").setEnabled(true);
-                        getPreferenceManager().findPreference("seekBar").setEnabled(true);
-                    }
-
-                    return false;
-                }
-            });
-
-            ((SwitchPreference)getPreferenceManager().findPreference("jacketSwitch")).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-                @Override
-                public boolean onPreferenceClick(Preference preference) {
-                    if (((SwitchPreference)preference).isChecked()){
-                        getPreferenceManager().findPreference("seekBar").setVisible(true);
-                    }
-                    else{
-                        getPreferenceManager().findPreference("seekBar").setVisible(false);
-
-                    }
-                    return false;
-                }
-            });
+//            if (!((SwitchPreference)getPreferenceManager().findPreference("weatherSwitch")).isChecked()) {
+//                getPreferenceManager().findPreference("rainSwitch").setEnabled(false);
+//                getPreferenceManager().findPreference("jacketSwitch").setEnabled(false);
+//                getPreferenceManager().findPreference("seekBar").setEnabled(false);
+//            }
+//            else{
+//                getPreferenceManager().findPreference("rainSwitch").setEnabled(true);
+//                getPreferenceManager().findPreference("jacketSwitch").setEnabled(true);
+//                getPreferenceManager().findPreference("seekBar").setEnabled(true);
+//            }
+//
+//            ((SwitchPreference)getPreferenceManager().findPreference("weatherSwitch")).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+//                @Override
+//                public boolean onPreferenceClick(Preference preference) {
+//                    if (!((SwitchPreference)preference).isChecked()) {
+//                        getPreferenceManager().findPreference("rainSwitch").setEnabled(false);
+//                        getPreferenceManager().findPreference("jacketSwitch").setEnabled(false);
+//                        getPreferenceManager().findPreference("seekBar").setEnabled(false);
+//                    }
+//
+//                    else{
+//                        getPreferenceManager().findPreference("rainSwitch").setEnabled(true);
+//                        getPreferenceManager().findPreference("jacketSwitch").setEnabled(true);
+//                        getPreferenceManager().findPreference("seekBar").setEnabled(true);
+//                    }
+//
+//                    return false;
+//                }
+//            });
+//
+//            ((SwitchPreference)getPreferenceManager().findPreference("jacketSwitch")).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+//                @Override
+//                public boolean onPreferenceClick(Preference preference) {
+//                    if (((SwitchPreference)preference).isChecked()){
+//                        getPreferenceManager().findPreference("seekBar").setVisible(true);
+//                    }
+//                    else{
+//                        getPreferenceManager().findPreference("seekBar").setVisible(false);
+//
+//                    }
+//                    return false;
+//                }
+//            });
         }
 
         @Override
         public void onCreatePreferences(Bundle bundle, String s) {
 
         }
+
 
         @Override
         public boolean onOptionsItemSelected(MenuItem item) {
