@@ -34,7 +34,6 @@ public class TaskFragment extends Fragment {
         Bundle args = new Bundle();
         args.putInt("day", day);
         args.putString("dayString", title);
-       // args.putParcelable("thisDay", Parcels.wrap(thisDay));
         fragmentFirst.setArguments(args);
         return fragmentFirst;
     }
@@ -46,8 +45,6 @@ public class TaskFragment extends Fragment {
         //TODO check for NullPointerExc
         dayOfW = getArguments().getInt("day");
         title = getArguments().getString("dayString");
-        //currentDay = Parcels.unwrap(this.getArguments().getParcelable("thisDay"));
-        //Parcels.unwrap(this.getArguments().getParcelable("days"));
         freeBlocks = new ArrayList<>();
         dailyTasks = new ArrayList<>();
 
@@ -61,7 +58,6 @@ public class TaskFragment extends Fragment {
         }
 
         if(freeBlocks!=null) {
-            //TODO search for other free blocks
             for(int i=0; i<freeBlocks.size(); i++)
             try {
                 if(dailyTasks!= null){

@@ -2,17 +2,21 @@ package com.example.smistry.woke;
 
 import android.app.TimePickerDialog;
 import android.content.Intent;
+import android.graphics.PorterDuff;
+import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.smistry.woke.fragments.TimePickerFragment;
 import com.example.smistry.woke.models.Day;
 import com.example.smistry.woke.models.Free;
@@ -25,41 +29,54 @@ import java.io.File;
 import java.io.IOException;
 import java.sql.Time;
 import java.util.ArrayList;
+import java.util.HashMap;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class editDayActivity extends AppCompatActivity implements TimePickerDialog.OnTimeSetListener{
-
-    TextView day;
-    TextView enteredFreeTimes;
-    TextView tvSleepTime;
-    TextView tvWakeTime;
-    Button btsleepTime;
-    Button btwakeTime;
-    Button btstartTimeFree;
-    Button btendTimeFree;
-    Button makeFree;
-
 
     Boolean sleepSet;
     Boolean wakeSet;
     Boolean startTimeFreeSet;
     Boolean endTimeFreeSet;
 
+    int position;
 
+    String image;
+    ArrayList<Day>days;
+    ArrayList<Free> frees;
+    HashMap<String,Integer> dayOfWeek;
     Time sleepTime;
     Time wakeTime;
     Time startTimeFree;
     Time endTimeFree;
+    Day currDay2;
 
-
-    ArrayList<Day>days;
-    ArrayList<Free> frees;
-    int position;
+    @BindView(R.id.ivDay) ImageView ivDay;
+    @BindView(R.id.tvSleepTime)TextView tvSleepTime;
+    @BindView(R.id.tvWakeTime) TextView tvWakeTime;
+    @BindView(R.id.tvDayEditDay) TextView day;
+    @BindView(R.id.btSleepTime) Button btsleepTime;
+    @BindView(R.id.btWakeTime) Button btwakeTime;
+    @BindView(R.id.btFreeTimeStart) Button btstartTimeFree;
+    @BindView(R.id.btFreeTimeEnd)Button btendTimeFree;
+    @BindView(R.id.btSetFree) Button makeFree;
+    @BindView(R.id.tvEnteredFreeEditDay) TextView enteredFreeTimes;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_edit_day);
-
+        ButterKnife.bind(this);
+        dayOfWeek=new HashMap<>();
+        dayOfWeek.put("Sunday", R.drawable.sunday);
+        dayOfWeek.put("Monday", R.drawable.monday);
+        dayOfWeek.put("Tuesday", R.drawable.tuesday);
+        dayOfWeek.put("Wednesday", R.drawable.wednesday);
+        dayOfWeek.put("Thursday", R.drawable.thursday);
+        dayOfWeek.put("Friday", R.drawable.friday);
+        dayOfWeek.put("Saturday", R.drawable.saturday);
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
@@ -76,27 +93,117 @@ public class editDayActivity extends AppCompatActivity implements TimePickerDial
         position= getIntent().getIntExtra("Position",0);
         days= Parcels.unwrap(getIntent().getParcelableExtra("Days"));
         Day currDay=days.get(position);
+        currDay2 = currDay;
         frees=currDay.getFreeBlocks();
 
-
-
-        tvSleepTime= (TextView)findViewById(R.id.tvSleepTime);
-        tvWakeTime= (TextView)findViewById(R.id.tvWakeTime);
         tvSleepTime.setText(currDay.getSleep().toString());
         tvWakeTime.setText(currDay.getWakeUp().toString());
 
-        day= (TextView)findViewById(R.id.tvDayEditDay);
         day.setText(getIntent().getStringExtra("Day").toString());
-        enteredFreeTimes= (TextView)findViewById(R.id.tvEnteredFreeEditDay);
+        image=getIntent().getStringExtra("Day").toString();
+
+        Glide.with(this)
+                .load(dayOfWeek.get(image))
+                .into(ivDay);
+
         for (Free free:frees){
             enteredFreeTimes.setText(enteredFreeTimes.getText().toString()+" "+free.toString());
         }
 
-        btsleepTime = (Button)findViewById(R.id.btSleepTime);
-        btwakeTime = (Button)findViewById(R.id.btWakeTime);
-        btstartTimeFree = (Button)findViewById(R.id.btFreeTimeStart);
-        btendTimeFree = (Button)findViewById(R.id.btFreeTimeEnd);
-        makeFree= (Button)findViewById(R.id.btSetFree) ;
+        btsleepTime.setOnTouchListener(new View.OnTouchListener() {
+
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN: {
+                        v.getBackground().setColorFilter(0xe0daf1f0, PorterDuff.Mode.SRC_ATOP);
+                        v.invalidate();
+                        break;
+                    }
+                    case MotionEvent.ACTION_UP: {
+                        v.getBackground().clearColorFilter();
+                        v.invalidate();
+                        break;
+                    }
+                }
+                return false;
+            }
+        });
+
+        btwakeTime.setOnTouchListener(new View.OnTouchListener() {
+
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN: {
+                        v.getBackground().setColorFilter(0xe0daf1f0, PorterDuff.Mode.SRC_ATOP);
+                        v.invalidate();
+                        break;
+                    }
+                    case MotionEvent.ACTION_UP: {
+                        v.getBackground().clearColorFilter();
+                        v.invalidate();
+                        break;
+                    }
+                }
+                return false;
+            }
+        });
+
+        btstartTimeFree.setOnTouchListener(new View.OnTouchListener() {
+
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN: {
+                        v.getBackground().setColorFilter(0xe0f5ddb6, PorterDuff.Mode.SRC_ATOP);
+                        v.invalidate();
+                        break;
+                    }
+                    case MotionEvent.ACTION_UP: {
+                        v.getBackground().clearColorFilter();
+                        v.invalidate();
+                        break;
+                    }
+                }
+                return false;
+            }
+        });
+
+        btendTimeFree.setOnTouchListener(new View.OnTouchListener() {
+
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN: {
+                        v.getBackground().setColorFilter(0xe0f5ddb6, PorterDuff.Mode.SRC_ATOP);
+                        v.invalidate();
+                        break;
+                    }
+                    case MotionEvent.ACTION_UP: {
+                        v.getBackground().clearColorFilter();
+                        v.invalidate();
+                        break;
+                    }
+                }
+                return false;
+            }
+        });
+
+        makeFree.setOnTouchListener(new View.OnTouchListener() {
+
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN: {
+                        v.getBackground().setColorFilter(0xe0f5ddb6, PorterDuff.Mode.SRC_ATOP);
+                        v.invalidate();
+                        break;
+                    }
+                    case MotionEvent.ACTION_UP: {
+                        v.getBackground().clearColorFilter();
+                        v.invalidate();
+                        break;
+                    }
+                }
+                return false;
+            }
+        });
 
         btwakeTime.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -106,7 +213,8 @@ public class editDayActivity extends AppCompatActivity implements TimePickerDial
                 startTimeFreeSet=false;
                 endTimeFreeSet=false;
 
-                DialogFragment TimePicker= new TimePickerFragment();
+                DialogFragment TimePicker= TimePickerFragment.newInstance(currDay2.getWakeUp().getHours(),currDay2.getWakeUp().getMinutes());
+
                 TimePicker.show(getSupportFragmentManager(), "TimePick");
             }
         });
@@ -118,7 +226,7 @@ public class editDayActivity extends AppCompatActivity implements TimePickerDial
                 sleepSet=true;
                 startTimeFreeSet=false;
                 endTimeFreeSet=false;
-                    DialogFragment TimePicker= new TimePickerFragment();
+                DialogFragment TimePicker= TimePickerFragment.newInstance(currDay2.getSleep().getHours(),currDay2.getSleep().getMinutes());
                     TimePicker.show(getSupportFragmentManager(), "TimePick");
 
 
@@ -134,11 +242,8 @@ public class editDayActivity extends AppCompatActivity implements TimePickerDial
                 sleepSet=false;
                 startTimeFreeSet=true;
                 endTimeFreeSet=false;
-                    DialogFragment TimePicker= new TimePickerFragment();
+                    DialogFragment TimePicker= TimePickerFragment.newInstance(0,0);
                     TimePicker.show(getSupportFragmentManager(), "TimePick");
-
-
-
 
             }
         });
@@ -150,7 +255,7 @@ public class editDayActivity extends AppCompatActivity implements TimePickerDial
                 sleepSet=false;
                 startTimeFreeSet=false;
                 endTimeFreeSet=true;
-                    DialogFragment TimePicker= new TimePickerFragment();
+                DialogFragment TimePicker= TimePickerFragment.newInstance(0,0);
                     TimePicker.show(getSupportFragmentManager(), "TimePick");
 
 
@@ -228,7 +333,6 @@ public class editDayActivity extends AppCompatActivity implements TimePickerDial
 
     }
 
-
     // write the items to the filesystem
     private void writeItems() {
         try {
@@ -240,15 +344,9 @@ public class editDayActivity extends AppCompatActivity implements TimePickerDial
         }
     }
 
-
-
     // returns the file in which the data is stored
     public File getDataFile() {
         return new File(this.getFilesDir(), "days.txt");
     }
-
-
-
-
 
 }
