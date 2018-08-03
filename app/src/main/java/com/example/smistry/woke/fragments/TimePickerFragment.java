@@ -6,39 +6,32 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
-import android.util.Log;
-import android.view.View;
-import android.widget.DatePicker;
-import android.widget.TimePicker;
 
-import java.sql.Time;
 import java.util.Calendar;
-import java.util.Date;
 
 public class TimePickerFragment extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         Calendar c = Calendar.getInstance();
-        int hour = c.get(Calendar.HOUR_OF_DAY);
-        int minute = c.get(Calendar.MINUTE);
+//        int hour = c.get(Calendar.HOUR_OF_DAY);
+//        int minute = c.get(Calendar.MINUTE);
+        int hour=getArguments().getInt("hour");
+        int min=getArguments().getInt("minutes");
 
-        return new TimePickerDialog(getActivity(),(TimePickerDialog.OnTimeSetListener) getActivity(), hour, minute, false);
+        return new TimePickerDialog(getActivity(),(TimePickerDialog.OnTimeSetListener) getActivity(), hour, min, false);
+    }
 
+    public static TimePickerFragment newInstance(int hour, int min) {
+        TimePickerFragment f = new TimePickerFragment();
+
+        Bundle args = new Bundle();
+        args.putInt("hour", hour);
+        args.putInt("minutes",min);
+        f.setArguments(args);
+
+        return f;
     }
 
 
-
-
-//    @Override
-//    public void onTimeSet(TimePicker timePicker, int hour, int minute) {
-//        Time time = new Time(hour, minute, 0);
-//
-//    }
-
-//    @Override
-//    public void onClick(View v){
-//        DialogFragment timePicker = new TimePickerFragment();
-//        timePicker.show(getSupportFragmentManager(), timePicker);
-//    }
 }

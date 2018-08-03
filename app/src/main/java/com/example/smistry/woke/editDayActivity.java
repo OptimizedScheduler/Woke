@@ -38,6 +38,7 @@ public class editDayActivity extends AppCompatActivity implements TimePickerDial
     Button btendTimeFree;
     Button makeFree;
 
+    Day currDay2;
 
     Boolean sleepSet;
     Boolean wakeSet;
@@ -76,6 +77,7 @@ public class editDayActivity extends AppCompatActivity implements TimePickerDial
         position= getIntent().getIntExtra("Position",0);
         days= Parcels.unwrap(getIntent().getParcelableExtra("Days"));
         Day currDay=days.get(position);
+        currDay2 = currDay;
         frees=currDay.getFreeBlocks();
 
 
@@ -106,7 +108,8 @@ public class editDayActivity extends AppCompatActivity implements TimePickerDial
                 startTimeFreeSet=false;
                 endTimeFreeSet=false;
 
-                DialogFragment TimePicker= new TimePickerFragment();
+                DialogFragment TimePicker= TimePickerFragment.newInstance(currDay2.getWakeUp().getHours(),currDay2.getWakeUp().getMinutes());
+
                 TimePicker.show(getSupportFragmentManager(), "TimePick");
             }
         });
@@ -118,7 +121,7 @@ public class editDayActivity extends AppCompatActivity implements TimePickerDial
                 sleepSet=true;
                 startTimeFreeSet=false;
                 endTimeFreeSet=false;
-                    DialogFragment TimePicker= new TimePickerFragment();
+                DialogFragment TimePicker= TimePickerFragment.newInstance(currDay2.getSleep().getHours(),currDay2.getSleep().getMinutes());
                     TimePicker.show(getSupportFragmentManager(), "TimePick");
 
 
@@ -134,11 +137,8 @@ public class editDayActivity extends AppCompatActivity implements TimePickerDial
                 sleepSet=false;
                 startTimeFreeSet=true;
                 endTimeFreeSet=false;
-                    DialogFragment TimePicker= new TimePickerFragment();
+                    DialogFragment TimePicker= TimePickerFragment.newInstance(0,0);
                     TimePicker.show(getSupportFragmentManager(), "TimePick");
-
-
-
 
             }
         });
@@ -150,7 +150,7 @@ public class editDayActivity extends AppCompatActivity implements TimePickerDial
                 sleepSet=false;
                 startTimeFreeSet=false;
                 endTimeFreeSet=true;
-                    DialogFragment TimePicker= new TimePickerFragment();
+                DialogFragment TimePicker= TimePickerFragment.newInstance(0,0);
                     TimePicker.show(getSupportFragmentManager(), "TimePick");
 
 
@@ -228,7 +228,6 @@ public class editDayActivity extends AppCompatActivity implements TimePickerDial
 
     }
 
-
     // write the items to the filesystem
     private void writeItems() {
         try {
@@ -240,15 +239,9 @@ public class editDayActivity extends AppCompatActivity implements TimePickerDial
         }
     }
 
-
-
     // returns the file in which the data is stored
     public File getDataFile() {
         return new File(this.getFilesDir(), "days.txt");
     }
-
-
-
-
 
 }

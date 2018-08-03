@@ -42,10 +42,16 @@ public class TaskRecyclerAdapter extends RecyclerView.Adapter<TaskRecyclerAdapte
         Task task = mTasks.get(i);
         viewHolder.tvTaskName.setText(task.getTaskTitle());
         viewHolder.tvTime.setText(task.getTime().toString());
-        if(task.getCategory()=="work")
-            viewHolder.ivCategory.setBackgroundResource(R.color.colorPrimary);
+        if(task.getCategory().equals("Entertainment"))
+            viewHolder.ivCategory.setBackgroundResource(R.color.orange1);
+        else if (task.getCategory().equals("Fitness"))
+            viewHolder.ivCategory.setBackgroundResource(R.color.orange0);
+        else if (task.getCategory().equals("Work"))
+            viewHolder.ivCategory.setBackgroundResource(R.color.orange3a);
+        else if (task.getCategory().equals("Social"))
+            viewHolder.ivCategory.setBackgroundResource(R.color.orange2);
         else
-            viewHolder.ivCategory.setBackgroundResource(R.color.colorAccent);
+            viewHolder.ivCategory.setBackgroundResource(R.color.brown);
         }
         else{
             viewHolder.tvTaskName.setText("L");

@@ -5,6 +5,7 @@
     <color name="colorAccent">#efc8b7</color>
 
     <color name ="white">#FFFFFF</color>
+    <color name ="black">#3b3a3a</color>
     <color name= "purple0">#63566c</color>
     <color name= "purple1">#63566c</color>
     <color name= "purple2">#692878</color>
@@ -25,16 +26,20 @@
     <color name="blue7">#00aea3</color>
     <color name="blue8">#a2dcd8</color>
     <color name="blue9">#daf1f0</color>
+    <color name="blue10">#ed7bbab6</color>
 
     <color name="orange0">#e9b25a</color>
     <color name="orange1">#c3591c</color>
     <color name="orange2">#d67c23</color>
     <color name="orange3">#dd8a27</color>
+    <color name="orange3a">#ff7c02</color>
     <color name="orange4">#e1942b</color>
     <color name="orange5">#e5a33d</color>
     <color name="orange6">#efc8b7</color>
     <color name="orange7">#f5ddb6</color>
     <color name="orange8">#fbf2e2</color>
+
+    <color name="brown">#873100</color>
 
 
 
