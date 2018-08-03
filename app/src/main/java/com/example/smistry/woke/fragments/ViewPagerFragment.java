@@ -9,6 +9,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.PagerTabStrip;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -50,7 +51,7 @@ public class ViewPagerFragment extends Fragment {
         return fragment;
     }
 
-    //crear una instance que le permita recibir el arrayList de la BottomNav Activity
+    //create an instance that recieves the arrayList from BottomNav Activity
     public static ViewPagerFragment newInstance(ArrayList<Day> days) {
         Bundle args=new Bundle();
         ViewPagerFragment fragment = new ViewPagerFragment();
@@ -58,7 +59,6 @@ public class ViewPagerFragment extends Fragment {
         fragment.setArguments(args);
         return fragment;
     }
-
 
     public ArrayList<Free> getArray(int pos){
         return daysA.get(pos).getFreeBlocks();
@@ -73,17 +73,17 @@ public class ViewPagerFragment extends Fragment {
         super.onCreate(savedInstanceState);
         daysA = new ArrayList<>();
         //retrieve the Array passed by the Activity (bottomNav)
-        //TODO check if it's not nullPointer
         daysA= Parcels.unwrap(this.getArguments().getParcelable("days"));
-        //
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_view_pager, container, false);
-
         viewPager = view.findViewById(R.id.vpPager);
+        PagerTabStrip pagerTabStrip = (PagerTabStrip) viewPager.findViewById(R.id.pager_header);
+        pagerTabStrip.setDrawFullUnderline(true);
+        pagerTabStrip.setTabIndicatorColor(getResources().getColor(R.color.blue0));
         viewPagerAdapter = new ViewPagerAdapter(getChildFragmentManager());
         viewPager.setAdapter(viewPagerAdapter);
         return view;
