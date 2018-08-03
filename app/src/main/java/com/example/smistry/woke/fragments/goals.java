@@ -75,7 +75,7 @@ public class goals extends Fragment {
         PieDataSet set = new PieDataSet(entries, "Categories");
         PieData data = new PieData(set);
 
-        set.setColors(new int[] { R.color.purple4, R.color.purple1, R.color.purple2, R.color.purple3 }, getContext());
+        set.setColors(new int[] { R.color.orange0, R.color.orange2, R.color.orange4, R.color.orange8 }, getContext());
         chart.setData(data);
        // chart.animate();
         chart.animateXY(2000,2000);

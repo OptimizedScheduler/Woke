@@ -1,6 +1,6 @@
 package com.example.smistry.woke.fragments;
 
-import android.annotation.SuppressLint;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,18 +13,10 @@ import com.example.smistry.woke.R;
 import com.example.smistry.woke.bottomNav;
 import com.example.smistry.woke.models.Day;
 import com.github.mikephil.charting.charts.HorizontalBarChart;
-import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.data.DataSet;
-import com.github.mikephil.charting.formatter.IAxisValueFormatter;
-import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
-import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
-import com.jjoe64.graphview.LabelFormatter;
-import com.jjoe64.graphview.Viewport;
 
 import java.util.ArrayList;
 
@@ -111,8 +103,9 @@ public class stats extends Fragment {
 
 
 
-        BarDataSet set1;
-        set1 = new BarDataSet(sleepVals, "Sleep Progress");
+        BarDataSet dataset = new BarDataSet(sleepVals, "Sleep Progress");
+        dataset.setColors(new int[] {Color.rgb(247,187,93) });
+        BarData data = new BarData(dataset);
 
 
         String labelLong="Sunday,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday";
@@ -121,10 +114,9 @@ public class stats extends Fragment {
 
 
 
-        set1.setDrawValues(true);
-        set1.setStackLabels(labels);
+        dataset.setDrawValues(true);
+        dataset.setStackLabels(labels);
 
-        BarData data = new BarData( set1);
 
 
         data.setBarWidth(barWidth);

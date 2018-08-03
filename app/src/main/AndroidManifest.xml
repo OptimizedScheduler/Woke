@@ -39,6 +39,10 @@
             android:name=".editDayActivity"
             android:label="@string/title_activity_settings" />
         <activity android:name=".Test" />
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
     </application>
 
 </manifest>

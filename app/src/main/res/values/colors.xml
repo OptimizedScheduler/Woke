@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#692878</color>
-    <color name="colorPrimaryDark">#140023</color>
-    <color name="colorAccent">#692878</color>
+    <color name="colorPrimary">#5DC6BE</color>
+    <color name="colorPrimaryDark">#007e6f</color>
+    <color name="colorAccent">#efc8b7</color>
+
     <color name ="white">#FFFFFF</color>
     <color name= "purple0">#63566c</color>
-    <color name= "purple1">#4b2771</color>
+    <color name= "purple1">#63566c</color>
     <color name= "purple2">#692878</color>
     <color name= "purple3">#8c6b96</color>
     <color name= "purple4">#c1aad2</color>
@@ -13,12 +14,29 @@
 
     <color name="backgroundPages">#262854</color>
     <color name="secondaryBackground">#5e609b</color>
-    <color name="font_main">#bfc2d2</color>
-    <color name="orange">#e26600</color>
-    <color name="blue">#0152bc</color>
-    <color name="green">#00be91</color>
-    <color name="yellow">#e6d201</color>
-    <color name="red">#bc001f</color>
-    <color name="pink">#d90182</color>
+
+    <color name="blue0">#5dc6be</color>
+    <color name="blue1">#004333</color>
+    <color name="blue2">#005F50</color>
+    <color name="blue3">#006f5f</color>
+    <color name="blue4">#007e6f</color>
+    <color name="blue5">#008b7b</color>
+    <color name="blue6">#009c8f</color>
+    <color name="blue7">#00aea3</color>
+    <color name="blue8">#a2dcd8</color>
+    <color name="blue9">#daf1f0</color>
+
+    <color name="orange0">#e9b25a</color>
+    <color name="orange1">#c3591c</color>
+    <color name="orange2">#d67c23</color>
+    <color name="orange3">#dd8a27</color>
+    <color name="orange4">#e1942b</color>
+    <color name="orange5">#e5a33d</color>
+    <color name="orange6">#efc8b7</color>
+    <color name="orange7">#f5ddb6</color>
+    <color name="orange8">#fbf2e2</color>
+
+
+
 </resources>
 
