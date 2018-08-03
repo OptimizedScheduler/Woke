@@ -1,105 +1,89 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/orange8"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/tvMonday"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignStart="@+id/tvSaturday"
-        android:layout_marginBottom="32dp"
-        android:text="Monday"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvSunday"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <TextView
         android:id="@+id/tvSunday"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
+        android:background="@drawable/borders"
+        android:fontFamily="@font/raleway_thin"
+        android:gravity="center"
         android:text="Sunday"
         android:textSize="24sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:textStyle="bold" />
 
     <TextView
-        android:id="@+id/tvSaturday"
+        android:id="@+id/tvMonday"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignStart="@+id/tvSunday"
-        android:layout_marginBottom="91dp"
-        android:text="Saturday"
+        android:fontFamily="@font/raleway_thin"
+        android:text="Monday"
+        android:background="@drawable/borders"
+        android:gravity="center"
         android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvFriday" />
-
-    <TextView
-        android:id="@+id/tvFriday"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignStart="@+id/tvSunday"
-        android:text="Friday"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/tvSaturday"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvThursday" />
-
-    <TextView
-        android:id="@+id/tvThursday"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignStart="@+id/tvSunday"
-        android:text="Thursday"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/tvFriday"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvWednesday" />
-
-    <TextView
-        android:id="@+id/tvWednesday"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignStart="@+id/tvSunday"
-        android:text="Wednesday"
-        android:textSize="24sp"
-        app:layout_constraintBottom_toTopOf="@+id/tvThursday"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvTuesday" />
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/tvTuesday"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignStart="@+id/tvSunday"
-        android:layout_marginBottom="328dp"
+        android:fontFamily="@font/raleway_thin"
         android:text="Tuesday"
+        android:background="@drawable/borders"
+        android:gravity="center"
         android:textSize="24sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvMonday"
-        app:layout_constraintVertical_bias="0.0" />
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tvWednesday"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:fontFamily="@font/raleway_thin"
+        android:text="Wednesday"
+        android:background="@drawable/borders"
+        android:gravity="center"
+        android:textSize="24sp"
+        android:textStyle="bold" />
 
 
-</android.support.constraint.ConstraintLayout>
+    <TextView
+        android:id="@+id/tvThursday"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:fontFamily="@font/raleway_thin"
+        android:text="Thursday"
+        android:background="@drawable/borders"
+        android:gravity="center"
+        android:textSize="24sp"
+        android:textStyle="bold"/>
+
+    <TextView
+        android:id="@+id/tvFriday"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:fontFamily="@font/raleway_thin"
+        android:text="Friday"
+        android:background="@drawable/borders"
+        android:gravity="center"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tvSaturday"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginBottom="91dp"
+        android:fontFamily="@font/raleway_thin"
+        android:text="Saturday"
+        android:background="@drawable/borders"
+        android:gravity="center"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+</LinearLayout>
