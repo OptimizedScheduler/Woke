@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.editDay"
+    tools:context=".editDayActivity"
     android:background="@color/white">
 
     <LinearLayout
@@ -12,13 +12,12 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tvDay"
+        <ImageView
+            android:id="@+id/ivDay"
             android:layout_width="185dp"
             android:layout_height="57dp"
-            android:background="@drawable/sunday"
-            android:gravity="top"
             android:layout_gravity="center"
+            android:gravity="top"
             android:textSize="24sp" />
 
         <TextView
