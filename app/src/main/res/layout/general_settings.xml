@@ -6,7 +6,8 @@
     android:background="@color/orange8"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:theme="@style/AppTheme2">
     <TextView
         android:id="@+id/textView3"
         android:layout_width="240dp"

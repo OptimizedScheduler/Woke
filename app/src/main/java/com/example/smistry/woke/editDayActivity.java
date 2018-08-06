@@ -106,7 +106,7 @@ public class editDayActivity extends AppCompatActivity implements TimePickerDial
                 .into(ivDay);
 
         for (Free free:frees){
-            enteredFreeTimes.setText(enteredFreeTimes.getText().toString()+" "+free.toString());
+            enteredFreeTimes.setText(enteredFreeTimes.getText().toString()+" "+free.stringInfo());
         }
 
         btsleepTime.setOnTouchListener(new View.OnTouchListener() {
@@ -269,7 +269,7 @@ public class editDayActivity extends AppCompatActivity implements TimePickerDial
 
                     Free toAdd=new Free(new ArrayList<Task>(), startTimeFree, endTimeFree);
                     days.get(position).getFreeBlocks().add(toAdd);
-                    enteredFreeTimes.setText(enteredFreeTimes.getText().toString()+" "+toAdd.toString());
+                    enteredFreeTimes.setText(enteredFreeTimes.getText().toString()+" "+toAdd.stringInfo());
                     endTimeFree=null;
                     startTimeFree=null;
 

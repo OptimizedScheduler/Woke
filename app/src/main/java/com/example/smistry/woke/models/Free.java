@@ -9,7 +9,7 @@ import java.util.ArrayList;
 //This object represents free times throughout the day for scheduling tasks
 @Parcel
 public class Free {
-     public ArrayList<Task> tasks;
+    public ArrayList<Task> tasks;
     public Time start;
     public Time end;
     public int freeBlockDuration;
@@ -33,6 +33,8 @@ public class Free {
 
     }
 
+
+
     @Override
     public String toString() {
         String taskString="";
@@ -42,6 +44,16 @@ public class Free {
         }
         return start.toString()+";"+end.toString()+";"+freeBlockDuration+";"+taskString;
     }
+
+
+    public String stringInfo(){
+        String info="";
+        info+="Start: "+start.toString();
+        info+="End: "+end.toString();
+        info+="Duration "+freeBlockDuration+" min";
+        return info;
+    }
+
 
     public ArrayList<Task> getTasks() {
         return tasks;
