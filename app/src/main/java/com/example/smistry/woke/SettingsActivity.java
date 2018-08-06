@@ -189,9 +189,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity  {
         public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
             super.onViewCreated(view, savedInstanceState);
 
-
-
-
             TextView age= (TextView)view.findViewById(R.id.etAge);
             final Switch weather= (Switch)view.findViewById(R.id.sWeather);
             final Switch rain= (Switch)view.findViewById(R.id.sUmbrella);
