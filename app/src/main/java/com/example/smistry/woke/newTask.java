@@ -2,6 +2,8 @@ package com.example.smistry.woke;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
 import android.provider.AlarmClock;
 import android.support.v4.app.DialogFragment;
@@ -9,6 +11,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.NotificationManagerCompat;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -19,6 +22,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.smistry.woke.fragments.DatePickerFragment;
 import com.example.smistry.woke.models.Day;
 import com.example.smistry.woke.models.Free;
@@ -37,6 +41,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -53,6 +58,9 @@ public class newTask extends FragmentActivity implements  DatePickerDialog.OnDat
     @BindView(R.id.tvHours) TextView tvHours;
     @BindView(R.id.tvMinutes) TextView tvMinutes;
     @BindView(R.id.etTitle) EditText etTitle;
+    @BindView(R.id.ivCategory) ImageView ivCategory;
+    @BindView(R.id.ivTimer) ImageView ivTimer;
+    @BindView(R.id.ivTitle) ImageView ivTitle;
 
     Object item;
     Date taskDate; //Date chosen for the activity from DatePickerFragment
@@ -61,6 +69,8 @@ public class newTask extends FragmentActivity implements  DatePickerDialog.OnDat
     boolean isDateSet;
     ArrayList<Day> myDays = new ArrayList<>();
     public  boolean nextMorning;
+    HashMap<Integer, Integer> categories;
+    String image;
 
     Time start = new Time(00,00,00);
     Time end = new Time(12,0,0);
@@ -81,10 +91,26 @@ public class newTask extends FragmentActivity implements  DatePickerDialog.OnDat
         //freeBlocks.add(example);
 
         notificationManager = NotificationManagerCompat.from(this);
+        ivTimer.setVisibility(View.VISIBLE);
+        ivTitle.setVisibility(View.VISIBLE);
+
+
+        categories=new HashMap<>();
+        categories.put(0, R.drawable.ic_fitness_center_black_24dp);
+        categories.put(1, R.drawable.ic_work_black_24dp);
+        categories.put(2, R.drawable.ic_movie_filter_black_24dp);
+        categories.put(3, R.drawable.ic_supervisor_account_black_24dp);
+        categories.put(4, R.drawable.ic_playlist_add_black_24dp);
 
         spCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
                item = parent.getItemAtPosition(pos);
+
+                ((TextView) parent.getChildAt(0)).setTextColor(Color.WHITE);
+
+                Glide.with(getBaseContext())
+                        .load(categories.get(pos))
+                        .into(ivCategory);
 
             }
             public void onNothingSelected(AdapterView<?> parent) {
@@ -96,8 +122,29 @@ public class newTask extends FragmentActivity implements  DatePickerDialog.OnDat
         btDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 DialogFragment datepicker = new DatePickerFragment();
                 datepicker.show(getSupportFragmentManager(), "date pick");
+            }
+        });
+
+
+        btDate.setOnTouchListener(new View.OnTouchListener() {
+
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN: {
+                        v.getBackground().setColorFilter(0xe0f5ddb6, PorterDuff.Mode.SRC_ATOP);
+                        v.invalidate();
+                        break;
+                    }
+                    case MotionEvent.ACTION_UP: {
+                        v.getBackground().clearColorFilter();
+                        v.invalidate();
+                        break;
+                    }
+                }
+                return false;
             }
         });
 
@@ -157,7 +204,28 @@ public class newTask extends FragmentActivity implements  DatePickerDialog.OnDat
                 }
             }
         });
+
+        btFinish.setOnTouchListener(new View.OnTouchListener() {
+
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN: {
+                        v.getBackground().setColorFilter(0xe0f5ddb6, PorterDuff.Mode.SRC_ATOP);
+                        v.invalidate();
+                        break;
+                    }
+                    case MotionEvent.ACTION_UP: {
+                        v.getBackground().clearColorFilter();
+                        v.invalidate();
+                        break;
+                    }
+                }
+                return false;
+            }
+        });
     }
+
+
 
     @Override
     public void onDateSet(DatePicker datePicker, int year, int month, int day) {
@@ -169,6 +237,8 @@ public class newTask extends FragmentActivity implements  DatePickerDialog.OnDat
         Log.d("Date Format", String.valueOf(taskDate.getYear()));
         iTaskDate=taskDate.getDay();
     }
+
+
 
     public boolean setTaskWithinFreeBlock (ArrayList<Day> dayArray, Task task){
         boolean reachEnd = false;
@@ -216,7 +286,7 @@ public class newTask extends FragmentActivity implements  DatePickerDialog.OnDat
                    movedDate.setHours(task.getTime().getHours());
                    movedDate.setMinutes(task.getTime().getMinutes());
                    task.setDate(movedDate);
-                   myDays.get(nextInd%7).getFreeBlocks().add(0, new Free(new ArrayList<Task>(), t1, t1, 0));
+                   myDays.get(nextInd%7).getFreeBlocks().add(0, new Free(new ArrayList<Task>(), t1, t1));
                    myDays.get(nextInd%7).getFreeBlocks().get(0).getTasks().add(task);
                    myDays.get(nextInd%7).setWakeUp(t2);
                    setAlarm(t2, task, etTitle.getText().toString(), 0, nextInd%7 );

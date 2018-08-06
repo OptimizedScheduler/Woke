@@ -103,14 +103,17 @@ public class stats extends Fragment {
 
 
 
+        String labelLong="Sunday,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday";
+        String[] labels= labelLong.split(",");
+
         BarDataSet dataset = new BarDataSet(sleepVals, "Sleep Progress");
         dataset.setColors(new int[] {Color.rgb(247,187,93) });
         BarData data = new BarData(dataset);
 
 
-        String labelLong="Sunday,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday";
 
-       String[] labels= labelLong.split(",");
+
+
 
 
 
@@ -122,6 +125,7 @@ public class stats extends Fragment {
         data.setBarWidth(barWidth);
         sleepChart.setFitBars(true);
         sleepChart.setData(data);
+        //sleepChart.getXAxis().setValueFormatter(new LabelFormatter(labels));
         data.setValueTextSize(13f);
 
 

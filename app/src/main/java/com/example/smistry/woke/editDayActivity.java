@@ -268,7 +268,7 @@ public class editDayActivity extends AppCompatActivity implements TimePickerDial
             public void onClick(View view) {
                 if (startTimeFree!=null&& endTimeFree!=null){
 
-                    Free toAdd=new Free(new ArrayList<Task>(), startTimeFree, endTimeFree, 60);
+                    Free toAdd=new Free(new ArrayList<Task>(), startTimeFree, endTimeFree);
                     days.get(position).getFreeBlocks().add(toAdd);
                     enteredFreeTimes.setText(enteredFreeTimes.getText().toString()+" "+toAdd.toString());
                     endTimeFree=null;

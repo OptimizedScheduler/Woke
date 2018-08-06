@@ -18,11 +18,11 @@ public class Free {
         //emtpy
     }
 
-    public Free(ArrayList<Task> tasks, Time start, Time end, int freeBlockDuration) {
+    public Free(ArrayList<Task> tasks, Time start, Time end) {
         this.tasks = tasks;
         this.start = start;
         this.end = end;
-        this.freeBlockDuration = freeBlockDuration;
+        freeBlockDuration =  (end.getHours()-start.getHours())*60 + end.getMinutes()-start.getMinutes();
     }
 
     public Free( Time start, Time end, int freeBlockDuration) {
