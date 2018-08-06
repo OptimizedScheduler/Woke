@@ -191,5 +191,5 @@
         android:visibility="visible"
         app:srcCompat="@drawable/ic_timer_black_24dp" />
 
-
+    
 </RelativeLayout>

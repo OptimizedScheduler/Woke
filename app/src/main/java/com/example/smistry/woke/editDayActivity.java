@@ -84,7 +84,6 @@ public class editDayActivity extends AppCompatActivity implements TimePickerDial
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-
         sleepSet=false;
         wakeSet=false;
         startTimeFreeSet=false;
