@@ -9,6 +9,7 @@
 
     <LinearLayout
         android:layout_width="match_parent"
+        android:paddingLeft="10dp"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
@@ -24,10 +25,10 @@
             android:id="@+id/tvAlarms"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
             android:fontFamily="@font/raleway_thin"
             android:text="alarms"
-            android:layout_marginTop="25dp"
-            android:textColor="@color/colorPrimaryDark"
+            android:textColor="@android:color/background_dark"
             android:textSize="24sp"
             android:textStyle="bold" />
 
