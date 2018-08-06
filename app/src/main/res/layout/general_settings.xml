@@ -8,15 +8,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:theme="@style/AppTheme2">
+
     <TextView
         android:id="@+id/textView3"
         android:layout_width="240dp"
         android:layout_height="wrap_content"
-        android:paddingTop="20dp"
         android:layout_marginLeft="10dp"
         android:fontFamily="@font/raleway_thin"
+        android:paddingTop="20dp"
         android:text="General information"
-        android:textSize="20sp"
+        android:textSize="22sp"
         android:textStyle="bold" />
 
     <EditText
@@ -31,7 +32,8 @@
         android:fontFamily="@font/raleway_thin"
         android:hint="Name"
         android:inputType="textPersonName"
-        android:textSize="16sp" />
+        android:textSize="18sp"
+        android:textStyle="bold" />
 
     <EditText
         android:id="@+id/etAge"
@@ -45,18 +47,19 @@
         android:fontFamily="@font/raleway_thin"
         android:hint="Age"
         android:inputType="number"
-        android:textSize="16sp" />
+        android:textSize="18sp"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/textView4"
         android:layout_width="240dp"
-        android:paddingTop="@dimen/mdtp_header_height"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
-        android:gravity="center_vertical"
         android:fontFamily="@font/raleway_thin"
+        android:gravity="center_vertical"
+        android:paddingTop="@dimen/mdtp_header_height"
         android:text="Weather notifications"
-        android:textSize="20sp"
+        android:textSize="22sp"
         android:textStyle="bold" />
 
     <TextView
@@ -68,12 +71,14 @@
         android:layout_marginLeft="10dp"
         android:fontFamily="@font/raleway_thin"
         android:text="Allow us to notify you whenever you need to carry your jacket or umbrella"
-        android:textSize="16sp" />
+        android:textSize="18sp"
+        android:textStyle="bold" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
+        android:paddingTop="@dimen/activity_vertical_margin"
         android:orientation="horizontal">
 
         <ImageView
@@ -90,8 +95,7 @@
             android:fontFamily="@font/raleway_thin"
             android:paddingLeft="10dp"
             android:text="Umbrella"
-            android:textSize="16sp"
-            android:textStyle="bold" />
+            android:textSize="18sp" />
 
     </LinearLayout>
 
@@ -99,6 +103,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="10dp"
+        android:paddingTop="@dimen/activity_vertical_margin"
         android:orientation="horizontal">
 
         <ImageView
@@ -115,16 +120,15 @@
             android:fontFamily="@font/raleway_thin"
             android:paddingLeft="10dp"
             android:text="Jacket"
-            android:textSize="16sp"
-            android:textStyle="bold" />
+            android:textSize="18sp" />
     </LinearLayout>
 
     <SeekBar
         android:id="@+id/sbTemp"
-        android:layout_width="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_height="wrap_content"
+        android:layout_width="243dp"
+        android:layout_height="38dp"
         android:layout_marginBottom="156dp"
+        android:layout_marginLeft="10dp"
         android:layout_marginStart="91dp"
         android:max="100" />
 
