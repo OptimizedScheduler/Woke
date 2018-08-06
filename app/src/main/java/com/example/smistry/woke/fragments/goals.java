@@ -42,6 +42,7 @@ public class goals extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         HashMap<String, Integer> categoryCount= new HashMap<>();
+
         days= ((bottomNav)getContext()).getDays();
 
 
@@ -49,12 +50,12 @@ public class goals extends Fragment {
             for (Free free: day.getFreeBlocks()){
                 for (Task task: free.getTasks()){
 
-                    if(!categoryCount.containsKey(task.getCategory())){
+                   if(!categoryCount.containsKey(task.getCategory())){
                         categoryCount.put(task.getCategory(), task.getDuration());
                     }
                     else{
                         categoryCount.put(task.getCategory(), categoryCount.get(task.getCategory())+task.getDuration());
-                    }
+                   }
                 }
             }
         }
@@ -71,11 +72,11 @@ public class goals extends Fragment {
         }
 
 
-
         PieDataSet set = new PieDataSet(entries, "Categories");
         PieData data = new PieData(set);
 
-        set.setColors(new int[] { R.color.orange0, R.color.orange2, R.color.orange4, R.color.orange8 }, getContext());
+
+        set.setColors(new int[] { R.color.orange0, R.color.orange1, R.color.orange2, R.color.orange3, R.color.orange4}, getContext());
         chart.setData(data);
        // chart.animate();
         chart.animateXY(2000,2000);

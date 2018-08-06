@@ -393,7 +393,7 @@ public class bottomNav extends AppCompatActivity {
                                 tasks.add(newTask);
                             }
                         }
-                        frees.add(new Free(tasks, freeStart, freeEnd, duration));
+                        frees.add(new Free(tasks, freeStart, freeEnd));
                     }
                 }
                 Day newDay= new Day(frees,dayOfWeek,wakeTime, sleepTime);

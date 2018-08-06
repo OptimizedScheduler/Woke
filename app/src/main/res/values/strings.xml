@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Woke</string>
     <string name="title_activity_home">HomeActivity</string>
-    <string name="category">Category</string>
+    <string name="category">category</string>
     <string-array name="categories">
         <item>Fitness</item>
         <item>Work</item>
