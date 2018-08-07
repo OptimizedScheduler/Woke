@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.text.method.ScrollingMovementMethod;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
@@ -83,6 +84,7 @@ public class editDayActivity extends AppCompatActivity implements TimePickerDial
             // Show the Up button in the action bar.
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+        enteredFreeTimes.setMovementMethod(new ScrollingMovementMethod());
 
         sleepSet=false;
         wakeSet=false;
@@ -269,7 +271,15 @@ public class editDayActivity extends AppCompatActivity implements TimePickerDial
 
                     Free toAdd=new Free(new ArrayList<Task>(), startTimeFree, endTimeFree);
                     days.get(position).getFreeBlocks().add(toAdd);
-                    enteredFreeTimes.setText(enteredFreeTimes.getText().toString()+" "+toAdd.stringInfo());
+                    String toEnter="";
+                    if (enteredFreeTimes.getText().toString().equals("")){
+                        toEnter=toAdd.stringInfo();
+                    }
+                    else{
+                        toEnter=enteredFreeTimes.getText().toString()+"\n"+toAdd.stringInfo();
+                    }
+
+                    enteredFreeTimes.setText(toEnter);
                     endTimeFree=null;
                     startTimeFree=null;
 

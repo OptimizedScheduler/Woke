@@ -48,9 +48,9 @@ public class Free {
 
     public String stringInfo(){
         String info="";
-        info+="Start: "+start.toString();
-        info+="End: "+end.toString();
-        info+="Duration "+freeBlockDuration+" min";
+        info+="Start: "+start.toString()+" ";
+        info+="End: "+end.toString()+" ";
+        info+="Duration "+freeBlockDuration+" min"+" ";
         return info;
     }
 

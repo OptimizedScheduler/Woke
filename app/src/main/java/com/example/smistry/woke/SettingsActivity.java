@@ -181,6 +181,29 @@ public class SettingsActivity extends AppCompatPreferenceActivity  {
             final Switch jacket= (Switch)view.findViewById(R.id.sJacket);
             final SeekBar temp= (SeekBar)view.findViewById(R.id.sbTemp);
 
+            temp.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener(){
+
+                @Override
+                public void onProgressChanged(SeekBar seekBar, int progress,
+                                              boolean fromUser) {
+                    // TODO Auto-generated method stub
+
+                    seekBarValue.setText(String.valueOf(progress));
+                }
+
+                @Override
+                public void onStartTrackingTouch(SeekBar seekBar) {
+                    // TODO Auto-generated method stub
+                }
+
+                @Override
+                public void onStopTrackingTouch(SeekBar seekBar) {
+                    // TODO Auto-generated method stub
+                }
+            });
+        }
+    }
+
 
             if (!jacket.isChecked()){
                 temp.setVisibility(View.INVISIBLE);
