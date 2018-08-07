@@ -107,6 +107,7 @@ public class newTask extends FragmentActivity implements  DatePickerDialog.OnDat
                item = parent.getItemAtPosition(pos);
 
                 ((TextView) parent.getChildAt(0)).setTextColor(Color.WHITE);
+                ((TextView) parent.getChildAt(0)).setTextSize(20);
 
                 Glide.with(getBaseContext())
                         .load(categories.get(pos))
