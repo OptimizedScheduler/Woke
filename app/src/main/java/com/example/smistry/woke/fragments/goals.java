@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import com.example.smistry.woke.models.Day;
 import com.example.smistry.woke.models.Free;
 import com.example.smistry.woke.models.Task;
 import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
@@ -26,6 +28,7 @@ import java.util.List;
 public class goals extends Fragment {
 
     ArrayList<Day> days;
+    PieChart chart;
 
     public goals() {
         // Required empty public constructor
@@ -62,7 +65,7 @@ public class goals extends Fragment {
 
 
         //code for chart from https://github.com/PhilJay/MPAndroidChart/wiki/Setting-Colors !!!!
-        PieChart chart = (PieChart) view.findViewById(R.id.chart);
+        chart = (PieChart) view.findViewById(R.id.chart);
 
         List<PieEntry> entries = new ArrayList<>();
 
@@ -75,7 +78,16 @@ public class goals extends Fragment {
         PieDataSet set = new PieDataSet(entries, "Categories");
         PieData data = new PieData(set);
 
+        Description desc= new Description();
+       // desc.setPosition(0,0);
+        desc.setTextSize(600);
 
+        String name= PreferenceManager.getDefaultSharedPreferences(getContext()).getString("name", "Your");
+        if (!name.equals("Your")){
+            name+="'s";
+        }
+        desc.setText(name+" Goals");
+        chart.setDescription(desc);
         set.setColors(new int[] { R.color.orange0, R.color.orange1, R.color.orange2, R.color.orange3, R.color.orange4}, getContext());
         chart.setData(data);
        // chart.animate();
@@ -84,4 +96,19 @@ public class goals extends Fragment {
 
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        Description desc= new Description();
+        // desc.setPosition(0,0);
+        desc.setTextSize(600);
+
+        String name= PreferenceManager.getDefaultSharedPreferences(getContext()).getString("name", "Your");
+        if (!name.equals("Your")){
+            name+="'s";
+        }
+        desc.setText(name+" Goals");
+        chart.setDescription(desc);
+        chart.animateXY(2000,2000);
+    }
 }

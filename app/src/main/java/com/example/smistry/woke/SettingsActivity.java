@@ -4,7 +4,9 @@ import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.graphics.PorterDuff;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -15,8 +17,11 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.preference.ListPreference;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.PreferenceManager;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
@@ -38,6 +43,8 @@ import java.io.IOException;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.example.smistry.woke.bottomNav.TAG;
 
 
 public class SettingsActivity extends AppCompatPreferenceActivity  {
@@ -165,6 +172,12 @@ public class SettingsActivity extends AppCompatPreferenceActivity  {
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public static class GeneralPreferenceFragment extends PreferenceFragment {
+        EditText age;
+        EditText name;
+        Switch rain;
+        Switch jacket;
+        SeekBar temp;
+        TextView tvTemp ;
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -176,30 +189,77 @@ public class SettingsActivity extends AppCompatPreferenceActivity  {
         public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
             super.onViewCreated(view, savedInstanceState);
 
-            EditText age= (EditText) view.findViewById(R.id.etAge);
-            final Switch rain= (Switch)view.findViewById(R.id.sUmbrella);
-            final Switch jacket= (Switch)view.findViewById(R.id.sJacket);
-            final SeekBar temp= (SeekBar)view.findViewById(R.id.sbTemp);
+            age= (EditText) view.findViewById(R.id.etAge);
+            name=(EditText)view.findViewById(R.id.etName);
+            rain= (Switch)view.findViewById(R.id.sUmbrella);
+            jacket= (Switch)view.findViewById(R.id.sJacket);
+            temp= (SeekBar)view.findViewById(R.id.sbTemp);
+            tvTemp= (TextView)view.findViewById(R.id.tvTemp);
 
+            final SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getContext());
 
-            if (!jacket.isChecked()){
-                temp.setVisibility(View.INVISIBLE);
+            if (!pref.getString("age", "no age").equals("no age")){
+                age.setText(pref.getString("age", "19"));
             }
-            else{
-                temp.setVisibility(View.VISIBLE);
-
+            if (!pref.getString("name", "no name").equals("no name")){
+                name.setText(pref.getString("name", "Arce"));
             }
 
+            rain.setChecked(pref.getBoolean("umbrella", false));
+            jacket.setChecked(pref.getBoolean("jacket", false));
+            tvTemp.setText(pref.getString("temp", "60F"));
 
-            jacket.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            final SharedPreferences.Editor prefEditor =PreferenceManager.getDefaultSharedPreferences(getContext()).edit();
+
+
+
+
+
+
+
+            rain.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                    if (!b){
-                        temp.setVisibility(View.INVISIBLE);
-                    }
-                    else{
-                        temp.setVisibility(View.VISIBLE);
-                    }
+                    prefEditor.putBoolean("umbrella",rain.isChecked() );
+                    prefEditor.apply();
+                }
+            });
+
+
+            age.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                    prefEditor.putString("age",age.getText().toString() );
+                    prefEditor.apply();
+                }
+
+                @Override
+                public void afterTextChanged(Editable editable) {
+
+                }
+            });
+
+            name.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                }
+
+
+                @Override
+                public void afterTextChanged(Editable editable) {
+                    prefEditor.putString("name", editable.toString());
+                    prefEditor.apply();
 
                 }
             });
@@ -208,7 +268,56 @@ public class SettingsActivity extends AppCompatPreferenceActivity  {
 
 
 
+            temp.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                @Override
+                public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                    tvTemp.setText(String.valueOf(i)+"F");
+                    prefEditor.putString("temp",tvTemp.getText().toString());
+                    prefEditor.apply();
 
+                }
+
+                @Override
+                public void onStartTrackingTouch(SeekBar seekBar) {
+
+                }
+
+                @Override
+                public void onStopTrackingTouch(SeekBar seekBar) {
+
+                }
+            });
+
+
+            if (!jacket.isChecked()){
+                temp.setVisibility(View.INVISIBLE);
+                tvTemp.setVisibility(View.INVISIBLE);
+
+            }
+            else{
+                temp.setVisibility(View.VISIBLE);
+                tvTemp.setVisibility(View.VISIBLE);
+            }
+
+
+            jacket.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                    if (!b){
+                        temp.setVisibility(View.INVISIBLE);
+                        tvTemp.setVisibility(View.INVISIBLE);
+                        prefEditor.putBoolean("jacket", b);
+                        prefEditor.apply();
+                    }
+                    else{
+                        temp.setVisibility(View.VISIBLE);
+                        tvTemp.setVisibility(View.VISIBLE);
+                        prefEditor.putBoolean("jacket",b);
+                        prefEditor.apply();
+                    }
+
+                }
+            });
         }
 
         @RequiresApi(api = Build.VERSION_CODES.M)
@@ -216,50 +325,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity  {
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setHasOptionsMenu(true);
-
-//            if (!((SwitchPreference)getPreferenceManager().findPreference("weatherSwitch")).isChecked()) {
-//                getPreferenceManager().findPreference("rainSwitch").setEnabled(false);
-//                getPreferenceManager().findPreference("jacketSwitch").setEnabled(false);
-//                getPreferenceManager().findPreference("seekBar").setEnabled(false);
-//            }
-//            else{
-//                getPreferenceManager().findPreference("rainSwitch").setEnabled(true);
-//                getPreferenceManager().findPreference("jacketSwitch").setEnabled(true);
-//                getPreferenceManager().findPreference("seekBar").setEnabled(true);
-//            }
-//
-//            ((SwitchPreference)getPreferenceManager().findPreference("weatherSwitch")).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-//                @Override
-//                public boolean onPreferenceClick(Preference preference) {
-//                    if (!((SwitchPreference)preference).isChecked()) {
-//                        getPreferenceManager().findPreference("rainSwitch").setEnabled(false);
-//                        getPreferenceManager().findPreference("jacketSwitch").setEnabled(false);
-//                        getPreferenceManager().findPreference("seekBar").setEnabled(false);
-//                    }
-//
-//                    else{
-//                        getPreferenceManager().findPreference("rainSwitch").setEnabled(true);
-//                        getPreferenceManager().findPreference("jacketSwitch").setEnabled(true);
-//                        getPreferenceManager().findPreference("seekBar").setEnabled(true);
-//                    }
-//
-//                    return false;
-//                }
-//            });
-//
-//            ((SwitchPreference)getPreferenceManager().findPreference("jacketSwitch")).setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
-//                @Override
-//                public boolean onPreferenceClick(Preference preference) {
-//                    if (((SwitchPreference)preference).isChecked()){
-//                        getPreferenceManager().findPreference("seekBar").setVisible(true);
-//                    }
-//                    else{
-//                        getPreferenceManager().findPreference("seekBar").setVisible(false);
-//
-//                    }
-//                    return false;
-//                }
-//            });
         }
 
         @Override
@@ -367,6 +432,141 @@ public class SettingsActivity extends AppCompatPreferenceActivity  {
 
                 }
             });
+
+
+            Sunday.setOnTouchListener(new View.OnTouchListener() {
+
+                public boolean onTouch(View v, MotionEvent event) {
+                    switch (event.getAction()) {
+                        case MotionEvent.ACTION_DOWN: {
+                            v.getBackground().setColorFilter(0xe0efc8b7, PorterDuff.Mode.SRC_ATOP);
+                            v.invalidate();
+                            break;
+                        }
+                        case MotionEvent.ACTION_UP: {
+                            v.getBackground().clearColorFilter();
+                            v.invalidate();
+                            break;
+                        }
+                    }
+                    return false;
+                }
+            });
+
+            Monday.setOnTouchListener(new View.OnTouchListener() {
+
+                public boolean onTouch(View v, MotionEvent event) {
+                    switch (event.getAction()) {
+                        case MotionEvent.ACTION_DOWN: {
+                            v.getBackground().setColorFilter(0xe0efc8b7, PorterDuff.Mode.SRC_ATOP);
+                            v.invalidate();
+                            break;
+                        }
+                        case MotionEvent.ACTION_UP: {
+                            v.getBackground().clearColorFilter();
+                            v.invalidate();
+                            break;
+                        }
+                    }
+                    return false;
+                }
+            });
+
+            Tuesday.setOnTouchListener(new View.OnTouchListener() {
+
+                public boolean onTouch(View v, MotionEvent event) {
+                    switch (event.getAction()) {
+                        case MotionEvent.ACTION_DOWN: {
+                            v.getBackground().setColorFilter(0xe0efc8b7, PorterDuff.Mode.SRC_ATOP);
+                            v.invalidate();
+                            break;
+                        }
+                        case MotionEvent.ACTION_UP: {
+                            v.getBackground().clearColorFilter();
+                            v.invalidate();
+                            break;
+                        }
+                    }
+                    return false;
+                }
+            });
+
+            Wednesday.setOnTouchListener(new View.OnTouchListener() {
+
+                public boolean onTouch(View v, MotionEvent event) {
+                    switch (event.getAction()) {
+                        case MotionEvent.ACTION_DOWN: {
+                            v.getBackground().setColorFilter(0xe0efc8b7, PorterDuff.Mode.SRC_ATOP);
+                            v.invalidate();
+                            break;
+                        }
+                        case MotionEvent.ACTION_UP: {
+                            v.getBackground().clearColorFilter();
+                            v.invalidate();
+                            break;
+                        }
+                    }
+                    return false;
+                }
+            });
+
+            Thursday.setOnTouchListener(new View.OnTouchListener() {
+
+                public boolean onTouch(View v, MotionEvent event) {
+                    switch (event.getAction()) {
+                        case MotionEvent.ACTION_DOWN: {
+                            v.getBackground().setColorFilter(0xe0efc8b7, PorterDuff.Mode.SRC_ATOP);
+                            v.invalidate();
+                            break;
+                        }
+                        case MotionEvent.ACTION_UP: {
+                            v.getBackground().clearColorFilter();
+                            v.invalidate();
+                            break;
+                        }
+                    }
+                    return false;
+                }
+            });
+
+            Friday.setOnTouchListener(new View.OnTouchListener() {
+
+                public boolean onTouch(View v, MotionEvent event) {
+                    switch (event.getAction()) {
+                        case MotionEvent.ACTION_DOWN: {
+                            v.getBackground().setColorFilter(0xe0efc8b7, PorterDuff.Mode.SRC_ATOP);
+                            v.invalidate();
+                            break;
+                        }
+                        case MotionEvent.ACTION_UP: {
+                            v.getBackground().clearColorFilter();
+                            v.invalidate();
+                            break;
+                        }
+                    }
+                    return false;
+                }
+            });
+
+            Saturday.setOnTouchListener(new View.OnTouchListener() {
+
+                public boolean onTouch(View v, MotionEvent event) {
+                    switch (event.getAction()) {
+                        case MotionEvent.ACTION_DOWN: {
+                            v.getBackground().setColorFilter(0xe0efc8b7, PorterDuff.Mode.SRC_ATOP);
+                            v.invalidate();
+                            break;
+                        }
+                        case MotionEvent.ACTION_UP: {
+                            v.getBackground().clearColorFilter();
+                            v.invalidate();
+                            break;
+                        }
+                    }
+                    return false;
+                }
+            });
+
         }
 
 
@@ -429,11 +629,14 @@ public class SettingsActivity extends AppCompatPreferenceActivity  {
     }
 
 
-
     // returns the file in which the data is stored
     public File getDataFile() {
         return new File(this.getFilesDir(), "days.txt");
     }
+
+
+
+
 
 
 
