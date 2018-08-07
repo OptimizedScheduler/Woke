@@ -180,29 +180,24 @@ public class SettingsActivity extends AppCompatPreferenceActivity  {
             final Switch rain= (Switch)view.findViewById(R.id.sUmbrella);
             final Switch jacket= (Switch)view.findViewById(R.id.sJacket);
             final SeekBar temp= (SeekBar)view.findViewById(R.id.sbTemp);
+            final TextView tvTemp= (TextView)view.findViewById(R.id.tvTemp) ;
 
-            temp.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener(){
-
+            temp.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                 @Override
-                public void onProgressChanged(SeekBar seekBar, int progress,
-                                              boolean fromUser) {
-                    // TODO Auto-generated method stub
-
-                    seekBarValue.setText(String.valueOf(progress));
+                public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                    tvTemp.setText(String.valueOf(i)+"F");
                 }
 
                 @Override
                 public void onStartTrackingTouch(SeekBar seekBar) {
-                    // TODO Auto-generated method stub
+
                 }
 
                 @Override
                 public void onStopTrackingTouch(SeekBar seekBar) {
-                    // TODO Auto-generated method stub
+
                 }
             });
-        }
-    }
 
 
             if (!jacket.isChecked()){
