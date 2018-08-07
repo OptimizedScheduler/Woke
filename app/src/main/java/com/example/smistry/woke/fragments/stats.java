@@ -5,14 +5,17 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.smistry.woke.R;
 import com.example.smistry.woke.bottomNav;
 import com.example.smistry.woke.models.Day;
 import com.github.mikephil.charting.charts.HorizontalBarChart;
+import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
@@ -24,6 +27,7 @@ import java.util.ArrayList;
 public class stats extends Fragment {
 
     HorizontalBarChart sleepChart;
+    TextView tvStatsTitle;
 
 
     public stats() {
@@ -42,13 +46,21 @@ public class stats extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         sleepChart = (HorizontalBarChart) view.findViewById(R.id.sleepChart);
+        tvStatsTitle = (TextView) view.findViewById(R.id.tvStatsTitle);
+        Description desc= new Description();
+        // desc.setPosition(0,0);
+        desc.setTextSize(600);
+        desc.setText("");
+        sleepChart.setDescription(desc);
+
+        String name= PreferenceManager.getDefaultSharedPreferences(getContext()).getString("name", "Your");
+        if (!name.equals("Your")){
+            name+="'s";
+        }
+
         setData(7, 12);
 
-
-
-
-
-
+        tvStatsTitle.setText(name + " Sleep Progress");
 
 
 //        sleepChart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(labels));
@@ -61,8 +73,6 @@ public class stats extends Fragment {
         // Hide graph legend
         sleepChart.getLegend().setEnabled(true);
         sleepChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM_INSIDE);
-
-
 
 
 
@@ -87,7 +97,7 @@ public class stats extends Fragment {
             int dayHours = day.getSleep().getHours();
             int dayMins = day.getWakeUp().getMinutes();
             float sleeptime = 1440 - Math.abs((nextHours - dayHours) * 60 + (nextMin - dayMins));
-            sleepVals.add(new BarEntry(i * spaceForBar, sleeptime));
+            sleepVals.add(new BarEntry(i * spaceForBar, new float [] {sleeptime, 480-sleeptime}));
 
 
         }
@@ -99,36 +109,29 @@ public class stats extends Fragment {
         int dayHours = day.getSleep().getHours();
         int dayMins = day.getWakeUp().getMinutes();
         float sleeptime = 1440 - Math.abs((nextHours - dayHours) * 60 + (nextMin - dayMins));
-        sleepVals.add(new BarEntry((0) * spaceForBar, sleeptime ));
+        sleepVals.add(new BarEntry((0) * spaceForBar, new float [] {sleeptime, 480-sleeptime} ));
 
 
 
-        String labelLong="Sunday,Monday,Tuesday,Wednesday,Thursday,Friday,Saturday";
+        String labelLong="Actual,Expected";
         String[] labels= labelLong.split(",");
 
         BarDataSet dataset = new BarDataSet(sleepVals, "Sleep Progress");
-        dataset.setColors(new int[] {Color.rgb(247,187,93) });
+        dataset.setColors(new int[] {Color.rgb(247,187,93), Color.rgb(195,89,28)});
+        dataset.setStackLabels(new String[]{
+                "Time Sleeping", "Recommended Sleep"
+        });
         BarData data = new BarData(dataset);
-
-
-
-
-
-
-
 
         dataset.setDrawValues(true);
         dataset.setStackLabels(labels);
-
-
 
         data.setBarWidth(barWidth);
         sleepChart.setFitBars(true);
         sleepChart.setData(data);
         //sleepChart.getXAxis().setValueFormatter(new LabelFormatter(labels));
         data.setValueTextSize(13f);
-
-
+        sleepChart.invalidate();
 
     }
 }

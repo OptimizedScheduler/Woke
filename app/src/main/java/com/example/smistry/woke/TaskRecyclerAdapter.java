@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.example.smistry.woke.models.Task;
 
+import java.sql.Time;
 import java.util.List;
 
 import butterknife.BindView;
@@ -41,7 +42,11 @@ public class TaskRecyclerAdapter extends RecyclerView.Adapter<TaskRecyclerAdapte
         if(mTasks!= null){
         Task task = mTasks.get(i);
         viewHolder.tvTaskName.setText(task.getTaskTitle());
-        viewHolder.tvTime.setText(task.getTime().toString());
+        viewHolder.tvCategory.setText(task.getCategory());
+        viewHolder.tvTime.setText(task.getTime().toString().substring(0,task.getTime().toString().length()-3)+" - ");
+        int endHr = task.getTime().getHours()*60+task.getTime().getMinutes()+task.getDuration();
+        Time endTime = new Time(endHr/60,endHr%60,00);
+        viewHolder.tvTimeEnd.setText(endTime.toString().substring(0,endTime.toString().length()-3));
         if(task.getCategory().equals("Entertainment"))
             viewHolder.ivCategory.setBackgroundResource(R.color.orange1);
         else if (task.getCategory().equals("Fitness"))
@@ -92,8 +97,9 @@ public class TaskRecyclerAdapter extends RecyclerView.Adapter<TaskRecyclerAdapte
 
         @BindView(R.id.tvTask) CheckedTextView tvTaskName;
         @BindView(R.id.tvTime) TextView tvTime;
-        @BindView(R.id.ivCategory)
-        ImageView ivCategory;
+        @BindView(R.id.ivCategory) ImageView ivCategory;
+        @BindView(R.id.tvTimeEnd) TextView tvTimeEnd;
+        @BindView(R.id.tvCategory) TextView tvCategory;
 
 
         public ViewHolder(@NonNull View itemView) {
