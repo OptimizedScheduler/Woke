@@ -10,7 +10,6 @@
     <uses-permission android:name="com.android.alarm.permission.SET_ALARM" />
     <uses-permission android:name="android.permission.INTERNET" />
 
-
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
     <application
@@ -24,7 +23,7 @@
         <activity
             android:name=".SplashScreen"
             android:label="Woke"
-            android:theme="@style/AppTheme">
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
