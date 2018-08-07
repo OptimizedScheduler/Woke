@@ -68,7 +68,7 @@ public class editDayActivity extends AppCompatActivity implements TimePickerDial
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.fragment_edit_day);
+        setContentView(R.layout.edit_day_activity);
         ButterKnife.bind(this);
         dayOfWeek=new HashMap<>();
         dayOfWeek.put("Sunday", R.drawable.sunday);
