@@ -14,7 +14,7 @@ public class SplashScreen extends AppCompatActivity {
         Thread timer = new Thread(){
             public void run(){
                 try{
-                    sleep(2500);   // set the duration of splash screen
+                    sleep(2800);   // set the duration of splash screen
                 }
                 catch(InterruptedException e){
                     e.printStackTrace();

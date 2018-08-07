@@ -24,7 +24,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="177dp"
+        android:layout_marginTop="172dp"
         android:layout_toEndOf="@+id/etHours"
         android:fontFamily="@font/raleway_thin"
         android:text="@string/category"
@@ -40,9 +40,8 @@
         android:id="@+id/tvDuration"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
         android:layout_alignStart="@+id/tvCategory"
-        android:layout_marginTop="279dp"
+        android:layout_centerVertical="true"
         android:fontFamily="@font/raleway_thin"
         android:text="duration"
         android:textColor="@color/white"
@@ -57,9 +56,9 @@
         android:id="@+id/spCategory"
         android:layout_width="201dp"
         android:layout_height="27dp"
-        android:layout_alignBottom="@+id/tvCategory"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="14dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignStart="@+id/tvCategory"
+        android:layout_marginTop="227dp"
         android:entries="@array/categories"
         android:outlineAmbientShadowColor="@color/white"
         android:textColor="@color/white"
@@ -96,7 +95,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignStart="@+id/tvCategory"
-        android:layout_marginBottom="239dp"
+        android:layout_marginBottom="160dp"
         android:fontFamily="@font/raleway_thin"
         android:text="set date"
         android:textColor="@color/white"
@@ -115,10 +114,12 @@
 
     <EditText
         android:id="@+id/etHours"
-        android:layout_width="65dp"
+        android:layout_width="55dp"
         android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/btDate"
-        android:layout_centerVertical="true"
+        android:layout_alignParentBottom="true"
+        android:layout_alignStart="@+id/ivTitle"
+        android:layout_marginBottom="215dp"
+        android:layout_marginStart="10dp"
         android:ems="10"
         android:inputType="number"
         android:textColor="@color/white"
@@ -126,9 +127,10 @@
 
     <EditText
         android:id="@+id/etMinutes"
-        android:layout_width="69dp"
+        android:layout_width="53dp"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
+        android:layout_alignTop="@+id/etHours"
+        android:layout_centerHorizontal="true"
         android:ems="10"
         android:inputType="number"
         android:textColor="@color/white"
@@ -138,21 +140,9 @@
         android:id="@+id/tvHours"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_centerVertical="true"
-        android:layout_marginStart="100dp"
+        android:layout_alignBaseline="@+id/etHours"
+        android:layout_alignStart="@+id/tvCategory"
         android:text="hours"
-        android:textColor="@color/white"
-        android:textSize="18sp"
-        android:textStyle="bold" />
-
-    <TextView
-        android:id="@+id/tvMinutes"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_toEndOf="@+id/btFinish"
-        android:text="minutes"
         android:textColor="@color/white"
         android:textSize="18sp"
         android:textStyle="bold" />
@@ -191,5 +181,16 @@
         android:visibility="visible"
         app:srcCompat="@drawable/ic_timer_black_24dp" />
 
-    
+    <TextView
+        android:id="@+id/tvMinutes"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/etHours"
+        android:layout_toEndOf="@+id/etMinutes"
+        android:text="minutes"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        tools:textColor="@color/white" />
+
+
 </RelativeLayout>
