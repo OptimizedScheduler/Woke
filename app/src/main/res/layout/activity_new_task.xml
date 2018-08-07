@@ -188,6 +188,7 @@
         android:layout_alignBaseline="@+id/etHours"
         android:layout_toEndOf="@+id/etMinutes"
         android:text="minutes"
+        android:textColor="@color/white"
         android:textSize="18sp"
         android:textStyle="bold"
         tools:textColor="@color/white" />
