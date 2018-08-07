@@ -44,8 +44,6 @@ import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.example.smistry.woke.bottomNav.TAG;
-
 
 public class SettingsActivity extends AppCompatPreferenceActivity  {
 
