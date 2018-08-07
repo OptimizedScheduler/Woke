@@ -207,11 +207,13 @@ public class SettingsActivity extends AppCompatPreferenceActivity  {
 
             rain.setChecked(pref.getBoolean("umbrella", false));
             jacket.setChecked(pref.getBoolean("jacket", false));
-            tvTemp.setText(pref.getString("temp", "60F"));
+            tvTemp.setText(pref.getString("temp", "0F"));
 
             final SharedPreferences.Editor prefEditor =PreferenceManager.getDefaultSharedPreferences(getContext()).edit();
 
 
+            int value= Integer.valueOf(tvTemp.getText().toString().replaceAll("[^0-9]", ""));
+            temp.setProgress(value);
 
 
 

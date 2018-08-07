@@ -119,16 +119,18 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/raleway_thin"
             android:gravity="center"
+            android:scrollbars="vertical"
             android:text="TextView"
-            android:textStyle="bold"
-            android:scrollbars="vertical"/>
+            android:textStyle="bold" />
+
 
         <TextView
             android:id="@+id/tvEnteredFreeEditDay"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="107dp"
+            android:layout_gravity="center"
             android:textSize="24sp" />
+
 
 
     </LinearLayout>

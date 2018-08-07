@@ -1,5 +1,6 @@
 package com.example.smistry.woke;
 
+import android.annotation.SuppressLint;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.graphics.PorterDuff;
@@ -65,6 +66,7 @@ public class editDayActivity extends AppCompatActivity implements TimePickerDial
     @BindView(R.id.btSetFree) Button makeFree;
     @BindView(R.id.tvEnteredFreeEditDay) TextView enteredFreeTimes;
 
+    @SuppressLint({"ClickableViewAccessibility", "SetTextI18n"})
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -97,8 +99,21 @@ public class editDayActivity extends AppCompatActivity implements TimePickerDial
         currDay2 = currDay;
         frees=currDay.getFreeBlocks();
 
-        tvSleepTime.setText(currDay.getSleep().toString());
-        tvWakeTime.setText(currDay.getWakeUp().toString());
+        String sleepMinutes=currDay.getSleep().getMinutes()+"";
+        String wakeMinutes=-currDay.getWakeUp().getMinutes()+"";
+
+        if (sleepMinutes.length()!=2){
+            sleepMinutes="0"+sleepMinutes;
+        }
+        if (wakeMinutes.length()!=2){
+            wakeMinutes="0"+wakeMinutes;
+        }
+
+
+        tvSleepTime.setText(currDay.getSleep().getHours()+":"+sleepMinutes);
+        tvWakeTime.setText(currDay.getWakeUp().getHours()+":"+wakeMinutes);
+        wakeTime=currDay.getWakeUp();
+        sleepTime=currDay.getSleep();
 
         day.setText(getIntent().getStringExtra("Day").toString());
         image=getIntent().getStringExtra("Day").toString();
@@ -107,10 +122,18 @@ public class editDayActivity extends AppCompatActivity implements TimePickerDial
                 .load(dayOfWeek.get(image))
                 .into(ivDay);
 
+        int count=0;
         for (Free free:frees){
-            enteredFreeTimes.setText(enteredFreeTimes.getText().toString()+" "+free.stringInfo());
+            if (count!=0){
+                enteredFreeTimes.setText(enteredFreeTimes.getText().toString()+"\n"+free.stringInfo());
+            }
+            else{
+                enteredFreeTimes.setText(free.stringInfo());
+                count+=1;
+            }
         }
 
+        //Setting colors for presing
         btsleepTime.setOnTouchListener(new View.OnTouchListener() {
 
             public boolean onTouch(View v, MotionEvent event) {
@@ -206,6 +229,7 @@ public class editDayActivity extends AppCompatActivity implements TimePickerDial
             }
         });
 
+        //filing in data
         btwakeTime.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -318,22 +342,81 @@ public class editDayActivity extends AppCompatActivity implements TimePickerDial
             wakeTime=time;
             wakeSet=true;
             days.get(position).setWakeUp(wakeTime);
-            tvWakeTime.setText(wakeTime.toString());
+
+            String wakeMinutes=days.get(position).getWakeUp().getMinutes()+"";
+
+            if (wakeMinutes.length()!=2){
+                wakeMinutes="0"+wakeMinutes;
+            }
+
+            tvWakeTime.setText(days.get(position).getWakeUp().getHours()+":"+wakeMinutes);
+
         }
         else if (sleepSet){
-            sleepTime=time;
-            sleepSet=true;
-            days.get(position).setSleep(sleepTime);
-            tvSleepTime.setText(sleepTime.toString());
+            if (time.before(wakeTime)){
+                Toast.makeText(getApplicationContext(), "Your sleep time can't be before your wake time", Toast.LENGTH_SHORT).show();
+
+            }
+            else{
+                sleepTime=time;
+                sleepSet=true;
+                days.get(position).setSleep(sleepTime);
+
+                String sleepMinutes=days.get(position).getSleep().getMinutes()+"";
+                if (sleepMinutes.length()!=2){
+                    sleepMinutes="0"+sleepMinutes;
+                }
+                tvSleepTime.setText( days.get(position).getSleep().getHours()+":"+sleepMinutes);
+            }
         }
 
         else if (startTimeFreeSet){
-            startTimeFree=time;
-            startTimeFreeSet=true;
+            boolean between=false;
+            for (Free free: days.get(position).getFreeBlocks()){
+                if (time.after(free.start)&&time.before(free.end)){
+                    between=true;
+                }
+            }
+
+
+            if (time.before(wakeTime)){
+                Toast.makeText(getApplicationContext(), "Your Free's start can't be before your wake time", Toast.LENGTH_SHORT).show();
+
+            }
+            else if (time.after(sleepTime)){
+                Toast.makeText(getApplicationContext(), "Your Free's start can't be after your sleep time", Toast.LENGTH_SHORT).show();
+            }
+            else if (between){
+                Toast.makeText(getApplicationContext(), "Your Free's start can't be between another Free block", Toast.LENGTH_SHORT).show();
+            }
+            else{
+                startTimeFree=time;
+                startTimeFreeSet=true;}
         }
         else if (endTimeFreeSet){
-            endTimeFree=time;
-            endTimeFreeSet=true;
+            boolean between=false;
+            for (Free free: days.get(position).getFreeBlocks()){
+                if (time.after(free.start)&&time.before(free.end)){
+                    between=true;
+                }
+            }
+            if (time.before(wakeTime)){
+                Toast.makeText(getApplicationContext(), "Your Free's end can't be before your wake time", Toast.LENGTH_SHORT).show();
+
+            }
+            else if (time.after(sleepTime)){
+                Toast.makeText(getApplicationContext(), "Your Free's end can't be after your sleep time", Toast.LENGTH_SHORT).show();
+            }
+            else if (time.before(startTimeFree)){
+                Toast.makeText(getApplicationContext(), "Your Free's end can't be before your Free's start", Toast.LENGTH_SHORT).show();
+            }
+            else if (between){
+                Toast.makeText(getApplicationContext(), "Your Free's end can't be between another Free block", Toast.LENGTH_SHORT).show();
+            }
+            else{
+                endTimeFree=time;
+                endTimeFreeSet=true;
+            }
         }
         sleepSet=false;
         wakeSet=false;

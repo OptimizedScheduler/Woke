@@ -47,10 +47,20 @@ public class Free {
 
 
     public String stringInfo(){
+        String endMinutes=end.getMinutes()+"";
+        String startMinutes=-start.getMinutes()+"";
+
+        if (endMinutes.length()!=2){
+            endMinutes="0"+endMinutes;
+        }
+        if (startMinutes.length()!=2){
+            startMinutes="0"+startMinutes;
+        }
+
         String info="";
-        info+="Start: "+start.toString()+" ";
-        info+="End: "+end.toString()+" ";
-        info+="Duration "+freeBlockDuration+" min"+" ";
+        info+="Start: "+start.getHours()+":"+startMinutes+" ";
+        info+="End: "+end.getHours()+":"+endMinutes;
+
         return info;
     }
 
