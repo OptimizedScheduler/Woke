@@ -267,7 +267,7 @@ public class bottomNav extends AppCompatActivity {
         getWeather();
         if(jacketPref && bringJacket) {
             Notification notification = new NotificationCompat.Builder(this, WokeApp.Channel_1_ID)
-                    .setSmallIcon(R.drawable.ic_notifications_black_24dp)
+                    .setSmallIcon(R.drawable.ic_wb_sunny_black_24dp)
                     .setContentTitle("Bring Jacket")
                     .setContentText("Bring Jacket")
                     .setPriority(NotificationCompat.PRIORITY_HIGH)
@@ -277,9 +277,57 @@ public class bottomNav extends AppCompatActivity {
         }
         else {
             Notification notification = new NotificationCompat.Builder(this, WokeApp.Channel_1_ID)
-                    .setSmallIcon(R.drawable.ic_notifications_black_24dp)
+                    .setSmallIcon(R.drawable.ic_wb_sunny_black_24dp)
                     .setContentTitle("No Jacket Needed")
                     .setContentText("No Jacket Needed")
+                    .setPriority(NotificationCompat.PRIORITY_HIGH)
+                    .build();
+
+            notificationManager.notify(1, notification);
+        }
+
+    }
+
+    public void sendOnChannel2(MenuItem menuItem)
+    {
+        String ageStr = PreferenceManager.getDefaultSharedPreferences(this).getString("age", "19");
+        int age = Integer.parseInt(ageStr);
+        if(age > 5 && age < 14) {
+            Notification notification = new NotificationCompat.Builder(this, WokeApp.Channel_1_ID)
+                    .setSmallIcon(R.drawable.moon)
+                    .setContentTitle("National Sleep Foundation Recommendation")
+                    .setContentText("Your sleep time should be between 10-11 hours")
+                    .setPriority(NotificationCompat.PRIORITY_HIGH)
+                    .build();
+
+            notificationManager.notify(1, notification);
+        }
+        else if(age > 13 && age <18) {
+            Notification notification = new NotificationCompat.Builder(this, WokeApp.Channel_1_ID)
+                    .setSmallIcon(R.drawable.moon)
+                    .setContentTitle("National Sleep Foundation Recommendation")
+                    .setContentText("Your sleep time should be between 8-10 hours")
+                    .setPriority(NotificationCompat.PRIORITY_HIGH)
+                    .build();
+
+            notificationManager.notify(1, notification);
+        }
+        else if(age > 18 && age < 65) {
+            Notification notification = new NotificationCompat.Builder(this, WokeApp.Channel_1_ID)
+                    .setSmallIcon(R.drawable.moon)
+                    .setContentTitle("National Sleep Foundation Recommendation")
+                    .setContentText("Your sleep time should be between 7-9 hours")
+                    .setPriority(NotificationCompat.PRIORITY_HIGH)
+                    .build();
+
+            notificationManager.notify(1, notification);
+        }
+
+        else {
+            Notification notification = new NotificationCompat.Builder(this, WokeApp.Channel_1_ID)
+                    .setSmallIcon(R.drawable.moon)
+                    .setContentTitle("National Sleep Foundation Recommendation")
+                    .setContentText("Your sleep time should be between 7-8 hours")
                     .setPriority(NotificationCompat.PRIORITY_HIGH)
                     .build();
 

@@ -8,12 +8,20 @@
     android:label = "Settings">
 
     <item
-        android:id="@+id/weatherAlert"
-        android:icon="@drawable/ic_wb_sunny_black_24dp"
+        android:id="@+id/sleepAlert"
+        android:icon="@drawable/moon"
         app:showAsAction="ifRoom"
-        android:onClick="sendOnChannel1"
+        android:onClick="sendOnChannel2"
         android:title="Notifications">
     </item>
+
+    <item
+    android:id="@+id/weatherAlert"
+    android:icon="@drawable/ic_wb_sunny_black_24dp"
+    app:showAsAction="ifRoom"
+    android:onClick="sendOnChannel1"
+    android:title="Notifications">
+</item>
 
 <item
     android:id="@+id/settingsIcon"
