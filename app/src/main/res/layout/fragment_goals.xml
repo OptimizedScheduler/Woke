@@ -7,65 +7,131 @@
     tools:context=".fragments.goals">
 
     <!-- TODO: Update blank fragment layout -->
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tvGoals1"
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/chart"
+            android:layout_width="match_parent"
+            android:layout_height="413dp" />
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentStart="true"
-            android:layout_marginBottom="127dp"
-            android:text="TextView"
-            android:textSize="18sp" />
+            android:orientation="horizontal"
+            android:layout_marginLeft="40dp">
 
-        <TextView
-            android:id="@+id/tvGoals2"
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_fitness_center_black_24dp"
+                android:tint="@color/black" />
+
+            <TextView
+                android:id="@+id/tvGoals1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:text="TextView"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_below="@+id/tvGoals1"
-            android:layout_marginTop="-122dp"
-            android:text="TextView"
-            android:textSize="18sp" />
+            android:orientation="horizontal"
+            android:layout_marginLeft="40dp">
 
-        <TextView
-            android:id="@+id/tvGoals3"
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_work_black_24dp"
+                android:tint="@color/black" />
+
+            <TextView
+                android:id="@+id/tvGoals2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:text="TextView"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentStart="true"
-            android:layout_marginBottom="66dp"
-            android:text="TextView"
-            android:textSize="18sp" />
+            android:orientation="horizontal"
+            android:layout_marginLeft="40dp">
 
-        <TextView
-            android:id="@+id/tvGoals4"
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_movie_filter_black_24dp"
+                android:tint="@color/black" />
+
+            <TextView
+                android:id="@+id/tvGoals3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:text="TextView"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentStart="true"
-            android:layout_marginBottom="33dp"
-            android:text="TextView"
-            android:textSize="18sp" />
+            android:orientation="horizontal"
+            android:layout_marginLeft="40dp"
+            >
 
-        <TextView
-            android:id="@+id/tvGoals5"
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_supervisor_account_black_24dp"
+                android:tint="@color/black" />
+
+            <TextView
+                android:id="@+id/tvGoals4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:text="TextView"
+                android:textSize="18sp"
+                />
+        </LinearLayout>
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentStart="true"
-            android:text="TextView"
-            android:textSize="18sp" />
-    </RelativeLayout>
+            android:orientation="horizontal"
+            android:layout_marginLeft="40dp"
+           >
 
-    <com.github.mikephil.charting.charts.PieChart
-        android:id="@+id/chart"
-        android:layout_width="match_parent"
-        android:layout_height="452dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true" />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_playlist_add_black_24dp"
+                android:tint="@color/black" />
+
+            <TextView
+                android:id="@+id/tvGoals5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+
+                android:text="TextView"
+                android:textSize="18sp"
+                />
+        </LinearLayout>
+
+    </LinearLayout>
+
 
 </FrameLayout>

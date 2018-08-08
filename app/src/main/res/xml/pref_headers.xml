@@ -13,5 +13,11 @@
         android:title="Set Times" />
 
 
+    <header
+        android:fragment="com.example.smistry.woke.SettingsActivity$GoalsFragment"
+        android:icon="@drawable/ic_assignment_black_24dp"
+        android:title="Set Goals" />
+
+
 
 </preference-headers>
