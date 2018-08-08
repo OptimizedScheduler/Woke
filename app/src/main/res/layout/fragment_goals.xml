@@ -11,12 +11,60 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <TextView
+            android:id="@+id/tvGoals1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginBottom="127dp"
+            android:text="TextView"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/tvGoals2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/tvGoals1"
+            android:layout_marginTop="-122dp"
+            android:text="TextView"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/tvGoals3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginBottom="66dp"
+            android:text="TextView"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/tvGoals4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginBottom="33dp"
+            android:text="TextView"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/tvGoals5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
+            android:text="TextView"
+            android:textSize="18sp" />
     </RelativeLayout>
 
     <com.github.mikephil.charting.charts.PieChart
         android:id="@+id/chart"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="452dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true" />
 
