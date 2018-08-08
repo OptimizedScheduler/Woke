@@ -16,8 +16,4 @@ public class MessageEvent {
         return mDaysList;
     }
 
-    public void setmDaysList(ArrayList<Day> mDaysList) {
-        this.mDaysList = mDaysList;
-    }
-
 }

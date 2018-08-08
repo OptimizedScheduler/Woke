@@ -160,8 +160,6 @@ public class bottomNav extends AppCompatActivity {
         getSharedPreferences("PREFERENCE", MODE_PRIVATE).edit()
                 .putBoolean("isFirstRun", false).commit();
 
-     //   EventBus.getDefault().register(this);
-
        Intent data = getIntent();
        settings = (HashMap<String, ArrayList<Free>>) data.getSerializableExtra("FreeMap");
 
@@ -202,10 +200,6 @@ public class bottomNav extends AppCompatActivity {
                 }
             }
         }
-
-
-
-
     }
 
 
@@ -214,11 +208,6 @@ public class bottomNav extends AppCompatActivity {
         days= event.getmDaysList();
         viewPager.setDaysA(days);
         newTask nT = EventBus.getDefault().getStickyEvent(newTask.class);
-        Log.d("EventBus", days.toString());
-
-/*        if(event != null) {
-            EventBus.getDefault().removeStickyEvent(nT);
-        }*/
     }
 
     // write the items to the filesystem
@@ -396,7 +385,7 @@ public class bottomNav extends AppCompatActivity {
     private void readItems() {
         try {
             ArrayList<String> dayStrings;
-//           // create the array using the content in the file
+           // create the array using the content in the file
             dayStrings = new ArrayList<String>(FileUtils.readLines(getDataFile(), Charset.defaultCharset()));
             if(days!=null){
                 days.clear();}
@@ -462,9 +451,6 @@ public class bottomNav extends AppCompatActivity {
                 days.add(newDay);
                 Log.d("Day", "added new day: " + newDay.toString());
             }
-
-
-
         }
         catch (IOException e) {
             // print the error to the console
@@ -472,10 +458,6 @@ public class bottomNav extends AppCompatActivity {
             // just load an empty list
             days = new ArrayList<>();
         }
-//        catch (ParseException e) {
-//            e.printStackTrace();
-//            Log.d("Home Activity", "Error with date to String");
-//        }
 
     }
 
