@@ -74,6 +74,7 @@ public class TaskFragment extends Fragment {
         }
     }
 
+
     // Inflate the view for the fragment based on layout XML
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -86,6 +87,7 @@ public class TaskFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         RecyclerView rvTasks= view.findViewById(R.id.rvTasks);
+
         rvTasks.setLayoutManager(new LinearLayoutManager(getContext()));
         rvTasks.setAdapter(adapter);
     }

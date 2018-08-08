@@ -41,6 +41,15 @@ public class TaskRecyclerAdapter extends RecyclerView.Adapter<TaskRecyclerAdapte
     public void onBindViewHolder(@NonNull final ViewHolder viewHolder, final int i) {
         if(mTasks!= null){
         Task task = mTasks.get(i);
+        viewHolder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                mTasks.remove(i);
+                notifyItemRemoved(i);
+                notifyItemRangeChanged(i,mTasks.size());
+                return false;
+            }
+        });
         viewHolder.tvTaskName.setText(task.getTaskTitle());
         viewHolder.tvCategory.setText(task.getCategory());
         viewHolder.tvTime.setText(task.getTime().toString().substring(0,task.getTime().toString().length()-3)+" - ");
@@ -85,11 +94,11 @@ public class TaskRecyclerAdapter extends RecyclerView.Adapter<TaskRecyclerAdapte
         });
     }
 
+
     @Override
     public int getItemCount() {
         if(mTasks!=null)
         return mTasks.size();
-
         return 0;
     }
 
