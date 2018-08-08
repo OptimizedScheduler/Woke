@@ -115,8 +115,6 @@ public class ViewPagerFragment extends Fragment {
             int freeIndex = data.getIntExtra("freeIndex",0);
             ArrayList<Free> newFB;
             newFB=Parcels.unwrap(data.getParcelableExtra("newFreeBlock"));
-           /* Task task =newFB.get(freeIndex).getTasks().get(newFB.get(freeIndex).getTasks().size()-1);
-            daysA.get(dayIndex).getFreeBlocks().get(freeIndex).getTasks().add(task);*/
             daysA.get(dayIndex).setFreeBlocks(newFB);
             viewPagerAdapter.notifyDataSetChanged();
             Log.d("ADD",  daysA.get(dayIndex).getFreeBlocks().get(freeIndex).getTasks().get(newFB.get(freeIndex).getTasks().size()-1).getTaskTitle());
