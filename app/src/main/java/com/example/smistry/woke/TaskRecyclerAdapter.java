@@ -10,6 +10,8 @@ import android.widget.CheckedTextView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.smistry.woke.models.Task;
 
 import java.sql.Time;
@@ -50,22 +52,41 @@ public class TaskRecyclerAdapter extends RecyclerView.Adapter<TaskRecyclerAdapte
                 return false;
             }
         });
-        viewHolder.tvTaskName.setText(task.getTaskTitle());
+
+            RequestOptions options = new RequestOptions();
+            options.centerCrop();
+
+            viewHolder.tvTaskName.setText(task.getTaskTitle());
         viewHolder.tvCategory.setText(task.getCategory());
         viewHolder.tvTime.setText(task.getTime().toString().substring(0,task.getTime().toString().length()-3)+" - ");
         int endHr = task.getTime().getHours()*60+task.getTime().getMinutes()+task.getDuration();
         Time endTime = new Time(endHr/60,endHr%60,00);
         viewHolder.tvTimeEnd.setText(endTime.toString().substring(0,endTime.toString().length()-3));
         if(task.getCategory().equals("Entertainment"))
-            viewHolder.ivCategory.setBackgroundResource(R.color.orange1);
+            Glide.with(context)
+                    .load(R.drawable.orange0)
+                    .apply(options)
+                    .into(viewHolder.ivCategory);
         else if (task.getCategory().equals("Fitness"))
-            viewHolder.ivCategory.setBackgroundResource(R.color.orange0);
+            Glide.with(context)
+                    .load(R.drawable.orange1)
+                    .apply(options)
+                    .into(viewHolder.ivCategory);
         else if (task.getCategory().equals("Work"))
-            viewHolder.ivCategory.setBackgroundResource(R.color.orange3a);
+            Glide.with(context)
+                    .load(R.drawable.orange2)
+                    .apply(options)
+                    .into(viewHolder.ivCategory);
         else if (task.getCategory().equals("Social"))
-            viewHolder.ivCategory.setBackgroundResource(R.color.orange2);
+            Glide.with(context)
+                    .load(R.drawable.orange3)
+                    .apply(options)
+                    .into(viewHolder.ivCategory);
         else
-            viewHolder.ivCategory.setBackgroundResource(R.color.brown);
+            Glide.with(context)
+                    .load(R.drawable.orange4)
+                    .apply(options)
+                    .into(viewHolder.ivCategory);
         }
         else{
             viewHolder.tvTaskName.setText("L");
