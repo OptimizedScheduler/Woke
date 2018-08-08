@@ -1,6 +1,7 @@
 package com.example.smistry.woke.fragments;
 
 import android.content.SharedPreferences;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -134,10 +135,14 @@ public class goals extends Fragment {
         if (!name.equals("Your")){
             name+="'s";
         }
-        desc.setText(name+" Goals");
-        chart.setDescription(desc);
+
+        chart.setCenterText(name+" Goals");
+        chart.setCenterTextSize(32);
         set.setColors(new int[] { R.color.orange0, R.color.orange1, R.color.orange2, R.color.orange3, R.color.orange4}, getContext());
         chart.setData(data);
+        Description descript= new Description();
+        descript.setText("");
+        chart.setDescription(descript);
        // chart.animate();
         chart.animateXY(2000,2000);
         //chart.invalidate(); // refresh
@@ -182,16 +187,18 @@ public class goals extends Fragment {
 
 
 
-        Description desc= new Description();
-        // desc.setPosition(0,0);
-        desc.setTextSize(600);
-
         String name= PreferenceManager.getDefaultSharedPreferences(getContext()).getString("name", "Your");
         if (!name.equals("Your")){
             name+="'s";
         }
-        desc.setText(name+" Goals");
-        chart.setDescription(desc);
+
+
+        Description descript= new Description();
+        descript.setText("");
+        chart.setDescription(descript);
+        chart.setCenterText(name+" Goals");
+
+
         chart.animateXY(2000,2000);
     }
 }
