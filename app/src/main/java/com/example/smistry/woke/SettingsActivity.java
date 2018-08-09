@@ -49,8 +49,6 @@ import java.util.List;
 public class SettingsActivity extends AppCompatPreferenceActivity {
 
     public static ArrayList<Day> enteredItems;
-    // Fake testing data to ensure adding free blocks works
-
 
     private static Preference.OnPreferenceChangeListener sBindPreferenceSummaryToValueListener = new Preference.OnPreferenceChangeListener() {
         @Override
@@ -96,17 +94,16 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         super.onCreate(savedInstanceState);
         setupActionBar();
         PreferenceManager.setDefaultValues(this, R.xml.pref_general, false);
-//        PreferenceManager.setDefaultValues(this, R.xml.pref_sleep_time, false);
-//        PreferenceManager.setDefaultValues(this, R.xml.pref_free_times, false);
 
+
+        //checking for data that has beeen previously inputed for days
         if (getIntent() != null) {
             enteredItems = Parcels.unwrap(getIntent().getParcelableExtra("days"));
         }
 
+        //inputting default sample data
         if (enteredItems == null || enteredItems.size() == 0) {
             enteredItems = new ArrayList<>();
-
-
             enteredItems.add(new Day(new ArrayList<Free>(), "Sunday", new Time(6, 0, 0), new Time(22, 00, 00)));
             enteredItems.add(new Day(new ArrayList<Free>(), "Monday", new Time(6, 0, 0), new Time(22, 00, 00)));
             enteredItems.add(new Day(new ArrayList<Free>(), "Tuesday", new Time(6, 0, 0), new Time(22, 00, 00)));
@@ -117,7 +114,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
         }
 
-
+        //sending over the day's array and saving the data inside a file for persistence
         MessageEvent event = new MessageEvent(enteredItems);
         EventBus.getDefault().postSticky(event);
         writeItems();
@@ -154,7 +151,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         loadHeadersFromResource(R.xml.pref_headers, target);
     }
 
-
     protected boolean isValidFragment(String fragmentName) {
         return PreferenceFragment.class.getName().equals(fragmentName)
                 || GeneralPreferenceFragment.class.getName().equals(fragmentName)
@@ -163,6 +159,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     }
 
 
+
+    //fragment in which general settings are stored
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public static class GeneralPreferenceFragment extends PreferenceFragment {
         EditText age;
@@ -191,6 +189,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
             final SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(getContext());
 
+            //looking for previously inputted information to populate the editText's
             if (!pref.getString("age", "no age").equals("no age")) {
                 age.setText(pref.getString("age", "19"));
             }
@@ -209,6 +208,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             temp.setProgress(value);
 
 
+            //listeners set up to watch for input and store the respective data into a sharedPreference
             rain.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                 @Override
                 public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -316,7 +316,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
 
         @Override
         public void onCreatePreferences(Bundle bundle, String s) {
-
         }
 
 
@@ -338,7 +337,6 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         @Override
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            // addPreferencesFromResource(R.xml.pref_free_times);
             setHasOptionsMenu(true);
         }
 
@@ -367,6 +365,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             final TextView Thursday = view.findViewById(R.id.tvThursday);
             final TextView Friday = view.findViewById(R.id.tvFriday);
             final TextView Saturday = view.findViewById(R.id.tvSaturday);
+
+            //listenting for what day of the week is pressed to open editDay with the proper information
 
             Sunday.setOnClickListener(new View.OnClickListener() {
                 @SuppressLint("ResourceType")
@@ -420,6 +420,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
                 }
             });
 
+
+            //setting responses for when users press buttons
 
             Sunday.setOnTouchListener(new View.OnTouchListener() {
 
@@ -568,6 +570,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         }
     }
 
+    //fragment where goals can be set
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     public static class GoalsFragment extends PreferenceFragment {
         EditText fitness;
@@ -603,6 +606,8 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             String socialInput = pref.getString("social", "0");
             String otherInput = pref.getString("other", "0");
 
+
+            //checking for previous input to populate for data
             if (!fitnessInput.equals("0")) {
                 fitness.setText(fitnessInput);
             }
@@ -620,6 +625,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             }
 
 
+            //setting on change listners to watch for when text is changed to save into the shared preferences
             fitness.addTextChangedListener(new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -739,6 +745,7 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
     }
 
 
+    //sending over the proper data to editDay
     @RequiresApi(api = Build.VERSION_CODES.M)
     public void openEditDay(int position, String day) {
         Intent i = new Intent(SettingsActivity.this, editDayActivity.class);
@@ -754,12 +761,9 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
         if (resultCode == RESULT_OK && requestCode == 0) {
             enteredItems.clear();
             enteredItems.addAll((ArrayList<Day>) Parcels.unwrap(data.getParcelableExtra("days")));
-//
             MessageEvent event = new MessageEvent(enteredItems);
             EventBus.getDefault().postSticky(event);
             writeItems();
-
-            //   EventBus.getDefault().postSticky(new MessageEvent(enteredItems));
         }
 
     }
