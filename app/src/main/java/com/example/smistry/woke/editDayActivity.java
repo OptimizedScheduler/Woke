@@ -99,19 +99,10 @@ public class editDayActivity extends AppCompatActivity implements TimePickerDial
         currDay2 = currDay;
         frees=currDay.getFreeBlocks();
 
-        String sleepMinutes=currDay.getSleep().getMinutes()+"";
-        String wakeMinutes=-currDay.getWakeUp().getMinutes()+"";
-
-        if (sleepMinutes.length()!=2){
-            sleepMinutes="0"+sleepMinutes;
-        }
-        if (wakeMinutes.length()!=2){
-            wakeMinutes="0"+wakeMinutes;
-        }
 
 
-        tvSleepTime.setText(currDay.getSleep().getHours()+":"+sleepMinutes);
-        tvWakeTime.setText(currDay.getWakeUp().getHours()+":"+wakeMinutes);
+        tvSleepTime.setText(currDay.getSleep().toString().substring(0,5));
+        tvWakeTime.setText(currDay.getWakeUp().toString().substring(0,5));
         wakeTime=currDay.getWakeUp();
         sleepTime=currDay.getSleep();
 
@@ -349,7 +340,10 @@ public class editDayActivity extends AppCompatActivity implements TimePickerDial
                 wakeMinutes="0"+wakeMinutes;
             }
 
-            tvWakeTime.setText(days.get(position).getWakeUp().getHours()+":"+wakeMinutes);
+
+
+            tvWakeTime.setText(days.get(position).getWakeUp().toString().substring(0,5));
+
 
         }
         else if (sleepSet){
@@ -366,7 +360,8 @@ public class editDayActivity extends AppCompatActivity implements TimePickerDial
                 if (sleepMinutes.length()!=2){
                     sleepMinutes="0"+sleepMinutes;
                 }
-                tvSleepTime.setText( days.get(position).getSleep().getHours()+":"+sleepMinutes);
+
+                tvSleepTime.setText(days.get(position).getSleep().toString().substring(0,5));
             }
         }
 
