@@ -9,15 +9,17 @@ import android.support.v4.app.DialogFragment;
 
 import java.util.Calendar;
 
+// class used in new task to set the date for task
+// dialog fragment generates a calendar for users to select the date
 public class DatePickerFragment extends DialogFragment {
     Calendar c = Calendar.getInstance();
     int year = c.get(Calendar.YEAR);
     int month = c.get(Calendar.MONTH);
     int day = c.get(Calendar.DAY_OF_MONTH);
-    int dayOfWeek = c.get(Calendar.DAY_OF_WEEK);
+
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        return new DatePickerDialog(getActivity(), (DatePickerDialog.OnDateSetListener) getActivity(), year,month,day);
+        return new DatePickerDialog(getActivity(), (DatePickerDialog.OnDateSetListener) getActivity(), year, month, day);
     }
 }
