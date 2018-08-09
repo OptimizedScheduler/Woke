@@ -88,11 +88,13 @@ public class editDayActivity extends AppCompatActivity implements TimePickerDial
         }
         enteredFreeTimes.setMovementMethod(new ScrollingMovementMethod());
 
+        //booleans that check which button opened the timepicker
         sleepSet=false;
         wakeSet=false;
         startTimeFreeSet=false;
         endTimeFreeSet=false;
 
+        //getting day and position from the intent
         position= getIntent().getIntExtra("Position",0);
         days= Parcels.unwrap(getIntent().getParcelableExtra("Days"));
         Day currDay=days.get(position);
@@ -101,11 +103,13 @@ public class editDayActivity extends AppCompatActivity implements TimePickerDial
 
 
 
+        //setting the textView's of time
         tvSleepTime.setText(currDay.getSleep().toString().substring(0,5));
         tvWakeTime.setText(currDay.getWakeUp().toString().substring(0,5));
         wakeTime=currDay.getWakeUp();
         sleepTime=currDay.getSleep();
 
+       //loading the proper title at the top of the activity
         day.setText(getIntent().getStringExtra("Day").toString());
         image=getIntent().getStringExtra("Day").toString();
 
@@ -113,6 +117,7 @@ public class editDayActivity extends AppCompatActivity implements TimePickerDial
                 .load(dayOfWeek.get(image))
                 .into(ivDay);
 
+        //populating the textview with previously entered free blocks
         int count=0;
         for (Free free:frees){
             if (count!=0){
@@ -124,7 +129,7 @@ public class editDayActivity extends AppCompatActivity implements TimePickerDial
             }
         }
 
-        //Setting colors for presing
+        //Setting colors for pressing feedback
         btsleepTime.setOnTouchListener(new View.OnTouchListener() {
 
             public boolean onTouch(View v, MotionEvent event) {
@@ -325,6 +330,7 @@ public class editDayActivity extends AppCompatActivity implements TimePickerDial
     }
 
 
+    //saving time returned and validating data
     @Override
     public void onTimeSet(TimePicker timePicker, int hour, int minute) {
         Time time = new Time(hour, minute, 0);
@@ -333,15 +339,6 @@ public class editDayActivity extends AppCompatActivity implements TimePickerDial
             wakeTime=time;
             wakeSet=true;
             days.get(position).setWakeUp(wakeTime);
-
-            String wakeMinutes=days.get(position).getWakeUp().getMinutes()+"";
-
-            if (wakeMinutes.length()!=2){
-                wakeMinutes="0"+wakeMinutes;
-            }
-
-
-
             tvWakeTime.setText(days.get(position).getWakeUp().toString().substring(0,5));
 
 
@@ -355,12 +352,6 @@ public class editDayActivity extends AppCompatActivity implements TimePickerDial
                 sleepTime=time;
                 sleepSet=true;
                 days.get(position).setSleep(sleepTime);
-
-                String sleepMinutes=days.get(position).getSleep().getMinutes()+"";
-                if (sleepMinutes.length()!=2){
-                    sleepMinutes="0"+sleepMinutes;
-                }
-
                 tvSleepTime.setText(days.get(position).getSleep().toString().substring(0,5));
             }
         }
