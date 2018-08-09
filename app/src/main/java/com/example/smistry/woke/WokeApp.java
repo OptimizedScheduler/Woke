@@ -5,6 +5,7 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.os.Build;
 
+//used for sending notifications
 public class WokeApp extends Application{
     public static final String Channel_1_ID = "channel1";
 
@@ -15,6 +16,7 @@ public class WokeApp extends Application{
         createNotificationChannel();
     }
 
+    //makes notification channel so that notification appears on screen with vibration
     private void createNotificationChannel(){
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
         {
