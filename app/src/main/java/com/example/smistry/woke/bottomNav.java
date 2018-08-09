@@ -3,7 +3,6 @@ package com.example.smistry.woke;
 import android.app.Notification;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.icu.text.SimpleDateFormat;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -56,16 +55,12 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Locale;
 
 import cz.msebera.android.httpclient.Header;
 
 
 public class bottomNav extends AppCompatActivity {
     final DescriptorMapping descriptorMapping = DescriptorMapping.withDefaults();
-
-    ArrayList<Task> tasks;
-    ArrayList<Free> freeBlocks;
     ArrayList<Day> days;
     HashMap<String, ArrayList<Free>> settings;
     final FragmentManager fragmentManager = getSupportFragmentManager();
@@ -74,7 +69,7 @@ public class bottomNav extends AppCompatActivity {
     public final static String API_KEY_PARAM = "apikey";
     public final static String TAG = "TestActivity";
     public boolean bringJacket = false;
-    int jacketTemp;
+    int jacketTemp;  //Temperature specified by user
 
     AsyncHttpClient client;
 
@@ -86,6 +81,11 @@ public class bottomNav extends AppCompatActivity {
 
     HashMap<String,Integer>  months = new HashMap<>();
 
+    public ArrayList<Day> getDays() {
+        return days;
+    }
+
+    //Setting fragments
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -114,15 +114,15 @@ public class bottomNav extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bottom_nav);
-
+        //sonar Setup
         SoLoader.init(this, false);
-
         if (BuildConfig.DEBUG && SonarUtils.shouldEnableSonar(this)) {
             final SonarClient client = AndroidSonarClient.getInstance(this);
             client.addPlugin(new InspectorSonarPlugin(getApplicationContext(), descriptorMapping));
             client.start();
         }
 
+        //Setting months_used for reading items from files
         months.put("Jan",0);
         months.put("Feb",1);
         months.put("Mar",2);
@@ -136,13 +136,10 @@ public class bottomNav extends AppCompatActivity {
         months.put("Nov",10);
         months.put("Dec",11);
 
-
-
         readItems();
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         jacketTemp=Integer.valueOf(prefs.getString("temp", "0F").toString().replaceAll("[^0-9]", ""));
-
 
         notificationManager = NotificationManagerCompat.from(this);
         client = new AsyncHttpClient();
@@ -164,7 +161,6 @@ public class bottomNav extends AppCompatActivity {
        settings = (HashMap<String, ArrayList<Free>>) data.getSerializableExtra("FreeMap");
 
         //Fill the Day Array with information
-        //TODO to be replaced with the information from the Files
         days=new ArrayList<>();
 
        viewPager= ViewPagerFragment.newInstance(days);
@@ -177,11 +173,6 @@ public class bottomNav extends AppCompatActivity {
 
         BottomNavigationView navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-
-
-
-
-
 
         if (days!=null){
             for (Day day: days) {
@@ -207,21 +198,7 @@ public class bottomNav extends AppCompatActivity {
     public void onEvent(MessageEvent event){
         days= event.getmDaysList();
         viewPager.setDaysA(days);
-        newTask nT = EventBus.getDefault().getStickyEvent(newTask.class);
     }
-
-    // write the items to the filesystem
-    private void writeItems() {
-        try {
-            // save the item list as a line-delimited text file
-            FileUtils.writeLines(getDataFile(), days);
-        } catch (IOException e) {
-            // print the error to the console
-            e.printStackTrace();
-        }
-    }
-
-
 
     @Override
     public void onStop() {
@@ -229,20 +206,19 @@ public class bottomNav extends AppCompatActivity {
         EventBus.getDefault().unregister(this);
     }
 
-
+    //Setting toolbar
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.action_toolbar, menu);
         return true;
     }
 
-    public void openSettings(MenuItem item)
-    {
+    //open settings with the toolbar icon
+    public void openSettings(MenuItem item) {
         Intent intent = new Intent(bottomNav.this,SettingsActivity.class);
         intent.putExtra("days", Parcels.wrap(days));
         startActivityForResult(intent,2);
     }
-
 
     @Override
     public void onStart() {
@@ -250,8 +226,8 @@ public class bottomNav extends AppCompatActivity {
         EventBus.getDefault().register(this);
     }
 
-    public void sendOnChannel1(MenuItem menuItem)
-    {
+    //Sends a notification when jacket icon is clicked (Weather)
+    public void sendOnChannel1(MenuItem menuItem) {
         Boolean jacketPref= PreferenceManager.getDefaultSharedPreferences(this).getBoolean("jacket", false);
         getWeather();
         if(jacketPref && bringJacket) {
@@ -277,8 +253,8 @@ public class bottomNav extends AppCompatActivity {
 
     }
 
-    public void sendOnChannel2(MenuItem menuItem)
-    {
+    //Sends a notification when moon icon is clicked. Sleep recommendation depending on the age of the user
+    public void sendOnChannel2(MenuItem menuItem) {
         String ageStr = PreferenceManager.getDefaultSharedPreferences(this).getString("age", "19");
         int age = Integer.parseInt(ageStr);
         if(age > 5 && age < 14) {
@@ -325,6 +301,7 @@ public class bottomNav extends AppCompatActivity {
 
     }
 
+    //Request information from Accuweather's API
     public void getWeather(){
         String url = API_BASE_URL;
 
@@ -364,10 +341,6 @@ public class bottomNav extends AppCompatActivity {
         }
     }
 
-    public ArrayList<Day> getDays() {
-        return days;
-    }
-
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onResume() {
@@ -386,13 +359,12 @@ public class bottomNav extends AppCompatActivity {
         try {
             ArrayList<String> dayStrings;
            // create the array using the content in the file
-            dayStrings = new ArrayList<String>(FileUtils.readLines(getDataFile(), Charset.defaultCharset()));
+            dayStrings = new ArrayList<>(FileUtils.readLines(getDataFile(), Charset.defaultCharset()));
             if(days!=null){
                 days.clear();}
             else{
                 days=new ArrayList<>();
             }
-
 
             for (String daysString : dayStrings) {
                 Log.d("Day", daysString);
@@ -432,8 +404,6 @@ public class bottomNav extends AppCompatActivity {
                                 String title = taskStringSplit[0];
                                 String category = taskStringSplit[1];
                                 int durationTask = Integer.parseInt(taskStringSplit[2].replaceAll("\\s+", ""));
-                                SimpleDateFormat format = new SimpleDateFormat("E MMM dd HH:mm:ss ZZZ yyyy", Locale.ENGLISH);
-                               // Date date = format.parse(taskStringSplit[3]);
 
                                 String[] dateSplit=taskStringSplit[3].split(" ");
 
@@ -449,7 +419,6 @@ public class bottomNav extends AppCompatActivity {
                 }
                 Day newDay= new Day(frees,dayOfWeek,wakeTime, sleepTime);
                 days.add(newDay);
-                Log.d("Day", "added new day: " + newDay.toString());
             }
         }
         catch (IOException e) {
@@ -460,8 +429,6 @@ public class bottomNav extends AppCompatActivity {
         }
 
     }
-
-
 
 }
 
