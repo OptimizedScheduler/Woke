@@ -36,8 +36,6 @@ import org.parceler.Parcels;
 import java.io.File;
 import java.io.IOException;
 import java.sql.Time;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -51,7 +49,6 @@ public class newTask extends FragmentActivity implements  DatePickerDialog.OnDat
     @BindView(R.id.spCategory) Spinner spCategory;
     @BindView(R.id.btDate) Button btDate;
     @BindView(R.id.tvDate) TextView tvDate;
-    @BindView(R.id.ivExit) ImageView ivExit;
     @BindView(R.id.btFinish) Button btFinish;
     @BindView(R.id.etHours) EditText etHours;
     @BindView(R.id.etMinutes) EditText etMinutes;
@@ -68,18 +65,15 @@ public class newTask extends FragmentActivity implements  DatePickerDialog.OnDat
     int duration;
     boolean isDateSet;
     ArrayList<Day> myDays = new ArrayList<>();
-    public  boolean nextMorning;
     HashMap<Integer, Integer> categories;
     String image;
 
-    Time start = new Time(00,00,00);
-    Time end = new Time(12,0,0);
-    ArrayList<Free> freeBlocks = new ArrayList<Free>();
+    Time start = new Time(00,00,00); //setting sample start time
+    Time end = new Time(12,0,0); // setting sample end time
 
     String [] months = {"Jan","Feb", "Mar", "Apr", "May", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec"};
 
     private NotificationManagerCompat notificationManager;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,14 +81,10 @@ public class newTask extends FragmentActivity implements  DatePickerDialog.OnDat
         setContentView(R.layout.activity_new_task);
         ButterKnife.bind(this);
         myDays=Parcels.unwrap(getIntent().getParcelableExtra("dayArray"));
-        final DateFormat date = new SimpleDateFormat("MM dd, yyyy");
-        //freeBlocks.add(example);
 
         notificationManager = NotificationManagerCompat.from(this);
-        ivTimer.setVisibility(View.VISIBLE);
-        ivTitle.setVisibility(View.VISIBLE);
 
-
+        //setting images for spinner
         categories=new HashMap<>();
         categories.put(0, R.drawable.ic_fitness_center_black_24dp);
         categories.put(1, R.drawable.ic_work_black_24dp);
@@ -102,17 +92,15 @@ public class newTask extends FragmentActivity implements  DatePickerDialog.OnDat
         categories.put(3, R.drawable.ic_supervisor_account_black_24dp);
         categories.put(4, R.drawable.ic_playlist_add_black_24dp);
 
+        //different icons for spinner depending on category
         spCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
                item = parent.getItemAtPosition(pos);
-
                 ((TextView) parent.getChildAt(0)).setTextColor(Color.WHITE);
                 ((TextView) parent.getChildAt(0)).setTextSize(20);
-
                 Glide.with(getBaseContext())
                         .load(categories.get(pos))
                         .into(ivCategory);
-
             }
             public void onNothingSelected(AdapterView<?> parent) {
                 Toast.makeText(newTask.this,"Please make a category selection", Toast.LENGTH_SHORT);
@@ -120,16 +108,17 @@ public class newTask extends FragmentActivity implements  DatePickerDialog.OnDat
         });
 
 
+        //opens date picker fragment
         btDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
                 DialogFragment datepicker = new DatePickerFragment();
                 datepicker.show(getSupportFragmentManager(), "date pick");
             }
         });
 
 
+        //change color of calendar icon if mouse hovers
         btDate.setOnTouchListener(new View.OnTouchListener() {
 
             public boolean onTouch(View v, MotionEvent event) {
@@ -149,15 +138,8 @@ public class newTask extends FragmentActivity implements  DatePickerDialog.OnDat
             }
         });
 
-        ivExit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(newTask.this,bottomNav.class);
-                startActivity(intent);
-            }
-        });
 
-
+        //finish button schedules tasks and makes check to make sure all fields are filled
         btFinish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -166,19 +148,22 @@ public class newTask extends FragmentActivity implements  DatePickerDialog.OnDat
                 String strMinutes = etMinutes.getText().toString();
                 String strTitle = etTitle.getText().toString();
 
+                // validates title
                 if(TextUtils.isEmpty(strTitle)){
                     Toast.makeText(newTask.this, "Please enter a Task Title!", Toast.LENGTH_SHORT).show();
                 }
 
+                //validates duration
                 else if(TextUtils.isEmpty(strHours) && TextUtils.isEmpty(strMinutes) || etHours.equals("0") && etMinutes.equals("0")  ) {
                     Toast.makeText(newTask.this,"Duration is a required field. Please enter a value!", Toast.LENGTH_SHORT).show();
                 }
 
-
+               // validates task date
                else if(taskDate == null){
                     Toast.makeText(newTask.this,"Date is a required field. Please enter a value!", Toast.LENGTH_SHORT).show();
                 }
 
+                // sets values for hours or minutes if user does not fill out one of the fields
                 else {
                     if(TextUtils.isEmpty(strHours)) {
                         etHours.setText("0");
@@ -187,6 +172,8 @@ public class newTask extends FragmentActivity implements  DatePickerDialog.OnDat
                     if(TextUtils.isEmpty(strMinutes)) {
                         etMinutes.setText("0");
                     }
+
+                    //calculates duration and sets task
                     duration = (Integer.parseInt(etHours.getText().toString())*60) + Integer.parseInt(etMinutes.getText().toString());
                     Task task = new Task(etTitle.getText().toString(), item.toString(), duration, taskDate);
 
@@ -198,14 +185,13 @@ public class newTask extends FragmentActivity implements  DatePickerDialog.OnDat
                     MessageEvent event = new MessageEvent(myDays);
                     EventBus.getDefault().postSticky(event);
 
-
-                    Log.d("Days", myDays.toString());
                     writeItems();
                     finish();
                 }
             }
         });
 
+        //changes finish button color on hover
         btFinish.setOnTouchListener(new View.OnTouchListener() {
 
             public boolean onTouch(View v, MotionEvent event) {
@@ -226,8 +212,7 @@ public class newTask extends FragmentActivity implements  DatePickerDialog.OnDat
         });
     }
 
-
-
+    //stores the date picked by the user for the task
     @Override
     public void onDateSet(DatePicker datePicker, int year, int month, int day) {
         Log.d("Date Format", String.valueOf(year) + " " + String.valueOf(month)+ " " + String.valueOf(day));
@@ -236,38 +221,44 @@ public class newTask extends FragmentActivity implements  DatePickerDialog.OnDat
         tvDate.setText(months[month]+ " " + day + ","+ " " + year);
         Log.d("Date Format", taskDate.toString());
         Log.d("Date Format", String.valueOf(taskDate.getYear()));
-        iTaskDate=taskDate.getDay();
+        iTaskDate=taskDate.getDay(); //gets the day of the week for the task
     }
 
-
-
+    //sets Task in the next available free block by checking the next available slot that fits duration of the task
     public boolean setTaskWithinFreeBlock (ArrayList<Day> dayArray, Task task){
         boolean reachEnd = false;
         boolean first=true;
         int index = iTaskDate;
         int nextInd = index+1;
         int blockDuration;
+
+        //looping through all free blocks
            while(!reachEnd) {
                if (first)
                    for (int i = 0; i < dayArray.get(index).getFreeBlocks().size(); i++) {
                        blockDuration = (dayArray.get(index).getFreeBlocks().get(i).getEnd().getHours() * 60 + dayArray.get(index).getFreeBlocks().get(i).getEnd().getMinutes());
                        blockDuration -= dayArray.get(index).getFreeBlocks().get(i).getStart().getHours() * 60 + dayArray.get(index).getFreeBlocks().get(i).getStart().getMinutes();
-                       //blockDuration = Integer.parseInt(dayArray.get(index).getFreeBlocks().get(i).getStart().toString()) - Integer.parseInt(dayArray.get(index).getFreeBlocks().get(i).getEnd().toString());
-                       if (blockDuration >= task.getDuration()) { //looping through all free blocks
+
+                       if (blockDuration >= task.getDuration()) { //checking if free block can fit task duration
                            if (dayArray.get(index).getFreeBlocks().get(i).getTasks() == null)
                                dayArray.get(index).getFreeBlocks().get(i).setTasks(new ArrayList<Task>());
                            dayArray.get(index).getFreeBlocks().get(i).getTasks().add(task); // adding updated task list to free block
                            task.setTime(dayArray.get(index).getFreeBlocks().get(i).getStart()); //setting start time for task
+
+                           //setting task date
                            taskDate.setHours(task.getTime().getHours());
                            taskDate.setMinutes(task.getTime().getMinutes());
 
+                           //updating start time of free block
                            start.setHours(task.getTime().getHours() + (Integer.parseInt(etHours.getText().toString())));
                            start.setMinutes(task.getTime().getMinutes() + (Integer.parseInt(etMinutes.getText().toString()))); //changing free block start time
                            dayArray.get(index).getFreeBlocks().get(i).setStart(start);
                            Log.d("Testing", start.toString());
 
+                           //setting alarm for the task as reminder
                            setAlarm(new Time(taskDate.getHours(), taskDate.getHours(), 00), task, etTitle.getText().toString(), i, iTaskDate);
 
+                           //passing days array/info to bottomNav (main activity)
                            MessageEvent event = new MessageEvent(myDays);
                            EventBus.getDefault().postSticky(event);
                            return true;
@@ -275,6 +266,7 @@ public class newTask extends FragmentActivity implements  DatePickerDialog.OnDat
                    }
                first = false;
 
+               //
                if((nextInd)%7 != index) {
                    Time t1 = myDays.get(nextInd%7).getWakeUp(); //wake up time of current day
                    int newWake = t1.getHours() * 60 + t1.getMinutes() - duration;  // new wake up time (Int format)
@@ -304,15 +296,19 @@ public class newTask extends FragmentActivity implements  DatePickerDialog.OnDat
            return  false;
     }
 
-
+    //setting alarm for task based on time and title
     public void setAlarm(Time time, Task task,String title, int FreeIndex, int DayIndex){
         Intent setAlarm = new Intent(AlarmClock.ACTION_SET_ALARM);
         setAlarm.putExtra(AlarmClock.EXTRA_HOUR,time.getHours());
         setAlarm.putExtra(AlarmClock.EXTRA_MINUTES, time.getMinutes());
         setAlarm.putExtra(AlarmClock.EXTRA_MESSAGE, title);
+
+        //setting alarm in background so user doesn't see the alarm clock screen
         setAlarm.putExtra(AlarmClock.EXTRA_SKIP_UI, true);
         ArrayList<Integer> alarmDays = new ArrayList<>();
         alarmDays.add(task.getDate().getDay()+1);
+
+        //setting alarm clock for specific weekday
         setAlarm.putExtra(AlarmClock.EXTRA_DAYS, alarmDays);
 
         Intent data = new Intent();
@@ -335,8 +331,6 @@ public class newTask extends FragmentActivity implements  DatePickerDialog.OnDat
             e.printStackTrace();
         }
     }
-
-
 
     // returns the file in which the data is stored
     public File getDataFile() {
