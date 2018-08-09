@@ -227,23 +227,21 @@ public class newTask extends FragmentActivity implements  DatePickerDialog.OnDat
     //sets Task in the next available free block by checking the next available slot that fits duration of the task
     public boolean setTaskWithinFreeBlock (ArrayList<Day> dayArray, Task task){
         boolean reachEnd = false;
-        boolean first=true;
-        int index = iTaskDate;
-        int nextInd = index+1;
+        boolean first=true; //determine if its the first time checking for the freeblocks
+        int nextInd = iTaskDate+1;
         int blockDuration;
 
-        //looping through all free blocks
            while(!reachEnd) {
-               if (first)
-                   for (int i = 0; i < dayArray.get(index).getFreeBlocks().size(); i++) {
-                       blockDuration = (dayArray.get(index).getFreeBlocks().get(i).getEnd().getHours() * 60 + dayArray.get(index).getFreeBlocks().get(i).getEnd().getMinutes());
-                       blockDuration -= dayArray.get(index).getFreeBlocks().get(i).getStart().getHours() * 60 + dayArray.get(index).getFreeBlocks().get(i).getStart().getMinutes();
+               if (first)   //looping through all free blocks
+                   for (int i = 0; i < dayArray.get(iTaskDate).getFreeBlocks().size(); i++) {
+                       blockDuration = (dayArray.get(iTaskDate).getFreeBlocks().get(i).getEnd().getHours() * 60 + dayArray.get(iTaskDate).getFreeBlocks().get(i).getEnd().getMinutes());
+                       blockDuration -= dayArray.get(iTaskDate).getFreeBlocks().get(i).getStart().getHours() * 60 + dayArray.get(iTaskDate).getFreeBlocks().get(i).getStart().getMinutes();
 
                        if (blockDuration >= task.getDuration()) { //checking if free block can fit task duration
-                           if (dayArray.get(index).getFreeBlocks().get(i).getTasks() == null)
-                               dayArray.get(index).getFreeBlocks().get(i).setTasks(new ArrayList<Task>());
-                           dayArray.get(index).getFreeBlocks().get(i).getTasks().add(task); // adding updated task list to free block
-                           task.setTime(dayArray.get(index).getFreeBlocks().get(i).getStart()); //setting start time for task
+                           if (dayArray.get(iTaskDate).getFreeBlocks().get(i).getTasks() == null)
+                               dayArray.get(iTaskDate).getFreeBlocks().get(i).setTasks(new ArrayList<Task>());
+                           dayArray.get(iTaskDate).getFreeBlocks().get(i).getTasks().add(task); // adding updated task list to free block
+                           task.setTime(dayArray.get(iTaskDate).getFreeBlocks().get(i).getStart()); //setting start time for task
 
                            //setting task date
                            taskDate.setHours(task.getTime().getHours());
@@ -252,7 +250,7 @@ public class newTask extends FragmentActivity implements  DatePickerDialog.OnDat
                            //updating start time of free block
                            start.setHours(task.getTime().getHours() + (Integer.parseInt(etHours.getText().toString())));
                            start.setMinutes(task.getTime().getMinutes() + (Integer.parseInt(etMinutes.getText().toString()))); //changing free block start time
-                           dayArray.get(index).getFreeBlocks().get(i).setStart(start);
+                           dayArray.get(iTaskDate).getFreeBlocks().get(i).setStart(start);
                            Log.d("Testing", start.toString());
 
                            //setting alarm for the task as reminder
@@ -266,31 +264,34 @@ public class newTask extends FragmentActivity implements  DatePickerDialog.OnDat
                    }
                first = false;
 
-               //
-               if((nextInd)%7 != index) {
+               //Adding the task to the next morning
+               if((nextInd)%7 != iTaskDate) {  //mod 7 used to allow to add within just these 7 days
+                   //
                    Time t1 = myDays.get(nextInd%7).getWakeUp(); //wake up time of current day
                    int newWake = t1.getHours() * 60 + t1.getMinutes() - duration;  // new wake up time (Int format)
                    Time t2 = new Time(newWake / 60, (newWake % 60), 00); //new Wake up time  && start of the task
-                   task.setTime(t2);
+                   task.setTime(t2); //set time to the new wakeUp time
                    Calendar cal = Calendar.getInstance();
                    cal.setTime(taskDate);
                    cal.add(Calendar.DATE, 1);
                    Date movedDate = cal.getTime();
                    movedDate.setHours(task.getTime().getHours());
                    movedDate.setMinutes(task.getTime().getMinutes());
-                   task.setDate(movedDate);
+                   task.setDate(movedDate); //set Date from task to next day
+
+                   //Add task to next morning
                    myDays.get(nextInd%7).getFreeBlocks().add(0, new Free(new ArrayList<Task>(), t1, t1));
                    myDays.get(nextInd%7).getFreeBlocks().get(0).getTasks().add(task);
                    myDays.get(nextInd%7).setWakeUp(t2);
                    setAlarm(t2, task, etTitle.getText().toString(), 0, nextInd%7 );
+
+                   //Post eventBus
                    MessageEvent event = new MessageEvent(myDays);
                    EventBus.getDefault().postSticky(event);
                    nextInd++;
                    return true;
                } else {
                    reachEnd=true;
-                   //Toast.makeText(this, "Sorry there is no available time in the week", Toast.LENGTH_LONG).show();
-                   //return false;
                }
            }
            return  false;
