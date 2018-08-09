@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -33,7 +32,7 @@ public class ViewPagerFragment extends Fragment {
     ViewPager viewPager;
     ArrayList<Day> daysA;
     final static Date today = new Date();
-    final static int dofNum = today.getDay();
+    final static int dofNum = today.getDay();  //int representation of day of the Week (Sunday, Monday... -> 0,1...)
     ViewPagerAdapter viewPagerAdapter;
     final int REQ_CODE = 1;
 
@@ -60,6 +59,7 @@ public class ViewPagerFragment extends Fragment {
         return fragment;
     }
 
+    //Used for ViewPager --> TaskFragment communication
     public ArrayList<Free> getArray(int pos){
         return daysA.get(pos).getFreeBlocks();
     }
@@ -89,7 +89,6 @@ public class ViewPagerFragment extends Fragment {
         return view;
     }
 
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -100,14 +99,11 @@ public class ViewPagerFragment extends Fragment {
                 Intent intent = new Intent(getActivity(),newTask.class);
                 intent.putExtra("dayArray", Parcels.wrap(daysA));
                 startActivityForResult(intent,REQ_CODE);
-
-                Snackbar.make(view, "Creating a new task", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
             }
         });
-
     }
 
+    //Recieves newTask's information
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK && requestCode == REQ_CODE){
@@ -133,10 +129,12 @@ public class ViewPagerFragment extends Fragment {
             return NUM_ITEMS;
         }
 
+        //Recieves an int 'position' which points which Tab from the viewPager is selected
+        //ViewPager will always be filled with Tab 0 = Today (day of Week)
         @Override
         public Fragment getItem(int position) {
             switch (position) {
-                case 0:
+                case 0: //Today
                     return TaskFragment.newInstance((dofNum+position)%7, getLabel(position));
                 case 1:
                     return TaskFragment.newInstance((dofNum+position)%7, getLabel(position));
