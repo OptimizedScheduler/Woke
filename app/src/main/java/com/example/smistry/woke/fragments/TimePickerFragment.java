@@ -9,17 +9,17 @@ import android.support.v4.app.DialogFragment;
 
 import java.util.Calendar;
 
+
+// class used in free block settings to set the free time for the day
+// dialog fragment generates a clock for users to select the free time
 public class TimePickerFragment extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        Calendar c = Calendar.getInstance();
-//        int hour = c.get(Calendar.HOUR_OF_DAY);
-//        int minute = c.get(Calendar.MINUTE);
-        int hour=getArguments().getInt("hour");
-        int min=getArguments().getInt("minutes");
+        int hour = getArguments().getInt("hour");
+        int min = getArguments().getInt("minutes");
 
-        return new TimePickerDialog(getActivity(),(TimePickerDialog.OnTimeSetListener) getActivity(), hour, min, false);
+        return new TimePickerDialog(getActivity(), (TimePickerDialog.OnTimeSetListener) getActivity(), hour, min, false);
     }
 
     public static TimePickerFragment newInstance(int hour, int min) {
@@ -27,7 +27,7 @@ public class TimePickerFragment extends DialogFragment {
 
         Bundle args = new Bundle();
         args.putInt("hour", hour);
-        args.putInt("minutes",min);
+        args.putInt("minutes", min);
         f.setArguments(args);
 
         return f;
