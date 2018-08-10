@@ -90,7 +90,7 @@ public class stats extends Fragment {
             int nextHours = next.getWakeUp().getHours();
             int nextMin = next.getWakeUp().getMinutes();
             int dayHours = day.getSleep().getHours();
-            int dayMins = day.getWakeUp().getMinutes();
+            int dayMins = day.getSleep().getMinutes();
             float sleeptime = 1440 - Math.abs((nextHours - dayHours) * 60 + (nextMin - dayMins));
             sleepVals.add(new BarEntry(i * spaceForBar, new float [] {sleeptime, 480-sleeptime}));
         }
@@ -101,7 +101,7 @@ public class stats extends Fragment {
         int nextHours = next.getWakeUp().getHours();
         int nextMin = next.getWakeUp().getMinutes();
         int dayHours = day.getSleep().getHours();
-        int dayMins = day.getWakeUp().getMinutes();
+        int dayMins = day.getSleep().getMinutes();
         float sleeptime = 1440 - Math.abs((nextHours - dayHours) * 60 + (nextMin - dayMins));
         sleepVals.add(new BarEntry((0) * spaceForBar, new float [] {sleeptime, 480-sleeptime} ));
 
@@ -118,7 +118,6 @@ public class stats extends Fragment {
         dataset.setDrawValues(true);
         dataset.setStackLabels(labels);
 
-        //formatting bar chart
         data.setBarWidth(barWidth);
         sleepChart.setFitBars(true);
         sleepChart.setData(data);
