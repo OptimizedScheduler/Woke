@@ -1,186 +1,211 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     android:background="@color/blue8">
 
-    <ImageView
-        android:id="@+id/ivTitle"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignStart="@+id/btDate"
-        android:layout_marginTop="73dp"
-        android:background="@drawable/ic_title_black_24dp"
-        android:visibility="visible"
-        app:srcCompat="@drawable/ic_title_black_24dp" />
 
+    <ImageView
+        android:id="@+id/newTaskHeader"
+        android:layout_width="match_parent"
+        android:layout_height="76dp"
+        android:background="@drawable/newtask_header" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="20dp"
+        android:paddingLeft="10dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/ivTitle"
+            android:layout_width="42dp"
+            android:layout_height="43dp"
+            android:background="@drawable/ic_title_black_24dp"
+            android:paddingTop="10dp"
+            android:visibility="visible" />
+
+        <EditText
+            android:id="@+id/etTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="task title"
+            android:inputType="text"
+            android:paddingLeft="40dp"
+            android:selectAllOnFocus="false"
+            android:singleLine="false"
+            android:textColor="@color/white"
+            android:textSize="24sp" />
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="50dp"
+        android:paddingLeft="10dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/ivCategory"
+            android:layout_width="50dp"
+            android:layout_height="match_parent"
+            app:srcCompat="@drawable/ic_fitness_center_black_24dp" />
 
     <TextView
         android:id="@+id/tvCategory"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="172dp"
-        android:layout_toEndOf="@+id/etHours"
         android:fontFamily="@font/raleway_thin"
         android:text="@string/category"
         android:textColor="@color/white"
+        android:paddingLeft="30dp"
         android:textSize="24sp"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.025"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:textStyle="bold" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="20dp"
+        android:paddingLeft="85dp"
+        android:orientation="horizontal">
+    <Spinner
+        android:id="@+id/spCategory"
+        android:layout_width="201dp"
+        android:layout_height="27dp"
+        android:entries="@array/categories"
+        android:outlineAmbientShadowColor="@color/white"
+        android:textColor="@color/white"
+        tools:outlineSpotShadowColor="@android:color/white"
+        tools:textColor="@android:color/white" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="50dp"
+        android:paddingLeft="20dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/ivTimer"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:background="@drawable/ic_timer_black_24dp"
+            android:paddingLeft="10dp"
+            android:visibility="visible" />
 
     <TextView
         android:id="@+id/tvDuration"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/tvCategory"
-        android:layout_centerVertical="true"
         android:fontFamily="@font/raleway_thin"
+        android:paddingLeft="30dp"
         android:text="duration"
         android:textColor="@color/white"
         android:textSize="24sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.025"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+       />
 
-    <Spinner
-        android:id="@+id/spCategory"
-        android:layout_width="201dp"
-        android:layout_height="27dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignStart="@+id/tvCategory"
-        android:layout_marginTop="227dp"
-        android:entries="@array/categories"
-        android:outlineAmbientShadowColor="@color/white"
-        android:textColor="@color/white"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.506"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:outlineSpotShadowColor="@android:color/white"
-        tools:textColor="@android:color/white" />
+    </LinearLayout>
 
-    <Button
-        android:id="@+id/btDate"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
-        android:layout_alignStart="@+id/ivCategory"
-        android:layout_alignTop="@+id/tvDate"
-        android:background="@drawable/ic_date_range_black_24dp"
-        android:textColor="@color/white" />
-
-    <TextView
-        android:id="@+id/tvDate"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignStart="@+id/tvCategory"
-        android:layout_marginBottom="160dp"
-        android:fontFamily="@font/raleway_thin"
-        android:text="set date"
-        android:textColor="@color/white"
-        android:textSize="24sp"
-        android:textStyle="bold" />
+        android:paddingTop="10dp"
+        android:paddingLeft="40dp"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/etHours"
+            android:layout_width="55dp"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="number"
+            android:textColor="@color/white"
+            tools:text="Hours" />
+
+        <TextView
+            android:id="@+id/tvHours"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="hours"
+            android:paddingRight="20dp"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/etMinutes"
+            android:layout_width="53dp"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="number"
+            android:textColor="@color/white"
+            tools:text="Minutes" />
+
+        <TextView
+            android:id="@+id/tvMinutes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="minutes"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            tools:textColor="@color/white" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="78dp"
+        android:paddingTop="40dp"
+        android:paddingLeft="25dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btDate"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:background="@drawable/ic_date_range_black_24dp"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:id="@+id/tvDate"
+            android:layout_width="wrap_content"
+            android:layout_height="46dp"
+            android:layout_marginBottom="103dp"
+            android:fontFamily="@font/raleway_thin"
+            android:paddingLeft="25dp"
+            android:text="set date"
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="30dp"
+        android:paddingLeft="130dp"
+        android:orientation="horizontal">
 
     <Button
         android:id="@+id/btFinish"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="71dp"
+        android:layout_marginBottom="33dp"
         android:background="@drawable/newfinish"
         android:textColor="@color/white" />
-
-    <EditText
-        android:id="@+id/etHours"
-        android:layout_width="55dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignStart="@+id/ivTitle"
-        android:layout_marginBottom="215dp"
-        android:layout_marginStart="10dp"
-        android:ems="10"
-        android:inputType="number"
-        android:textColor="@color/white"
-        tools:text="Hours" />
-
-    <EditText
-        android:id="@+id/etMinutes"
-        android:layout_width="53dp"
-        android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/etHours"
-        android:layout_centerHorizontal="true"
-        android:ems="10"
-        android:inputType="number"
-        android:textColor="@color/white"
-        tools:text="Minutes" />
-
-    <TextView
-        android:id="@+id/tvHours"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/etHours"
-        android:layout_alignStart="@+id/tvCategory"
-        android:text="hours"
-        android:textColor="@color/white"
-        android:textSize="18sp"
-        android:textStyle="bold" />
-
-    <EditText
-        android:id="@+id/etTitle"
-        android:layout_width="213dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignStart="@+id/tvCategory"
-        android:layout_marginTop="64dp"
-        android:ems="10"
-        android:hint="task title"
-        android:inputType="text"
-        android:selectAllOnFocus="false"
-        android:singleLine="false"
-        android:textColor="@color/white"
-        android:textSize="24sp" />
-
-    <ImageView
-        android:id="@+id/ivCategory"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignTop="@+id/tvCategory"
-        android:layout_marginStart="28dp"
-        app:srcCompat="@drawable/ic_fitness_center_black_24dp" />
-
-    <ImageView
-        android:id="@+id/ivTimer"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
-        android:layout_alignStart="@+id/btDate"
-        android:layout_alignTop="@+id/tvDuration"
-        android:background="@drawable/ic_timer_black_24dp"
-        android:visibility="visible"
-        app:srcCompat="@drawable/ic_timer_black_24dp" />
-
-    <TextView
-        android:id="@+id/tvMinutes"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/etHours"
-        android:layout_toEndOf="@+id/etMinutes"
-        android:text="minutes"
-        android:textColor="@color/white"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        tools:textColor="@color/white" />
-
-
-</RelativeLayout>
+    </LinearLayout>
+</LinearLayout>
