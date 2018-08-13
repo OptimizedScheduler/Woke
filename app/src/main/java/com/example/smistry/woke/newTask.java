@@ -254,7 +254,7 @@ public class newTask extends FragmentActivity implements  DatePickerDialog.OnDat
                            Log.d("Testing", start.toString());
 
                            //setting alarm for the task as reminder
-                           setAlarm(new Time(taskDate.getHours(), taskDate.getHours(), 00), task, etTitle.getText().toString(), i, iTaskDate);
+                           setAlarm(new Time(taskDate.getHours(), taskDate.getMinutes(), 00), task, etTitle.getText().toString(), i, iTaskDate);
 
                            //passing days array/info to bottomNav (main activity)
                            MessageEvent event = new MessageEvent(myDays);
